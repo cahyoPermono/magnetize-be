@@ -10,6 +10,7 @@
     "ecmaVersion": 6
   },
   "rules": {
-    "prettier/prettier": ["warn", { "singleQuote": true }]
+    "prettier/prettier": ["warn", { "singleQuote": true }],
+    "eqeqeq": "warn"
   }
 }
