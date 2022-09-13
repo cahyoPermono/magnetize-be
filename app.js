@@ -2,6 +2,8 @@ const express = require('express');
 
 const app = express();
 
-console.log('asdad');
+app.post('/api/1.0/users', (req, res) => {
+  return res.send({ message: 'User Created' });
+});
 
-app.listen(3000, () => console.log('app is running in port 3000'));
+module.exports = app;

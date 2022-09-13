@@ -4,7 +4,7 @@
   "description": "backend for magnetize using express and tdd methodology",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon app",
+    "dev": "nodemon index",
     "test": "jest --watch"
   },
   "author": "Cahyo Adi Permono",
