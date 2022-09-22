@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const sequelize = require('../src/config/database');
+const sequelize = require('../config/database');
 
 // initiate model for extend
 const Model = Sequelize.Model;
