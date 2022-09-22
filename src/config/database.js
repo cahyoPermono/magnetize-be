@@ -1,9 +1,17 @@
 const Sequelize = require('sequelize');
+const config = require('config');
 
-const sequelize = new Sequelize('magnetize', 'root', '123321', {
-  host: 'localhost',
-  dialect: 'mysql',
-  logging: false,
-});
+const dbConfig = config.get('database');
+
+const sequelize = new Sequelize(
+  dbConfig.database,
+  dbConfig.username,
+  dbConfig.password,
+  {
+    host: dbConfig.host,
+    dialect: dbConfig.dialect,
+    logging: dbConfig.logging,
+  }
+);
 
 module.exports = sequelize;
