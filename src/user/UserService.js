@@ -9,4 +9,16 @@ const save = async (body) => {
   const user = { ...body, password: hash };
   await User.create(user);
 };
-module.exports = { save };
+
+const isEmailExists = async (email) => {
+  console.log(email);
+  const user = await User.findOne({ where: { email } });
+  console.log(user);
+
+  if (user) {
+    return true;
+  }
+
+  return false;
+};
+module.exports = { save, isEmailExists };

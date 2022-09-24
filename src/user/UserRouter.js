@@ -17,7 +17,14 @@ router.post(
     .withMessage('Email cannot be null')
     .bail()
     .isEmail()
-    .withMessage('Email must be valid'),
+    .withMessage('Email must be valid')
+    .bail()
+    .custom(async (email) => {
+      const isEmailExists = await UserService.isEmailExists(email);
+      if (isEmailExists) {
+        throw new Error('Email in use');
+      }
+    }),
   check('password')
     .notEmpty()
     .withMessage('Password cannot be null')
