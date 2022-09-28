@@ -11,9 +11,7 @@ const save = async (body) => {
 };
 
 const isEmailExists = async (email) => {
-  console.log(email);
   const user = await User.findOne({ where: { email } });
-  console.log(user);
 
   if (user) {
     return true;
