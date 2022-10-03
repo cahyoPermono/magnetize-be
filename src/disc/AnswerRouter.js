@@ -1,17 +1,14 @@
 const express = require('express');
-const UserService = require('./UserService');
+const AnswerService = require('./AnswerService');
 const { check, validationResult } = require('express-validator');
 
 const router = express.Router();
 
 router.post(
-  '/api/1.0/users',
-  check('username')
+  '/api/1.0/answers',
+  check('name')
     .notEmpty()
-    .withMessage('Username cannot be null')
-    .bail()
-    .isLength({ min: 4, max: 32 })
-    .withMessage('Must Have min 4 and max 32 char'),
+    .withMessage('Name cannot be null'),
   check('email')
     .notEmpty()
     .withMessage('Email cannot be null')
@@ -20,23 +17,14 @@ router.post(
     .withMessage('Email must be valid')
     .bail()
     .custom(async (email) => {
-      const isEmailExists = await UserService.isEmailExists(email);
-      if (isEmailExists)
-       {
+      const mailExists = await AnswerService.mailExists(email);
+      if (mailExists) {
         throw new Error('Email in use');
       }
     }),
-  check('password')
+  check('role')
     .notEmpty()
-    .withMessage('Password cannot be null')
-    .bail()
-    .isLength({ min: 8 })
-    .withMessage('Password must have at least 8 char')
-    .bail()
-    .matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$/)
-    .withMessage(
-      'Password must have at least 1 lowercase and 1 uppercase and 1 number'
-    ),
+    .withMessage('Role cannot be null'),
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -46,8 +34,8 @@ router.post(
         .forEach((error) => (validationErrors[error.param] = error.msg));
       return res.status(400).send({ validationErrors });
     }
-    await UserService.save(req.body);
-    return res.send({ message: 'User Created' });
+    await AnswerService.save(req.body);
+    return res.send({ message: 'Answer Saved' });
   }
 );
 
