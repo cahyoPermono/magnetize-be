@@ -14,14 +14,7 @@ router.post(
     .withMessage('Email cannot be null')
     .bail()
     .isEmail()
-    .withMessage('Email must be valid')
-    .bail()
-    .custom(async (email) => {
-      const mailExists = await AnswerService.mailExists(email);
-      if (mailExists) {
-        throw new Error('Email in use');
-      }
-    }),
+    .withMessage('Email must be valid'),
   check('role')
     .notEmpty()
     .withMessage('Role cannot be null'),
@@ -37,6 +30,25 @@ router.post(
     await AnswerService.save(req.body);
     return res.send({ message: 'Answer Saved' });
   }
+);
+
+// router.get(
+//   '/api/1.0/answers/:email',
+//   async (email) => {
+//       const answerByEmail = await AnswerService.mailExists(email);
+//       res.send({ message: 'Success Get Question', data: answerByEmail });
+//   }
+  
+// );
+
+router.get(
+  '/api/1.0/answers/:email',
+  async (req, res) => {
+    const email = req.params.email
+    const answer = await AnswerService.findByEmail(email);
+      res.send({ message: 'Success Get Answer', data: answer });
+  }
+  
 );
 
 module.exports = router;

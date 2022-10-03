@@ -40,6 +40,10 @@ const postAnswer = (answer = validAnswer) => {
   return request(app).post('/api/1.0/answers').send(answer);
 };
 
+const getAnswerByEmail = () => {
+  return request(app).get('/api/1.0/answers/name1@gmail.com');
+}
+
 describe('Submit Answer', () => {
   it('returns 200 OK when submit is valid', async () => {
     const response = await postAnswer();
@@ -160,10 +164,17 @@ describe('Submit Answer', () => {
       expect(body.validationErrors[field]).toBe(expectedMessage);
     }
   );
+});
 
-  it('returns Email in use when same email is used', async () => {
-    await Answer.create({ ...validAnswer });
-    const response = await postAnswer();
-    expect(response.body.validationErrors.email).toBe('Email in use');
+describe('Get Answers By Email', () => {
+  it('returns 200 OK when success get answer by email', async () => {
+    const response = await getAnswerByEmail();
+    expect(response.status).toBe(200);
+  });
+  
+
+  it('returns success message when success get answer by email', async () => {
+    const response = await getAnswerByEmail();
+    expect(response.body.message).toBe('Success Get Answer');
   });
 });
