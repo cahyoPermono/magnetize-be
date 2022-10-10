@@ -1,0 +1,11 @@
+{
+  "username_null": "Username Tidak Boleh Kosong",
+  "username_size": "Minimal 4 dan Maximal 32 karakter",
+  "email_null": "E-mail Tidak Boleh Kosong",
+  "email_invalid": "E-mail Tidak Benar",
+  "password_null": "Password Tidak Boleh Kosong",
+  "password_size": "Password setidaknya 6 karakter",
+  "password_pattern": "Password Harus Punya setidaknya 1 Huruf Besar, 1 Huruf kecil, dan 1 Bilangan",
+  "email_inuse": "E-mail Sudah Digunakan",
+  "user_create_success": "User Berhasil Dibuat"
+}
