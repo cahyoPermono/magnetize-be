@@ -2,7 +2,7 @@ module.exports = {
   database: {
     database: 'magnetize',
     username: 'root',
-    password: '123321',
+    password: '',
     dialect: 'mysql',
     host: 'localhost',
     logging: false,
