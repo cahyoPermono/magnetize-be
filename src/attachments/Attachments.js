@@ -12,7 +12,10 @@ Attachments.init(
       type: Sequelize.STRING,
     },
     attachment_file: {
-      type: Sequelize.TEXT('long'),
+      type: Sequelize.TEXT("long"),
+    },
+    type: {
+      type: Sequelize.STRING,
     },
     DepartementId: {
       type: Sequelize.INTEGER,

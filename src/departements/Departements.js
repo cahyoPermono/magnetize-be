@@ -25,6 +25,9 @@ Departements.init(
     deskripsi: {
       type: Sequelize.STRING,
     },
+    avatar: {
+      type: Sequelize.STRING,
+    },
   },
   {
     sequelize,

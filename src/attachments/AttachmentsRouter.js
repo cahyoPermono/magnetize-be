@@ -7,6 +7,7 @@ router.post(
   "/api/1.0/attachments",
   check("attachment_name").notEmpty().withMessage("attachment_name_null"),
   check("attachment_file").notEmpty().withMessage("attachment_file_null"),
+  check("type").notEmpty().withMessage("type_file_null"),
   check("DepartementId").notEmpty().withMessage("departementID_null"),
   async (req, res) => {
     const errors = validationResult(req);

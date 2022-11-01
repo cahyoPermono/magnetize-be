@@ -8,6 +8,7 @@ const AnswerRouter = require('./disc/AnswerRouter');
 const DepartementsRouter = require('./departements/DepartementsRouter');
 const NotesRouter = require('./notes/NotesRouter');
 const AttachmentsRouter = require('./attachments/AttachmentsRouter');
+const GuestRouter = require('./guest/GuestRouter');
 
 i18next
   .use(Backend)
@@ -38,5 +39,6 @@ app.use(AnswerRouter);
 app.use(DepartementsRouter);
 app.use(NotesRouter);
 app.use(AttachmentsRouter);
+app.use(GuestRouter);
 
 module.exports = app;

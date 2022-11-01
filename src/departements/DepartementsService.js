@@ -20,12 +20,10 @@ exports.departmentGet = async (id) => {
 };
 
 exports.departementDelete = async (id) => {
-  const dataAttach = await Attachments.findAll({ where: { DepartementId: id } });
-  const dataNotes = await Notes.findAll({ where: { DepartementId: id } });
+  const dataAttach = await Attachments.destroy({ where: { DepartementId: id } });
+  const dataNotes = await Notes.destroy({ where: { DepartementId: id } });
   const del = await Departements.findOne({ where: { id: id } });
   if (del) {
-    dataAttach.destroy();
-    dataNotes.destroy();
     del.destroy();
   }
 };
