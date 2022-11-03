@@ -162,8 +162,7 @@ describe('Submit Answer', () => {
       const response = await postAnswer(answer);
       const body = response.body;
       expect(body.validationErrors[field]).toBe(expectedMessage);
-    }
-  );
+    });
 });
 
 describe('Get Answers By Email', () => {
