@@ -6,9 +6,7 @@ const router = express.Router();
 
 router.post(
   '/api/1.0/answers',
-  check('name')
-    .notEmpty()
-    .withMessage('Name cannot be null'),
+  check('name').notEmpty().withMessage('Name cannot be null'),
   check('email')
     .notEmpty()
     .withMessage('Email cannot be null')

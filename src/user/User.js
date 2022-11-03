@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/database');
 
-// initiate model for extend
 const Model = Sequelize.Model;
 
 class User extends Model {}
@@ -13,7 +12,6 @@ User.init(
     },
     email: {
       type: Sequelize.STRING,
-      unique: true,
     },
     password: {
       type: Sequelize.STRING,
