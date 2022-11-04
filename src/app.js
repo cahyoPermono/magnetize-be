@@ -9,7 +9,8 @@ const DepartementsRouter = require('./departements/DepartementsRouter');
 const NotesRouter = require('./notes/NotesRouter');
 const AttachmentsRouter = require('./attachments/AttachmentsRouter');
 const GuestRouter = require('./guest/GuestRouter');
-
+const expressLayouts = require('express-ejs-layouts');
+const path = require('path');
 i18next
   .use(Backend)
   .use(middleware.LanguageDetector)
@@ -27,6 +28,12 @@ i18next
   });
 
 const app = express();
+
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/docs', express.static(path.join(__dirname, 'docs')));
+app.use(expressLayouts);
+app.set('view engine', 'ejs');
+
 const cors = require('cors');
 app.use(middleware.handle(i18next));
 
