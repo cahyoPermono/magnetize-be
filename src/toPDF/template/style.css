@@ -1,0 +1,28 @@
+body {
+    margin: 10px 30px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .col-1 {
+    width: 20%;
+  }
+
+  td {
+    padding: 5px;
+  }
+
+  tr,
+  td {
+    border: 1px black solid;
+  }
+
+  .head-cell {
+    color: white;
+    background-color: #195563;
+    margin-top: 15px;
+  }

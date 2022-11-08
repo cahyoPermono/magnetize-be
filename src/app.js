@@ -9,7 +9,16 @@ const DepartementsRouter = require('./departements/DepartementsRouter');
 const NotesRouter = require('./notes/NotesRouter');
 const AttachmentsRouter = require('./attachments/AttachmentsRouter');
 const GuestRouter = require('./guest/GuestRouter');
-const expressLayouts = require('express-ejs-layouts');
+const ApplicantRouter = require('./applicant/ApplicantRouter');
+const FamilyRouter = require('./applicant/FamilyRouter');
+const FormalEducationRouter = require('./applicant/FormalEducationRouter');
+const NonFormalEducationRouter = require('./applicant/NonFormalEducationRouter');
+const ComputerLiterateRouter = require('./applicant/ComputerLiterateRouter');
+const EmploymentHistoryRouter = require('./applicant/EmploymentHistoryRouter');
+const JobDescriptionRouter = require('./applicant/JobDescriptionRouter');
+const OtherInformationRouter = require('./applicant/OtherInformationRouter');
+const AttachmentRouter = require('./applicant/AttachmentRouter');
+
 const path = require('path');
 i18next
   .use(Backend)
@@ -31,8 +40,6 @@ const app = express();
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/docs', express.static(path.join(__dirname, 'docs')));
-app.use(expressLayouts);
-app.set('view engine', 'ejs');
 
 const cors = require('cors');
 app.use(middleware.handle(i18next));
@@ -47,5 +54,13 @@ app.use(DepartementsRouter);
 app.use(NotesRouter);
 app.use(AttachmentsRouter);
 app.use(GuestRouter);
-
+app.use(ApplicantRouter);
+app.use(FamilyRouter);
+app.use(FormalEducationRouter);
+app.use(NonFormalEducationRouter);
+app.use(ComputerLiterateRouter);
+app.use(EmploymentHistoryRouter);
+app.use(JobDescriptionRouter);
+app.use(OtherInformationRouter);
+app.use(AttachmentRouter);
 module.exports = app;
