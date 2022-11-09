@@ -18,6 +18,26 @@ const EmploymentHistoryRouter = require('./applicant/EmploymentHistoryRouter');
 const JobDescriptionRouter = require('./applicant/JobDescriptionRouter');
 const OtherInformationRouter = require('./applicant/OtherInformationRouter');
 const AttachmentRouter = require('./applicant/AttachmentRouter');
+const JobRouter = require('./skill/JobRouter');
+const SkillRouter = require('./skill/SkillRouter');
+const SubSkillRouter = require('./skill/SubSkillRouter');
+const ApplicantSkillRouter = require('./skill/ApplicantSkillRouter')
+
+i18next
+  .use(Backend)
+  .use(middleware.LanguageDetector)
+  .init({
+    fallbackLng: 'en',
+    lng: 'en',
+    ns: ['translation'],
+    defaultNS: 'translation',
+    backend: {
+      loadPath: './locales/{{lng}}/{{ns}}.json',
+    },
+    detection: {
+      lookupHeader: 'accept-language',
+    },
+  });
 
 const path = require('path');
 i18next
@@ -41,10 +61,10 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/docs', express.static(path.join(__dirname, 'docs')));
 
-const cors = require('cors');
 app.use(middleware.handle(i18next));
 
 app.use(express.json({limit: '100mb'}));
+const cors = require('cors');
 app.use(cors());
 
 app.use(UserRouter);
@@ -63,4 +83,9 @@ app.use(EmploymentHistoryRouter);
 app.use(JobDescriptionRouter);
 app.use(OtherInformationRouter);
 app.use(AttachmentRouter);
+app.use(JobRouter);
+app.use(SkillRouter);
+app.use(SubSkillRouter)
+app.use(ApplicantSkillRouter);
+
 module.exports = app;
