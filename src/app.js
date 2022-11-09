@@ -61,7 +61,6 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/docs', express.static(path.join(__dirname, 'docs')));
 
-const cors = require('cors');
 app.use(middleware.handle(i18next));
 
 app.use(express.json({limit: '100mb'}));
