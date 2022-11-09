@@ -21,6 +21,18 @@ const find = async () => {
   return false;
 };
 
+const findOrder = async () => {
+  const applicant = await Applicant.findAll({
+    limit: 1,
+    order: [['id', 'desc']],
+  });
+  if (applicant) {
+    return applicant;
+  }
+
+  return false;
+};
+
 const byId = async (id) => {
   const applicant = await Applicant.findOne({
     where: {
@@ -37,4 +49,4 @@ const byId = async (id) => {
   return false;
 };
 
-module.exports = { save, find, byId };
+module.exports = { save, find, byId, findOrder };

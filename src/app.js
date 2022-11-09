@@ -15,6 +15,10 @@ const EmploymentHistoryRouter = require('./applicant/EmploymentHistoryRouter');
 const JobDescriptionRouter = require('./applicant/JobDescriptionRouter');
 const OtherInformationRouter = require('./applicant/OtherInformationRouter');
 const AttachmentRouter = require('./applicant/AttachmentRouter');
+const JobRouter = require('./skill/JobRouter');
+const SkillRouter = require('./skill/SkillRouter');
+const SubSkillRouter = require('./skill/SubSkillRouter');
+const ApplicantSkillRouter = require('./skill/ApplicantSkillRouter')
 
 i18next
   .use(Backend)
@@ -68,5 +72,9 @@ app.use(EmploymentHistoryRouter);
 app.use(JobDescriptionRouter);
 app.use(OtherInformationRouter);
 app.use(AttachmentRouter);
+app.use(JobRouter);
+app.use(SkillRouter);
+app.use(SubSkillRouter)
+app.use(ApplicantSkillRouter);
 
 module.exports = app;

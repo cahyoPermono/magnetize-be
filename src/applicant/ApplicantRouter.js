@@ -104,7 +104,7 @@ router.post(
 );
 
 router.get('/api/1.0/applicants', async (req, res) => {
-  const applicant = await ApplicantService.find();
+  const applicant = await ApplicantService.findOrder();
   res.send({ message: 'Success Get Data Applicant', data: applicant });
 });
 
@@ -112,5 +112,6 @@ router.get('/api/1.0/applicants/:id', async (req, res) => {
   const applicant = await ApplicantService.byId(req.params.id);
   res.send({ message: 'Success Get Data Applicant by Id', data: applicant });
 });
+
 
 module.exports = router;

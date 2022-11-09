@@ -6,7 +6,7 @@ const save = async (body) => {
   await OtherInformation.create(otherinformation);
 };
 
-const save2 = async (applicantId, body) => {
+const save2 = async (applicantId = Applicant.id, body) => {
   const otherinformation = { applicantId: applicantId, ...body };
   await OtherInformation.create(otherinformation);
 };
