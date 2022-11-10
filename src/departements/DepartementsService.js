@@ -19,6 +19,14 @@ exports.departmentGet = async (id) => {
   });
 };
 
+exports.departmentGetsss = async (id) => {
+  const dataDept =  await Departements.findOne({
+    where: { id: id },
+    include: [Notes, Attachments],
+  });
+  return dataDept;
+};
+
 exports.departementDelete = async (id) => {
   const dataAttach = await Attachments.destroy({ where: { DepartementId: id } });
   const dataNotes = await Notes.destroy({ where: { DepartementId: id } });

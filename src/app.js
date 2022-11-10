@@ -9,15 +9,7 @@ const DepartementsRouter = require('./departements/DepartementsRouter');
 const NotesRouter = require('./notes/NotesRouter');
 const AttachmentsRouter = require('./attachments/AttachmentsRouter');
 const GuestRouter = require('./guest/GuestRouter');
-const ApplicantRouter = require('./applicant/ApplicantRouter');
-const FamilyRouter = require('./applicant/FamilyRouter');
-const FormalEducationRouter = require('./applicant/FormalEducationRouter');
-const NonFormalEducationRouter = require('./applicant/NonFormalEducationRouter');
-const ComputerLiterateRouter = require('./applicant/ComputerLiterateRouter');
-const EmploymentHistoryRouter = require('./applicant/EmploymentHistoryRouter');
-const JobDescriptionRouter = require('./applicant/JobDescriptionRouter');
-const OtherInformationRouter = require('./applicant/OtherInformationRouter');
-const AttachmentRouter = require('./applicant/AttachmentRouter');
+const toPDFService = require('./toPDF/service');
 
 const path = require('path');
 i18next
@@ -37,8 +29,7 @@ i18next
   });
 
 const app = express();
-
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/docs', express.static(path.join(__dirname, 'docs')));
 
 const cors = require('cors');
@@ -54,13 +45,5 @@ app.use(DepartementsRouter);
 app.use(NotesRouter);
 app.use(AttachmentsRouter);
 app.use(GuestRouter);
-app.use(ApplicantRouter);
-app.use(FamilyRouter);
-app.use(FormalEducationRouter);
-app.use(NonFormalEducationRouter);
-app.use(ComputerLiterateRouter);
-app.use(EmploymentHistoryRouter);
-app.use(JobDescriptionRouter);
-app.use(OtherInformationRouter);
-app.use(AttachmentRouter);
+app.use(toPDFService);
 module.exports = app;
