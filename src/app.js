@@ -9,7 +9,36 @@ const DepartementsRouter = require('./departements/DepartementsRouter');
 const NotesRouter = require('./notes/NotesRouter');
 const AttachmentsRouter = require('./attachments/AttachmentsRouter');
 const GuestRouter = require('./guest/GuestRouter');
+const ApplicantRouter = require('./applicant/ApplicantRouter');
+const FamilyRouter = require('./applicant/FamilyRouter');
+const FormalEducationRouter = require('./applicant/FormalEducationRouter');
+const NonFormalEducationRouter = require('./applicant/NonFormalEducationRouter');
+const ComputerLiterateRouter = require('./applicant/ComputerLiterateRouter');
+const EmploymentHistoryRouter = require('./applicant/EmploymentHistoryRouter');
+const JobDescriptionRouter = require('./applicant/JobDescriptionRouter');
+const OtherInformationRouter = require('./applicant/OtherInformationRouter');
+const AttachmentRouter = require('./applicant/AttachmentRouter');
+const JobRouter = require('./skill/JobRouter');
+const SkillRouter = require('./skill/SkillRouter');
+const SubSkillRouter = require('./skill/SubSkillRouter');
+const ApplicantSkillRouter = require('./skill/ApplicantSkillRouter')
 const toPDFService = require('./toPDF/service');
+
+i18next
+  .use(Backend)
+  .use(middleware.LanguageDetector)
+  .init({
+    fallbackLng: 'en',
+    lng: 'en',
+    ns: ['translation'],
+    defaultNS: 'translation',
+    backend: {
+      loadPath: './locales/{{lng}}/{{ns}}.json',
+    },
+    detection: {
+      lookupHeader: 'accept-language',
+    },
+  });
 
 const path = require('path');
 i18next
@@ -32,10 +61,10 @@ const app = express();
 app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/docs', express.static(path.join(__dirname, 'docs')));
 
-const cors = require('cors');
 app.use(middleware.handle(i18next));
 
 app.use(express.json({limit: '100mb'}));
+const cors = require('cors');
 app.use(cors());
 
 app.use(UserRouter);
@@ -45,5 +74,13 @@ app.use(DepartementsRouter);
 app.use(NotesRouter);
 app.use(AttachmentsRouter);
 app.use(GuestRouter);
-app.use(toPDFService);
+app.use(ApplicantRouter);
+app.use(FamilyRouter);
+app.use(FormalEducationRouter);
+app.use(NonFormalEducationRouter);
+app.use(ComputerLiterateRouter);
+app.use(EmploymentHistoryRouter);
+app.use(JobDescriptionRouter);
+app.use(OtherInformationRouter);
+app.use(AttachmentRouter);
 module.exports = app;
