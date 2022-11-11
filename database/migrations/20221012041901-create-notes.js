@@ -13,7 +13,7 @@ module.exports = {
       notes: {
         type: Sequelize.STRING,
       },
-      departement_id: {
+      DepartementId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'departements',
@@ -31,7 +31,7 @@ module.exports = {
     });
   },
 
-  async down (queryInterface, Sequelize) {
-    await queryInterface.dropTable("notes");
-  }
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('notes');
+  },
 };

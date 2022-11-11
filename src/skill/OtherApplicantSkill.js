@@ -1,17 +1,20 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/database');
-const Applicant = require('./Applicant');
+const Applicant = require('../applicant/Applicant');
 
 const Model = Sequelize.Model;
 
-class Attachment extends Model {}
+class OtherApplicantSkill extends Model {}
 
-Attachment.init(
+OtherApplicantSkill.init(
   {
-    type: {
+    nama: {
       type: Sequelize.STRING,
     },
-    file: {
+    nilai: {
+      type: Sequelize.STRING,
+    },
+    keterangan: {
       type: Sequelize.STRING,
     },
     applicantId: {
@@ -20,15 +23,15 @@ Attachment.init(
   },
   {
     sequelize,
-    modelName: 'attachment',
+    modelName: 'otherapplicantskill',
   }
 );
-Attachment.belongsTo(Applicant);
-Applicant.hasMany(Attachment, {
+OtherApplicantSkill.belongsTo(Applicant);
+Applicant.hasMany(OtherApplicantSkill, {
   foreignKey: {
     type: Sequelize.INTEGER,
     allowNull: false,
   },
 });
 
-module.exports = Attachment;
+module.exports = OtherApplicantSkill;
