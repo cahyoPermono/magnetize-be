@@ -80,7 +80,6 @@ router.post(
       await NonFormalEducationService.save2(applicantId.id, req.body.nonformaleducation[index]);
     }
     // await NonFormalEducationService.save2(applicantId.id, req.body.nonformaleducation);
-
     for (let index = 0; index < req.body.computerliterate.length; index++) {
       await ComputerLiterateService.save2(applicantId.id, req.body.computerliterate[index]);
     }
