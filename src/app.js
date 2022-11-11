@@ -22,6 +22,7 @@ const JobRouter = require('./skill/JobRouter');
 const SkillRouter = require('./skill/SkillRouter');
 const SubSkillRouter = require('./skill/SubSkillRouter');
 const ApplicantSkillRouter = require('./skill/ApplicantSkillRouter');
+const toPDFService = require('./toPDF/service');
 
 i18next
   .use(Backend)
@@ -57,8 +58,7 @@ i18next
   });
 
 const app = express();
-
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public')));
 app.use('/docs', express.static(path.join(__dirname, 'docs')));
 
 app.use(middleware.handle(i18next));
@@ -66,6 +66,7 @@ app.use(middleware.handle(i18next));
 app.use(express.json({limit: '100mb'}));
 const cors = require('cors');
 app.use(cors());
+app.use(toPDFService)
 
 app.use(UserRouter);
 app.use(QuestionRouter);
@@ -82,7 +83,8 @@ app.use(ApplicantRouter);
 // app.use(EmploymentHistoryRouter);
 // app.use(JobDescriptionRouter);
 // app.use(OtherInformationRouter);
-// app.use(AttachmentApplicantRouter);
+// app.use(AttachmentRouter);
+
 app.use(JobRouter);
 app.use(SkillRouter);
 app.use(SubSkillRouter);
