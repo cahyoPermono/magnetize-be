@@ -1,5 +1,6 @@
 const Skill = require('./Skill');
 const Job = require('./Job');
+const Subskill = require('./SubSkill');
 
 const save = async (body) => {
   const skill = { ...body };
@@ -8,11 +9,7 @@ const save = async (body) => {
 
 const find = async () => {
   const skill = await Skill.findAll({
-    include: [
-      {
-        model: Job,
-      },
-    ],
+    include: [Job, Subskill],
   });
   if (skill) {
     return skill;

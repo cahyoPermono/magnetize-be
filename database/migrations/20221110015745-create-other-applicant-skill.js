@@ -1,33 +1,28 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('users', {
+    await queryInterface.createTable('otherapplicantskills', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      username: {
+      applicantId: {
+        type: Sequelize.DataTypes.INTEGER,
+        references: {
+          model: 'applicants',
+          key: 'id',
+        },
+        allowNull: false,
+      },
+      nama: {
         type: Sequelize.STRING,
       },
-      email: {
+      nilai: {
         type: Sequelize.STRING,
       },
-      password: {
-        type: Sequelize.STRING,
-      },
-      inactive: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true,
-      },
-      activationToken: {
-        type: Sequelize.STRING,
-      },
-      passwordResetToken: {
-        type: Sequelize.STRING,
-      },
-      image: {
+      keterangan: {
         type: Sequelize.STRING,
       },
       createdAt: {
@@ -42,6 +37,6 @@ module.exports = {
   },
   // eslint-disable-next-line no-unused-vars
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('users');
+    await queryInterface.dropTable('otherapplicantskills');
   },
 };
