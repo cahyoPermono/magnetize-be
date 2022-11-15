@@ -15,4 +15,9 @@ router.get('/api/1.0/subskills', async (req, res) => {
   res.send({ message: 'Success Get Sub Skill', data: subskill });
 });
 
+router.get('/api/1.0/subskills/:skillId', async (req, res) => {
+  const skill = await SubSkillService.findbyIdSkill(req.params.skillId);
+  res.send({ message: 'Success Get', data: skill });
+});
+
 module.exports = router;
