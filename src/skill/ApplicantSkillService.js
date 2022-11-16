@@ -9,9 +9,7 @@ const save = async (body) => {
 
 const find = async () => {
   const applicantskill = await ApplicantSkill.findAll({
-    include: [
-      SubSkill, Applicant
-    ],
+    include: [SubSkill, Applicant],
   });
   if (applicantskill) {
     return applicantskill;

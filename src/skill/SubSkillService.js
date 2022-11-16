@@ -21,4 +21,16 @@ const find = async () => {
   return false;
 };
 
-module.exports = { save, find };
+const findbyIdSkill = async (skillId) => {
+  const subskill = await SubSkill.findAll({
+    where: {
+      skillId: skillId,
+    },
+  });
+  if (subskill) {
+    return subskill;
+  }
+  return false;
+};
+
+module.exports = { save, find, findbyIdSkill };

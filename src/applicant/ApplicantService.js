@@ -7,6 +7,8 @@ const EmploymentHistory = require('../applicant/EmploymentHistory');
 const JobDescription = require('../applicant/JobDescription');
 const OtherInformation = require('../applicant/OtherInformation');
 const AttachmentApplicant = require('../applicant/AttachmentApplicant');
+const ApplicantSkill = require('../skill/ApplicantSkill');
+const OtherApplicantSkill = require('../skill/OtherApplicantSkill');
 
 const save = async (body) => {
   const applicant = { ...body };
@@ -17,7 +19,7 @@ const find = async () => {
   const applicant = await Applicant.findAll({
     include: [
       Family, FormalEducation, NonFormalEducation, ComputerLiterate,
-      EmploymentHistory, JobDescription, OtherInformation, AttachmentApplicant
+      EmploymentHistory, JobDescription, OtherInformation, AttachmentApplicant, ApplicantSkill, OtherApplicantSkill
     ],
   });
   if (applicant) {
@@ -45,7 +47,7 @@ const byId = async (id) => {
     },
     include: [
       Family, FormalEducation, NonFormalEducation, ComputerLiterate,
-      EmploymentHistory, JobDescription, OtherInformation, AttachmentApplicant
+      EmploymentHistory, JobDescription, OtherInformation, AttachmentApplicant, ApplicantSkill, OtherApplicantSkill
     ],
   });
   if (applicant) {
