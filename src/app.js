@@ -17,7 +17,7 @@ const ApplicantRouter = require('./applicant/ApplicantRouter');
 // const EmploymentHistoryRouter = require('./applicant/EmploymentHistoryRouter');
 // const JobDescriptionRouter = require('./applicant/JobDescriptionRouter');
 // const OtherInformationRouter = require('./applicant/OtherInformationRouter');
-// const AttachmentApplicantRouter = require('./applicant/AttachmentApplicantRouter');
+const AttachmentApplicantRouter = require('./applicant/AttachmentApplicantRouter');
 const JobRouter = require('./skill/JobRouter');
 const SkillRouter = require('./skill/SkillRouter');
 const SubSkillRouter = require('./skill/SubSkillRouter');
@@ -67,8 +67,8 @@ app.use(middleware.handle(i18next));
 app.use(express.json({limit: '100mb'}));
 const cors = require('cors');
 app.use(cors());
-app.use(toPDFService)
 
+app.use(toPDFService);
 app.use(UserRouter);
 app.use(QuestionRouter);
 app.use(AnswerRouter);
@@ -84,8 +84,7 @@ app.use(ApplicantRouter);
 // app.use(EmploymentHistoryRouter);
 // app.use(JobDescriptionRouter);
 // app.use(OtherInformationRouter);
-// app.use(AttachmentRouter);
-
+app.use(AttachmentApplicantRouter);
 app.use(JobRouter);
 app.use(SkillRouter);
 app.use(SubSkillRouter);

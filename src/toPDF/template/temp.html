@@ -13,6 +13,21 @@
       font-family: Arial, Helvetica, sans-serif;
     }
 
+    .foto-profil {
+      margin: 20px;
+      float: right;
+      height: fit-content;
+      width: fit-content;
+    }
+
+    .foto-profil img {
+      width: 100px;
+    }
+
+    .f {
+      display: flex;
+    }
+
     .head-cell-tr {
       background-color: rgba(108, 117, 125, 0.3);
     }
@@ -45,13 +60,20 @@
 
 <body>
   <div class="header">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbIO6Djw3OrosvFawG2ZXIeDsAWemx9Sc-b1GpOT5iwQ&s"
-      alt="logo imani prima">
-    <h3>FORMULIR LAMARAN KERJA</h3>
-    <p>Applicant Form</p>
+    <div class="f">
+      <div>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbIO6Djw3OrosvFawG2ZXIeDsAWemx9Sc-b1GpOT5iwQ&s"
+          alt="logo imani prima">
+        <h3>FORMULIR LAMARAN KERJA</h3>
+        <p>Applicant Form</p>
+      </div>
+      <div class="foto-profil">
+        <img src="https://porteous.com.au/wp-content/uploads/2016/09/dummy-profile-pic-male-300x300.jpg" alt="img">
+      </div>
+    </div>
+
   </div>
   <main>
-    {{#each a}}
     <div id="table-personal-data">
       <table>
         <tr>
@@ -59,7 +81,7 @@
             <span>Posisi yang dilamar</span> <br>
             <small><i>Apply position</i></small>
           </td>
-          <td>{{this.applicant.position}}</td>
+          <td>{{this.dataApplicantPromise.position}}</td>
         </tr>
       </table>
       <table class="head-cell">
@@ -74,9 +96,11 @@
             <small><i>Full Name</i></small>
           </td>
           <td>
-            {{this.applicant.name}}
-            {{#ifCond this.applicant.gender '===' 'L'}} <small style="font-size: 70%;"> (Laki-laki)</small>{{/ifCond}}
-            {{#ifCond this.applicant.gender '===' 'P'}} <small style="font-size: 70%;">Perempuan</small>{{/ifCond}}
+            {{this.dataApplicantPromise.name}}
+            {{#ifCond this.dataApplicantPromise.gender '===' 'L'}} <small style="font-size: 70%;">
+              (Laki-laki)</small>{{/ifCond}}
+            {{#ifCond this.dataApplicantPromise.gender '===' 'P'}} <small
+              style="font-size: 70%;">Perempuan</small>{{/ifCond}}
           </td>
         </tr>
         <tr>
@@ -85,8 +109,8 @@
             <small><i>Place/Date of Birth</i></small>
           </td>
           <td>
-            {{this.applicant.place_of_birth}}, {{this.applicant.date}} <br>
-            <small>Golongan Darah: {{this.applicant.blood_type}}</small>
+            {{this.dataApplicantPromise.place_of_birth}}, {{this.dataApplicantPromise.date}} <br>
+            <small>Golongan Darah: {{this.dataApplicantPromise.blood_type}}</small>
           </td>
         </tr>
         <tr>
@@ -95,8 +119,8 @@
             <small><i>Home Address</i></small>
           </td>
           <td>
-            {{this.applicant.address}} <br>
-            <small>Kode Pos/<i>Postal Code</i>: {{this.applicant.postal_code_address}}</small>
+            {{this.dataApplicantPromise.address}} <br>
+            <small>Kode Pos/<i>Postal Code</i>: {{this.dataApplicantPromise.postal_code_address}}</small>
           </td>
         </tr>
         <tr>
@@ -105,8 +129,8 @@
             <small><i>Home Address</i></small>
           </td>
           <td>
-            {{this.applicant.domicile}} <br>
-            <small>Kode Pos/<i>Postal Code</i>: {{this.applicant.postal_code_domicile}}</small>
+            {{this.dataApplicantPromise.domicile}} <br>
+            <small>Kode Pos/<i>Postal Code</i>: {{this.dataApplicantPromise.postal_code_domicile}}</small>
           </td>
         </tr>
         <tr>
@@ -115,8 +139,8 @@
             <small><i>Phone</i></small>
           </td>
           <td>
-            No. HP : {{this.applicant.mobile}} <br>
-            Kantor/Orangtua : {{this.applicant.phone}} / {{this.applicant.office_parent_phone}}
+            No. HP : {{this.dataApplicantPromise.mobile}} <br>
+            Kantor/Orangtua : {{this.dataApplicantPromise.phone}} / {{this.dataApplicantPromise.office_parent_phone}}
           </td>
         </tr>
         <tr>
@@ -125,7 +149,7 @@
             <small><i>e-mail</i></small>
           </td>
           <td>
-            {{this.applicant.email}}
+            {{this.dataApplicantPromise.email}}
           </td>
         </tr>
         <tr>
@@ -134,8 +158,8 @@
             <small><i>ID/SIM no.</i></small>
           </td>
           <td>
-            {{this.applicant.id_sim_no}} <br>
-            <small>Berlaku s.d./<i>Valid until:</i> {{this.applicant.valid_to}}</small>
+            {{this.dataApplicantPromise.id_sim_no}} <br>
+            <small>Berlaku s.d./<i>Valid until:</i> {{this.dataApplicantPromise.valid_to}}</small>
           </td>
         </tr>
         <tr>
@@ -144,7 +168,7 @@
             <small><i>(jika ada)</i></small>
           </td>
           <td>
-            {{this.applicant.npwp_no}}
+            {{this.dataApplicantPromise.npwp_no}}
           </td>
         </tr>
         <tr>
@@ -153,7 +177,7 @@
             <small><i>(jika ada)</i></small>
           </td>
           <td>
-            {{this.applicant.account_no}}
+            {{this.dataApplicantPromise.account_no}}
           </td>
         </tr>
         <tr>
@@ -162,7 +186,7 @@
             <small><i>Religion</i></small>
           </td>
           <td>
-            {{this.applicant.religion}}
+            {{this.dataApplicantPromise.religion}}
           </td>
         </tr>
       </table>
@@ -178,15 +202,14 @@
             <small><i>Martial Status</i></small>
           </td>
           <td>
-            {{this.applicant.marital_status}}
-            {{#ifCond this.applicant.marital_status '===' 'Menikah'}}
-            (Tahun {{this.applicant.year_marriage}})
+            {{this.dataApplicantPromise.marital_status}}
+            {{#ifCond this.dataApplicantPromise.marital_status '===' 'Menikah'}}
+            (Tahun {{this.dataApplicantPromise.year_marriage}})
             {{/ifCond}}
           </td>
         </tr>
       </table>
     </div>
-    {{/each}}
     <div id="table-martial-data">
       <table>
         <tr class="head-cell-tr">
@@ -216,7 +239,7 @@
           </td>
         </tr>
         <div>
-          {{#each family}}
+          {{#each familiesPromise}}
           {{#ifCond this.member '===' 'Ayah'}}
           <tr>
             <td>
@@ -356,7 +379,7 @@
           </td>
         </tr>
         <div>
-          {{#each family}}
+          {{#each familiesPromise}}
           {{#ifCond this.member '===' 'Suami / Istri'}}
           <tr>
             <td>
@@ -466,7 +489,7 @@
           <td>Masuk</td>
           <td>Lulus</td>
         </tr>
-        {{#each formaleducation}}
+        {{#each formaleducationPromise}}
         <tr>
           <td>
             {{this.level}}
@@ -501,7 +524,7 @@
           <td>Sertifikat</td>
           <td>Dibiayai Oleh</td>
         </tr>
-        {{#each nonformaleducation}}
+        {{#each nonformaleducationsPromise}}
         <tr>
           <td>
             {{this.course}}
@@ -533,7 +556,7 @@
           <td>Jenis Program Aplikasi dan Keahlian Khusus</td>
           <td>Tingkat Penguasaan </td>
         </tr>
-        {{#each computerliterate}}
+        {{#each computerliteratesPromise}}
         <tr>
           <td>
             {{this.skill}}
@@ -578,7 +601,7 @@
             <small><i>Reason for Leaving</i></small>
           </td>
         </tr>
-        {{#each employmenthistory}}
+        {{#each employmenthistoriesPromise}}
         <tr>
           <td>
             <small style="font-size: 40%;">Start: </small>{{this.start}}
@@ -616,7 +639,7 @@
       <table>
         <tr>
           <td>
-            {{this.jobdescription.description}}
+            {{this.jobdescriptionPromise.desciption}}
           </td>
         </tr>
       </table>
@@ -635,7 +658,7 @@
                 hospitalized
                 and / or seriously ill for a long time?</i>
             </p>
-            {{this.otherinformation.hospitalized}}
+            {{this.otherinformationPromise.hospitalized}}
           </td>
         </tr>
         <tr>
@@ -643,7 +666,7 @@
             <p style="font-size: 70%;">
               (Jika Ya) Sakit apa? <i>(If Yes) What kind of disease ? </i>
             </p>
-            {{this.otherinformation.disease}}
+            {{this.otherinformationPromise.disease}}
           </td>
         </tr>
         <tr>
@@ -652,7 +675,7 @@
               Kapan terakhir anda mengikuti evaluasi psikologis (psikotest) ?<i> When last time you taken a psycological
                 test ? </i>
             </p>
-            {{this.otherinformation.psycological_test}}
+            {{this.otherinformationPromise.psycological_test}}
           </td>
         </tr>
         <tr>
@@ -662,9 +685,9 @@
               <br>
               1. Telecommunication Industry
             </p>
-            {{this.otherinformation.experience_tellecomunication}} Bulan
+            {{this.otherinformationPromise.experience_tellecomunication}} Bulan
             <p style="font-size: 70%;">2. IT Technology </p>
-            {{this.otherinformation.experience_it}} Bulan
+            {{this.otherinformationPromise.experience_it}} Bulan
           </td>
         </tr>
         <tr>
@@ -673,7 +696,7 @@
               Sebutkan alasan anda ingin bergabung dengan PT Imani Prima?<i> Why do you want to join with PT Imani
                 Prima?</i>
             </p>
-            {{this.otherinformation.reason_join}}
+            {{this.otherinformationPromise.reason_join}}
           </td>
         </tr>
         <tr>
@@ -681,7 +704,7 @@
             <p style="font-size: 70%;">
               Mengapa kami bisa mempekerjakan anda? <i>Why we can hire you?</i>
             </p>
-            {{this.otherinformation.reason_hire}}
+            {{this.otherinformationPromise.reason_hire}}
           </td>
         </tr>
         <tr>
@@ -689,7 +712,7 @@
             <p style="font-size: 70%;">
               Informasikan pendapat anda tentang Kerjasama (Team Work)? <i>Inform your opinion about team work?</i>
             </p>
-            {{this.otherinformation.opinion_teamwork}}
+            {{this.otherinformationPromise.opinion_teamwork}}
           </td>
         </tr>
         <tr>
@@ -698,7 +721,7 @@
               Sebutkan rencana jangka pendek dan rencana jangka panjang anda? <i>Mention your short term plan and your
                 long term plan?</i>
             </p>
-            {{this.otherinformation.plan}}
+            {{this.otherinformationPromise.plan}}
           </td>
         </tr>
         <tr>
@@ -707,7 +730,7 @@
               Bagaimana tanggapan anda mengenai target yang akan diberikan oleh perusahaan kepada anda? <i>How do your
                 respond to the target will company will give you?</i>
             </p>
-            {{this.otherinformation.respond_target}}
+            {{this.otherinformationPromise.respond_target}}
           </td>
         </tr>
         <tr>
@@ -715,7 +738,7 @@
             <p style="font-size: 70%;">
               Bagaimana tanggapan anda mengenai tekanan dalam pekerjaan? <i>How do your respond to pressure at work?</i>
             </p>
-            {{this.otherinformation.respond_preasure}}
+            {{this.otherinformationPromise.respond_preasure}}
           </td>
         </tr>
         <tr>
@@ -723,7 +746,7 @@
             <p style="font-size: 70%;">
               Mengapa anda ingin keluar dari perusahaan terakhir? <i>Why do you want to leave the last company?</i>
             </p>
-            {{this.otherinformation.reason_leave_last_company}}
+            {{this.otherinformationPromise.reason_leave_last_company}}
           </td>
         </tr>
         <tr>
@@ -731,7 +754,7 @@
             <p style="font-size: 70%;">
               Berapa gaji yang anda inginkan ? <i>How much salary do you expect ?</i>
             </p>
-            Rp.{{this.otherinformation.salary_expect}}
+            Rp.{{this.otherinformationPromise.salary_expect}}
           </td>
         </tr>
         <tr>
@@ -739,7 +762,7 @@
             <p style="font-size: 70%;">
               Kapan anda dapat mulai bekerja ? <i>When will you be able to start to work ?</i>
             </p>
-            {{this.otherinformation.able_to_start}}
+            {{this.otherinformationPromise.able_to_start}}
           </td>
         </tr>
         <tr>
@@ -748,7 +771,7 @@
               Sebutkan orang terdekat yang bisa dihubungi dalam keadaan darurat? <i>Person to contact in case of
                 emergency?</i>
             </p>
-            {{this.otherinformation.contact_emergency}}
+            {{this.otherinformationPromise.contact_emergency}}
           </td>
         </tr>
         <tr>
@@ -757,7 +780,7 @@
               Sebutkan nama kenalan anda di PT. Imani Prima dan hubungan anda dengannya sebagai?<i> Name your friends /
                 relatives in PT. Imani Prima and the relationship as ?</i>
             </p>
-            {{this.otherinformation.relatives_in_ip}}
+            {{this.otherinformationPromise.relatives_in_ip}}
           </td>
         </tr>
         <tr>
@@ -769,14 +792,14 @@
             <p style="font-size: 70%;">
               Kelebihan :
             </p>
-            {{this.otherinformation.strength}}
+            {{this.otherinformationPromise.strength}}
             <p style="font-size: 70%;">
               Kekurangan :
             </p>
-            {{this.otherinformation.weakness}}
+            {{this.otherinformationPromise.weakness}}
           </td>
         </tr>
-      </table> 
+      </table>
     </div>
   </main>
 </body>
