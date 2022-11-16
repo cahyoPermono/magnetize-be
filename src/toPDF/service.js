@@ -10,7 +10,7 @@ const options = {
     format: 'A4',
     orientation: 'potrait',
     border: '10mm'
-}
+};
 
 router.get("/trypdf/:id", async (req, res) => {
     const html = fs.readFileSync(path.join(__dirname, '../toPDF/template/temp.html'), 'utf-8');
