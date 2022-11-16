@@ -1,4 +1,5 @@
 const Job = require('./Job');
+const Skill = require('./Skill');
 
 const save = async (body) => {
   const job = { ...body };
@@ -6,7 +7,11 @@ const save = async (body) => {
 };
 
 const find = async () => {
-  const job = await Job.findAll({});
+  const job = await Job.findAll({
+    include: [
+      Skill
+    ],
+  });
   if (job) {
     return job;
   }

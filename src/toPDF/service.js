@@ -5,6 +5,8 @@ const path = require('path');
 const pdf = require('pdf-creator-node');
 const nodemailer = require('nodemailer');
 const ApplicantService = require("../applicant/ApplicantService");
+const JobService = require("../skill/JobService");
+const SubSkillService = require('../skill/SubSkillService');
 
 const options = {
     format: 'A4',
@@ -22,6 +24,25 @@ router.get("/api/1.0/download_pdf/:id", async (req, res) => {
         }
     }));
 });
+router.get("/api/1.0/get_applicantskill/:id", async (req, res) => {
+    const dataApplicant = await ApplicantService.byId(req.params.id);
+
+    const applicantskills = []
+    dataApplicant.applicantskills.forEach(element => {
+        applicantskills.push({ subskill_id: element.subskillId, nilai: element.nilai, keterangan: element.keterangan })
+    });
+    let a = []
+    const subskill = await SubSkillService.find();
+    subskill.forEach(element => {
+        applicantskills.forEach(e => {
+            if (element.id === e.subskill_id) {
+                a.push({subskill:element.subskill, nilai:e.nilai, keterangan:e.keterangan} )
+            }
+        });
+    });
+    console.log(a)
+    res.send( a )
+})
 
 router.get("/api/1.0/topdf/:id", async (req, res) => {
     const html = fs.readFileSync(path.join(__dirname, '../toPDF/template/temp.html'), 'utf-8');

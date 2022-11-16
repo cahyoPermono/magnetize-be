@@ -22,6 +22,7 @@ const JobRouter = require('./skill/JobRouter');
 const SkillRouter = require('./skill/SkillRouter');
 const SubSkillRouter = require('./skill/SubSkillRouter');
 const ApplicantSkillRouter = require('./skill/ApplicantSkillRouter');
+const OtherApplicantSkillRouter = require('./skill/OtherApplicantSkillRouter');
 const toPDFService = require('./toPDF/service');
 
 i18next
@@ -88,5 +89,6 @@ app.use(JobRouter);
 app.use(SkillRouter);
 app.use(SubSkillRouter);
 app.use(ApplicantSkillRouter);
+app.use(OtherApplicantSkillRouter);
 
 module.exports = app;
