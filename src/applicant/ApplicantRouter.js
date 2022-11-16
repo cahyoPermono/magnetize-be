@@ -73,29 +73,25 @@ router.post(
     for (let index = 0; index < req.body.family.length; index++) {
       await FamilyService.save2(applicantId.id, req.body.family[index]);
     }
-    // await FamilyService.save2(applicantId.id, req.body.family);
+
     await FormalEducationService.save2(applicantId.id, req.body.formaleducation);
 
     for (let index = 0; index < req.body.nonformaleducation.length; index++) {
       await NonFormalEducationService.save2(applicantId.id, req.body.nonformaleducation[index]);
     }
-    // await NonFormalEducationService.save2(applicantId.id, req.body.nonformaleducation);
 
     for (let index = 0; index < req.body.computerliterate.length; index++) {
       await ComputerLiterateService.save2(applicantId.id, req.body.computerliterate[index]);
     }
-    // await ComputerLiterateService.save2(applicantId.id, req.body.computerliterate);
 
     for (let index = 0; index < req.body.employmenthistory.length; index++) {
       await EmploymentHistoryService.save2(applicantId.id, req.body.employmenthistory[index]);
     }
-    // await EmploymentHistoryService.save2(applicantId.id, req.body.employmenthistory);
 
     await JobDescriptionService.save2(applicantId.id, req.body.jobdescription);
 
     await OtherInformationService.save2(applicantId.id, req.body.otherinformation);
 
-    // await AttachmentService.save2(applicantId.id, req.body.attachment);
     for (let index = 0; index < req.body.attachment.length; index++) {
       await AttachmentApplicantService.save2(applicantId.id, req.body.attachment[index]);
     }
