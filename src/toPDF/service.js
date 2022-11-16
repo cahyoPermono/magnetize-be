@@ -4,254 +4,240 @@ const fs = require('fs');
 const path = require('path');
 const pdf = require('pdf-creator-node');
 const nodemailer = require('nodemailer');
-const DepartementsService = require("../departements/DepartementsService");
+const ApplicantService = require("../applicant/ApplicantService");
+const JobService = require("../skill/JobService");
+const SubSkillService = require('../skill/SubSkillService');
 
 const options = {
     format: 'A4',
     orientation: 'potrait',
     border: '10mm'
-}
+};
 
-router.get("/trypdf/:id", async (req, res) => {
+router.get("/api/1.0/download_pdf/:id", async (req, res) => {
+    const filename = 'applicantDocs_' + req.params.id + '.pdf';
+    fs.readFile('./docs/' + filename, 'base64', ((err, dataPDF) => {
+        if (err) {
+            res.send({ message: "error !" })
+        } else {
+            res.send({ dataPDF })
+        }
+    }));
+});
+router.get("/api/1.0/get_applicantskill/:id", async (req, res) => {
+    const dataApplicant = await ApplicantService.byId(req.params.id);
+
+    const applicantskills = []
+    dataApplicant.applicantskills.forEach(element => {
+        applicantskills.push({ subskill_id: element.subskillId, nilai: element.nilai, keterangan: element.keterangan })
+    });
+    let a = []
+    const subskill = await SubSkillService.find();
+    subskill.forEach(element => {
+        applicantskills.forEach(e => {
+            if (element.id === e.subskill_id) {
+                a.push({subskill:element.subskill, nilai:e.nilai, keterangan:e.keterangan} )
+            }
+        });
+    });
+    console.log(a)
+    res.send( a )
+})
+
+router.get("/api/1.0/topdf/:id", async (req, res) => {
     const html = fs.readFileSync(path.join(__dirname, '../toPDF/template/temp.html'), 'utf-8');
-    const filename = 'try_coba_dept' + '.pdf';
+    const dataApplicant = await ApplicantService.byId(req.params.id);
 
-    const dataDept = await DepartementsService.departmentGetsss(req.params.id);
-    const dataDeptPromise = {
-        nama: dataDept.nama,
-        url: dataDept.url,
-        industri: dataDept.industri,
-        lokasi: dataDept.lokasi,
-        alamat: dataDept.alamat,
-        deskripsi: dataDept.deskripsi,
-        avatar: dataDept.avatar,
-        createdAt: dataDept.createdAt,
-        updatedAt: dataDept.updatedAt,
+    const filename = 'applicantDocs_' + dataApplicant.id + '.pdf';
+
+    const dataApplicantPromise = {
+        name: dataApplicant.name,
+        gender: dataApplicant.gender,
+        place_of_birth: dataApplicant.place_of_birth,
+        date: dataApplicant.date.toISOString().substring(0, 10).split("-").reverse().join("-"),
+        blood_type: dataApplicant.blood_type,
+        address: dataApplicant.address,
+        postal_code_address: dataApplicant.postal_code_address,
+        domicile: dataApplicant.domicile,
+        postal_code_domicile: dataApplicant.postal_code_domicile,
+        phone: dataApplicant.phone,
+        mobile: dataApplicant.mobile,
+        office_parent_phone: dataApplicant.office_parent_phone,
+        email: dataApplicant.email,
+        id_sim_no: dataApplicant.id_sim_no,
+        valid_to: dataApplicant.valid_to.toISOString().substring(0, 10).split("-").reverse().join("-"),
+        npwp_no: dataApplicant.npwp_no,
+        account_no: dataApplicant.account_no,
+        religion: dataApplicant.religion,
+        position: dataApplicant.position,
+        photo: dataApplicant.photo,
+        marital_status: dataApplicant.marital_status,
+        year_marriage: dataApplicant.year_marriage,
     };
 
-    //Data 
-    const dataApplicant = [{
-        applicant: {
-            id: 2,
-            name: 'applicant1',
-            gender: 'L',
-            place_of_birth: 'Jakarta',
-            date: '01-01-1997',
-            blood_type: 'O',
-            address: 'Cilandak Timur',
-            postal_code_address: '12345',
-            domicile: 'Jl.Melati',
-            postal_code_domicile: '13426',
-            phone: '075112345',
-            mobile: '081234567890',
-            office_parent_phone: '',
-            email: 'applicant1@mail.com',
-            id_sim_no: '01023415698127516',
-            valid_to: '',
-            npwp_no: '01023415698127516',
-            account_no: '1234567890',
-            religion: 'Islam',
-            position: 'Position 1',
-            photo: 'applicant1.jpg',
-            marital_status: 'Menikah',
-            year_marriage: '2021',
-        },
-        attachment: [
-            {
-                type: 'KTP',
-                file: 'ktp',
-            },
-        ],
-    }];
-    const computerliterate = [
-        {
-            skill: 'PHP',
-            level: 'Cukup',
-        },
-        {
-            skill: 'Laravel',
-            level: 'baik',
-        },
-        {
-            skill: 'HTML',
-            level: 'kurang',
-        },
-    ];
-    const nonformaleducation = [
-        {
-            course: 'Web',
-            year: '2020',
-            duration: '3 bulan',
-            certificate: 'certificate',
-            sponsored_by: 'Skill Academy',
-        },
-        {
-            course: 'Database Oracle',
-            year: '2021',
-            duration: '6 bulan',
-            certificate: 'certificate',
-            sponsored_by: 'Shopee',
-        },
-    ];
-    const formaleducation = [{
-        level: 'Diploma 3',
-        name_location: 'politeknik Padang',
-        major: 'TI',
-        entry: '2018',
-        graduate: '2021',
-    },
-    {
-        level: 'Sarjana (S1)',
-        name_location: 'Universitas Negri Semarang',
-        major: 'TI',
-        entry: '2021',
-        graduate: '2023',
-    }];
-    const employmenthistory = [
-        {
-            start: 'Juni 2022',
-            end: 'Juli 2022',
-            name_company: 'PT ABC',
-            position: 'Admin',
-            direct_supervisor: 'Bpk. Aldi',
-            take_home_pay: '2.000.000',
-            reason_leaving: 'Masalah Pribadi',
-        },
-        {
-            start: 'Juni 2021',
-            end: 'Juni 2022',
-            name_company: 'PT ABDDDDD',
-            position: 'Admin',
-            direct_supervisor: 'Bpk. Aldo F.',
-            take_home_pay: '2.100.000',
-            reason_leaving: 'Masalah Pribadi',
-        },
-    ];
-    const family = [
-        {
-            member: 'Ayah',
-            name: 'Anto',
-            gender: 'L',
-            date: '01-12-1965',
-            education: 'D2',
-            occupation_company: 'Pensiun',
-        },
-        {
-            member: 'Ibu',
-            name: 'Ani',
-            gender: 'P',
-            date: '01-12-1965',
-            education: 'D2',
-            occupation_company: 'Pensiun',
-        },
-        {
-            member: 'Anak 1',
-            name: 'Anindya',
-            gender: 'P',
-            date: '01-12-1980',
-            education: 'D2',
-            occupation_company: 'Pensiun',
-        },
-        {
-            member: 'Anak 2',
-            name: 'Putra',
-            gender: 'L',
-            date: '01-12-2000',
-            education: 'D4',
-            occupation_company: 'Pensiun',
-        },
-        {
-            member: 'Suami / Istri',
-            name: 'Ambari',
-            gender: 'L',
-            date: '01-12-1988',
-            education: 'D4',
-            occupation_company: 'Pensiun',
-        },
-    ];
-    const jobdescription = {
-        description: 'Membuat aplikasi untuk mendeteksi penyakit tenggorokan berbahaya dan menyelamatkan bumi dari monster bawah laut',
+    const families = dataApplicant.families;
+    const familiesPromise = []
+    families.forEach(element => {
+        let args = {
+            member: element.member,
+            name: element.name,
+            gender: element.gender,
+            date: element.date.toISOString().substring(0, 10).split("-").reverse().join("-"),
+            education: element.education,
+            occupation_company: element.occupation_company,
+        }
+        familiesPromise.push(args)
+    });
+
+    const formaleducation = dataApplicant.formaleducations;
+    const formaleducationPromise = []
+    formaleducation.forEach(element => {
+        let args = {
+            level: element.level,
+            name_location: element.name_location,
+            major: element.major,
+            entry: element.entry,
+            graduate: element.graduate,
+        }
+        formaleducationPromise.push(args)
+    });
+
+    const nonformaleducation = dataApplicant.nonformaleducations;
+    const nonformaleducationsPromise = []
+    nonformaleducation.forEach(element => {
+        let args = {
+            course: element.course,
+            year: element.year,
+            duration: element.duration,
+            certificate: element.certificate,
+            sponsored_by: element.sponsored_by,
+        }
+        nonformaleducationsPromise.push(args)
+    });
+
+    const computerliterates = dataApplicant.computerliterates;
+    const computerliteratesPromise = []
+    computerliterates.forEach(element => {
+        let args = {
+            skill: element.skill,
+            level: element.level,
+        }
+        computerliteratesPromise.push(args)
+    });
+
+    const employmenthistories = dataApplicant.employmenthistories;
+    const employmenthistoriesPromise = []
+    employmenthistories.forEach(element => {
+        let args = {
+            start: element.start,
+            end: element.end,
+            name_company: element.name_company,
+            position: element.position,
+            direct_supervisor: element.direct_supervisor,
+            take_home_pay: element.take_home_pay,
+            reason_leaving: element.reason_leaving,
+        }
+        employmenthistoriesPromise.push(args)
+    });
+
+    const jobdescriptionPromise = {
+        desciption: dataApplicant.jobdescription.description,
     };
-    const otherinformation = {
-        hospitalized: 'Ya',
-        disease: 'Tifus',
-        psycological_test: '24-06-2022',
-        experience_tellecomunication: '5',
-        experience_it: '15',
-        reason_join: 'Ingin Bekerja bersama tim hebat',
-        reason_hire: 'Saya tekun',
-        opinion_teamwork: 'Teamwork penting',
-        plan: 'S1',
-        respond_target: 'Target meningkatkan semangat',
-        respond_preasure: 'Tekanan sedikit menantang',
-        reason_leave_last_company: 'Lingkungan kerja tidak baik',
-        salary_expect: '4.000.000',
-        able_to_start: 'Secepatnya',
-        contact_emergency: '082113456789',
-        relatives_in_ip: 'Tidak Ada',
-        strength: 'rajin, tekun, disiplin',
-        weakness: 'lupa, bosan, takut',
+
+    const otherinformationPromise = {
+        hospitalized: dataApplicant.otherinformation.hospitalized,
+        disease: dataApplicant.otherinformation.disease,
+        psycological_test: dataApplicant.otherinformation.psycological_test,
+        experience_tellecomunication: dataApplicant.otherinformation.experience_tellecomunication,
+        experience_it: dataApplicant.otherinformation.experience_it,
+        reason_join: dataApplicant.otherinformation.reason_join,
+        reason_hire: dataApplicant.otherinformation.reason_hire,
+        opinion_teamwork: dataApplicant.otherinformation.opinion_teamwork,
+        plan: dataApplicant.otherinformation.plan,
+        respond_target: dataApplicant.otherinformation.respond_target,
+        respond_preasure: dataApplicant.otherinformation.respond_preasure,
+        reason_leave_last_company: dataApplicant.otherinformation.reason_leave_last_company,
+        salary_expect: dataApplicant.otherinformation.salary_expect,
+        able_to_start: dataApplicant.otherinformation.able_to_start,
+        contact_emergency: dataApplicant.otherinformation.contact_emergency,
+        relatives_in_ip: dataApplicant.otherinformation.relatives_in_ip,
+        strength: dataApplicant.otherinformation.strength,
+        weakness: dataApplicant.otherinformation.weakness,
     };
+
+    const attachmentapplicants = dataApplicant.attachmentapplicants;
+    const attachmentapplicantsPromise = []
+    attachmentapplicants.forEach(element => {
+        let args = {
+            type: element.type,
+            file: element.file,
+        }
+        attachmentapplicantsPromise.push(args)
+    });
+
+    //dataApplicantPromise, familiesPromise, formaleducationPromise, nonformaleducationsPromise, 
+    //computerliteratesPromise, employmenthistoriesPromise, jobdescriptionPromise, otherinformationPromise,
+    //attachmentapplicantsPromise
 
     const document = {
         html: html,
         data: {
-            a: dataApplicant,
-            family: family,
-            formaleducation: formaleducation,
-            nonformaleducation: nonformaleducation,
-            computerliterate: computerliterate,
-            employmenthistory: employmenthistory,
-            jobdescription: jobdescription,
-            otherinformation: otherinformation,
-            dataDept: dataDeptPromise
+            dataApplicantPromise: dataApplicantPromise,
+            familiesPromise: familiesPromise,
+            formaleducationPromise: formaleducationPromise,
+            nonformaleducationsPromise: nonformaleducationsPromise,
+            computerliteratesPromise: computerliteratesPromise,
+            employmenthistoriesPromise: employmenthistoriesPromise,
+            jobdescriptionPromise: jobdescriptionPromise,
+            otherinformationPromise: otherinformationPromise,
+            attachmentapplicantsPromise: attachmentapplicantsPromise
         },
         path: './docs/' + filename
     }
 
-    pdf.create(document, options)
+    await pdf.create(document, options)
         .then(res => {
             console.log(res);
         }).catch(error => {
             console.log(error);
         });
+
     const filepath = 'http://localhost:3000/docs/' + filename;
 
-    // Send base64 pdf to client
-    fs.readFile('./docs/' + filename, 'base64', ((err, dataPDF) => {
-        if (err) throw err;
-        res.send({
-            filepath: filepath,
-            pdf: dataPDF,
-            data: dataDeptPromise
-        })
-    }))
+    const transporter = nodemailer.createTransport({
+        service: "hotmail",
+        auth: {
+            user: "testing229988@outlook.com",
+            pass: "23121ggg"
+        }
+    });
 
+    const test = {
+        from: "testing229988@outlook.com",
+        to: "zidnazen@gmail.com",
+        subject: "testing",
+        text: "Ada pendaftar baru yang mendaftarkan diri, silahkan lihat lamaran pekerjaan berikut ini:",
+        attachments: [
+            { filename: filename, path: './docs/' + filename }
+        ]
+
+    }
+    transporter.sendMail(test, (err) => {
+        if (err) {
+            console.log(err)
+        } else {
+            console.log("email send")
+            // Send base64 pdf to client
+            fs.readFile('./docs/' + filename, 'base64', ((err, dataPDF) => {
+                if (err) throw err;
+                res.send({
+                    filepath: filepath,
+                    message: "pdf generated",
+                    pdf: dataPDF,
+                });
+            }))
+        };
+    });
 });
-// const transporter = nodemailer.createTransport({
-//     service: "hotmail",
-//     auth: {
-//         user: "testing229988@outlook.com",
-//         pass: "23121ggg"
-//     }
-// });
-// const test = {
-//     from: "testing229988@outlook.com",
-//     to: "zidnazen@gmail.com",
-//     subject: "testing",
-//     text: "Ada pendaftar baru yang mendaftarkan diri, silahkan lihat lamaran pekerjaan berikut ini:",
-//     attachments: [
-//         { filename: 'pelamar.pdf', path: './docs/try_coba_dept.pdf' }
-//     ]
-// }
-// transporter.sendMail(test, (err) => {
-//     if (err) {
-//         console.log(err)
-//     } else {
-//         console.log("email send")
-//         }));
-//     }
-// })
-
 
 module.exports = router;
