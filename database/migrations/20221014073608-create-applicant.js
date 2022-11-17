@@ -51,7 +51,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       valid_to: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
       },
       npwp_no: {
         type: Sequelize.STRING,
