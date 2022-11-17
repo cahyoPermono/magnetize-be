@@ -51,10 +51,10 @@
         </tr>
         <tr>
             <td>Nama</td>
-            <td>No Hp</td>
+            <td>{{this.dataApplicant.name}}</td>
         </tr>
         <tr>
-            <td>{{this.dataApplicant.name}}</td>
+            <td>No Hp</td>
             <td>{{this.dataApplicant.phone}}</td>
         </tr>
     </table>
@@ -65,7 +65,7 @@
         </div>
         <tr class="head-cell">
             <td>Skill</td>
-            <td>Nilai </td>
+            <td>Nilai</td>
             <td>Keterangan</td>
         </tr>
         {{#each this.subskill}}
@@ -73,8 +73,8 @@
             <td>{{this.subskill}}</td>
             <td>{{this.nilai}}</td>
             <td>{{this.keterangan}}</td>
-            </ul>
-            {{/each}}
+        </tr>
+        {{/each}}
     </table>
     <br>
     {{/each}}

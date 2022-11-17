@@ -13,14 +13,22 @@ const options = {
   border: "10mm",
 };
 router.get("/api/1.0/download_pdf/:id", async (req, res) => {
-  const filename = "applicantDocs_" + req.params.id + ".pdf";
-  fs.readFile("./docs/" + filename, "base64", (err, dataPDF) => {
-    if (err) {
-      res.send({ message: "error !" });
-    } else {
-      res.send({ dataPDF });
-    }
-  });
+    const filename = "applicantDocs_" + req.params.id + ".pdf";
+    const filename_TechnicalSkill = 'TechApplicantDocs_' + req.params.id + '.pdf';
+
+    fs.readFile("./docs/" + filename, "base64", (err, dataPDF) => {
+        if (err) {
+            res.send({ message: "error !" });
+        } else {
+            fs.readFile("./docs/" + filename_TechnicalSkill, "base64", (err, dataPDF_TechnicalSkill) => {
+                if (err) {
+                    res.send({ message: "error !" });
+                } else {
+                    res.send({ dataPDF: dataPDF, dataPDF_TechnicalSkill: dataPDF_TechnicalSkill });
+                }
+            });
+        }
+    });
 });
 
 router.get("/api/1.0/topdf_skill/:id", async (req, res) => {
@@ -28,7 +36,8 @@ router.get("/api/1.0/topdf_skill/:id", async (req, res) => {
 
   const dataApplicantPromise = {
     name: dataApplicant.name,
-    phone: dataApplicant.phone,
+    phone: dataApplicant.mobile,
+        position: dataApplicant.position,
   };
   const applicantskills = [];
   dataApplicant.applicantskills.forEach((element) => {
@@ -97,40 +106,36 @@ router.get("/api/1.0/topdf_skill/:id", async (req, res) => {
       console.log(error);
     });
 
-  const transporter = nodemailer.createTransport({
-    service: "hotmail",
-    auth: {
-      user: "testing229988@outlook.com",
-      pass: "23121ggg",
-    },
-  });
+    const transporter = nodemailer.createTransport({
+        service: "hotmail",
+        auth: {
+            user: "testing229988@outlook.com",
+            pass: "23121ggg"
+        }
+    });
+    const text = `<p><b>Dear HR Imani Prima,</b> <br><br>Diinformasikan bahwa ada pelamar baru yang telah mengisi formulir, yaitu: <br> Nama: ${dataApplicantPromise.name} <br>Posisi: ${dataApplicantPromise.position} <br><br>formulir yang telah diisi pelamar terlamir. Terima Kasih</p>`
+    const filename_DataApplicant = 'applicantDocs_' + req.params.id + '.pdf';
+    const subject = dataApplicantPromise.name + " - " + dataApplicantPromise.position
+    const test = {
+        from: "testing229988@outlook.com",
+        to: "zidnazen@gmail.com",
+        subject: subject,
+        html: text,
+        attachments: [
+            { filename: filename_TechnicalSkill, path: './docs/' + filename_TechnicalSkill },
+            { filename: filename_DataApplicant, path: './docs/' + filename_DataApplicant }
+        ]
 
-  const filename_DataApplicant = "applicantDocs_" + req.params.id + ".pdf";
-  const test = {
-    from: "testing229988@outlook.com",
-    to: "dwisuciamelia3029@gmail.com",
-    subject: "testing",
-    text: "Ada pendaftar baru yang mendaftarkan diri, silahkan lihat lamaran pekerjaan dan technical skill berikut:",
-    attachments: [
-      {
-        filename: filename_TechnicalSkill,
-        path: "./docs/" + filename_TechnicalSkill,
-      },
-      {
-        filename: filename_DataApplicant,
-        path: "./docs/" + filename_DataApplicant,
-      },
-    ],
-  };
-  transporter.sendMail(test, (err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("email send");
-      // Send base64 pdf to client
-      res.send({ message: "Email Send!" });
     }
-  });
+    transporter.sendMail(test, (err) => {
+        if (err) {
+            console.log(err)
+        } else {
+            console.log("email send")
+            // Send base64 pdf to client
+            res.send({ message: "Email Send!" })
+        };
+    });
 });
 
 router.get("/api/1.0/topdf/:id", async (req, res) => {

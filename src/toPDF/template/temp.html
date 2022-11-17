@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Applicant PDF</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 12px 30px;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .foto-profil {
+      margin: 20px;
+      float: right;
+      height: fit-content;
+      width: fit-content;
+      padding: 5px;
+      border: 1px black solid;
+    }
+
+    .foto-profil img {
+      width: 100px;
+    }
+
+    .f {
+      display: flex;
+    }
+
+    .head-cell-tr {
+      background-color: rgba(108, 117, 125, 0.3);
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    .col-1 {
+      width: 20%;
+    }
+
+    td {
+      padding: 5px;
+    }
+
+    tr,
+    td {
+      border: 1px black solid;
+    }
+
+    .head-cell {
+      color: white;
+      background-color: #195563;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="header">
+    <div class="f">
+      <div>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbIO6Djw3OrosvFawG2ZXIeDsAWemx9Sc-b1GpOT5iwQ&s"
+          alt="logo imani prima">
+        <h3>FORMULIR LAMARAN KERJA</h3>
+        <p>Applicant Form</p>
+      </div>
+      <div class="foto-profil">
+        <img src="{{this.dataApplicantPromise.photo}}" alt="img">
+      </div>
+    </div>
+
+  </div>
+  <main>
+    <div id="table-personal-data">
+      <table>
+        <tr>
+          <td class="col-1">
+            <span>Posisi yang dilamar</span> <br>
+            <small><i>Apply position</i></small>
+          </td>
+          <td>{{this.dataApplicantPromise.position}}</td>
+        </tr>
+      </table>
+      <table class="head-cell">
+        <tr>
+          <td><b>Data Pribadi </b><small>(personal data)</small></td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <td class="col-1">
+            <span>Nama Lengkap</span><br>
+            <small><i>Full Name</i></small>
+          </td>
+          <td>
+            {{this.dataApplicantPromise.name}}
+            {{#ifCond this.dataApplicantPromise.gender '===' 'L'}} <small style="font-size: 70%;">
+              (Laki-laki)</small>{{/ifCond}}
+            {{#ifCond this.dataApplicantPromise.gender '===' 'P'}} <small
+              style="font-size: 70%;">Perempuan</small>{{/ifCond}}
+          </td>
+        </tr>
+        <tr>
+          <td class="col-1">
+            <span>Tempat/Tanggal Lahir</span><br>
+            <small><i>Place/Date of Birth</i></small>
+          </td>
+          <td>
+            {{this.dataApplicantPromise.place_of_birth}}, {{this.dataApplicantPromise.date}} <br>
+            <small>Golongan Darah: {{this.dataApplicantPromise.blood_type}}</small>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-1">
+            <span>Alamat Rumah (Sesuai KTP)</span> <br>
+            <small><i>Home Address</i></small>
+          </td>
+          <td>
+            {{this.dataApplicantPromise.address}} <br>
+            <small>Kode Pos/<i>Postal Code</i>: {{this.dataApplicantPromise.postal_code_address}}</small>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-1">
+            <span>Alamat Rumah (Domisili)</span> <br>
+            <small><i>Home Address</i></small>
+          </td>
+          <td>
+            {{this.dataApplicantPromise.domicile}} <br>
+            <small>Kode Pos/<i>Postal Code</i>: {{this.dataApplicantPromise.postal_code_domicile}}</small>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-1">
+            <span>Telpon</span> <br>
+            <small><i>Phone</i></small>
+          </td>
+          <td>
+            No. HP : {{this.dataApplicantPromise.mobile}} <br>
+            Kantor/Orangtua : {{this.dataApplicantPromise.phone}} / {{this.dataApplicantPromise.office_parent_phone}}
+          </td>
+        </tr>
+        <tr>
+          <td class="col-1">
+            <span>E-Mail </span> <br>
+            <small><i>e-mail</i></small>
+          </td>
+          <td>
+            {{this.dataApplicantPromise.email}}
+          </td>
+        </tr>
+        <tr>
+          <td class="col-1">
+            <span>No.KTP/SIM</span> <br>
+            <small><i>ID/SIM no.</i></small>
+          </td>
+          <td>
+            {{this.dataApplicantPromise.id_sim_no}} <br>
+            <small>Berlaku s.d./<i>Valid until:</i> {{this.dataApplicantPromise.valid_to}}</small>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span>No.NPWP</span> <br>
+            <small><i>(jika ada)</i></small>
+          </td>
+          <td>
+            {{this.dataApplicantPromise.npwp_no}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span>No.Rekening</span> <br>
+            <small><i>(jika ada)</i></small>
+          </td>
+          <td>
+            {{this.dataApplicantPromise.account_no}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span>Agama</span> <br>
+            <small><i>Religion</i></small>
+          </td>
+          <td>
+            {{this.dataApplicantPromise.religion}}
+          </td>
+        </tr>
+      </table>
+      <table class="head-cell">
+        <tr>
+          <td><b>Data Keluarga </b><small>(family data)</small></td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <td class="col-1">
+            <span>Status Perkawinan</span><br>
+            <small><i>Martial Status</i></small>
+          </td>
+          <td>
+            {{this.dataApplicantPromise.marital_status}}
+            {{#ifCond this.dataApplicantPromise.marital_status '===' 'Menikah'}}
+            (Tahun {{this.dataApplicantPromise.year_marriage}})
+            {{/ifCond}}
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div id="table-martial-data">
+      <table>
+        <tr class="head-cell-tr">
+          <td>
+            <span>Anggota Keluarga</span><br>
+            <small><i>Family Member</i></small>
+          </td>
+          <td>
+            <span>Nama</span><br>
+            <small><i>Name</i></small>
+          </td>
+          <td>
+            <span>L/P</span><br>
+            <small><i>M/F</i></small>
+          </td>
+          <td>
+            <span>Tgl Lahir</span><br>
+            <small><i>DOB</i></small>
+          </td>
+          <td>
+            <span>Pendidikan</span><br>
+            <small><i>Education</i></small>
+          </td>
+          <td>
+            <span>Pekerjaan & Perusahaan</span><br>
+            <small><i>Occupation & Company</i></small>
+          </td>
+        </tr>
+        <div>
+          {{#each familiesPromise}}
+          {{#ifCond this.member '===' 'Ayah'}}
+          <tr>
+            <td>
+              {{this.member}}
+            </td>
+            <td>
+              {{this.name}}
+            </td>
+            <td>
+              {{this.gender}}
+            </td>
+            <td>
+              {{this.date}}
+            </td>
+            <td>
+              {{this.education}}
+            </td>
+            <td>
+              {{this.occupation_company}}
+            </td>
+          </tr>
+          {{/ifCond}}
+          {{#ifCond this.member '===' 'Ibu'}}
+          <tr>
+            <td>
+              {{this.member}}
+            </td>
+            <td>
+              {{this.name}}
+            </td>
+            <td>
+              {{this.gender}}
+            </td>
+            <td>
+              {{this.date}}
+            </td>
+            <td>
+              {{this.education}}
+            </td>
+            <td>
+              {{this.occupation_company}}
+            </td>
+          </tr>
+          {{/ifCond}}
+          {{#ifCond this.member '===' 'Saudara 1'}}
+          <tr>
+            <td>
+              {{this.member}}
+            </td>
+            <td>
+              {{this.name}}
+            </td>
+            <td>
+              {{this.gender}}
+            </td>
+            <td>
+              {{this.date}}
+            </td>
+            <td>
+              {{this.education}}
+            </td>
+            <td>
+              {{this.occupation_company}}
+            </td>
+          </tr>
+          {{/ifCond}}
+          {{/each}}
+          {{#ifCond this.member '===' 'Saudara 2'}}
+          <tr>
+            <td>
+              {{this.member}}
+            </td>
+            <td>
+              {{this.name}}
+            </td>
+            <td>
+              {{this.gender}}
+            </td>
+            <td>
+              {{this.date}}
+            </td>
+            <td>
+              {{this.education}}
+            </td>
+            <td>
+              {{this.occupation_company}}
+            </td>
+          </tr>
+          {{/ifCond}}
+          {{#ifCond this.member '===' 'Saudara 3'}}
+          <tr>
+            <td>
+              {{this.member}}
+            </td>
+            <td>
+              {{this.name}}
+            </td>
+            <td>
+              {{this.gender}}
+            </td>
+            <td>
+              {{this.date}}
+            </td>
+            <td>
+              {{this.education}}
+            </td>
+            <td>
+              {{this.occupation_company}}
+            </td>
+          </tr>
+          {{/ifCond}}
+        </div>
+        <tr class="head-cell-tr">
+          <td>
+            <span>Susunan Keluarga</span><br>
+            <small><i>Family Structure</i></small>
+          </td>
+          <td>
+            <span>Nama</span><br>
+            <small><i>Name</i></small>
+          </td>
+          <td>
+            <span>L/P</span><br>
+            <small><i>M/F</i></small>
+          </td>
+          <td>
+            <span>Tgl Lahir</span><br>
+            <small><i>DOB</i></small>
+          </td>
+          <td>
+            <span>Pendidikan</span><br>
+            <small><i>Education</i></small>
+          </td>
+          <td>
+            <span>Pekerjaan & Perusahaan</span><br>
+            <small><i>Occupation & Company</i></small>
+          </td>
+        </tr>
+        <div>
+          {{#each familiesPromise}}
+          {{#ifCond this.member '===' 'Suami / Istri'}}
+          <tr>
+            <td>
+              {{this.member}}
+            </td>
+            <td>
+              {{this.name}}
+            </td>
+            <td>
+              {{this.gender}}
+            </td>
+            <td>
+              {{this.date}}
+            </td>
+            <td>
+              {{this.education}}
+            </td>
+            <td>
+              {{this.occupation_company}}
+            </td>
+          </tr>
+          {{/ifCond}}
+          {{#ifCond this.member '===' 'Anak 1'}}
+          <tr>
+            <td>
+              {{this.member}}
+            </td>
+            <td>
+              {{this.name}}
+            </td>
+            <td>
+              {{this.gender}}
+            </td>
+            <td>
+              {{this.date}}
+            </td>
+            <td>
+              {{this.education}}
+            </td>
+            <td>
+              {{this.occupation_company}}
+            </td>
+          </tr>
+          {{/ifCond}}
+          {{#ifCond this.member '===' 'Anak 2'}}
+          <tr>
+            <td>
+              {{this.member}}
+            </td>
+            <td>
+              {{this.name}}
+            </td>
+            <td>
+              {{this.gender}}
+            </td>
+            <td>
+              {{this.date}}
+            </td>
+            <td>
+              {{this.education}}
+            </td>
+            <td>
+              {{this.occupation_company}}
+            </td>
+          </tr>
+          {{/ifCond}}
+          {{/each}}
+          {{#ifCond this.member '===' 'Anak 3'}}
+          <tr>
+            <td>
+              {{this.member}}
+            </td>
+            <td>
+              {{this.name}}
+            </td>
+            <td>
+              {{this.gender}}
+            </td>
+            <td>
+              {{this.date}}
+            </td>
+            <td>
+              {{this.education}}
+            </td>
+            <td>
+              {{this.occupation_company}}
+            </td>
+          </tr>
+          {{/ifCond}}
+        </div>
+      </table>
+    </div>
+    <div id="formal_edu">
+      <table class="head-cell">
+        <tr>
+          <td><b>Pendidikan Formal </b><small>(formal education)</small></td>
+        </tr>
+      </table>
+      <table>
+        <tr class="head-cell-tr">
+          <td rowspan="2">Jenjang</td>
+          <td rowspan="2">Nama&Kota/tempat</td>
+          <td rowspan="2">Jurusan</td>
+          <td colspan="2">Tahun Pendidikan</td>
+        </tr>
+        <tr class="head-cell-tr">
+          <td>Masuk</td>
+          <td>Lulus</td>
+        </tr>
+        {{#each formaleducationPromise}}
+        <tr>
+          <td>
+            {{this.level}}
+          </td>
+          <td>
+            {{this.name_location}}
+          </td>
+          <td>
+            {{this.major}}
+          </td>
+          <td>
+            {{this.entry}}
+          </td>
+          <td>
+            {{this.graduate}}
+          </td>
+        </tr>
+        {{/each}}
+      </table>
+    </div>
+    <div id="nonformal_edu">
+      <table class="head-cell">
+        <tr>
+          <td><b>Pendidikan Non-Formal </b><small>(non-formal education)</small></td>
+        </tr>
+      </table>
+      <table>
+        <tr class="head-cell-tr">
+          <td>Jenis Kursus/Training/Seminar</td>
+          <td>Tahun</td>
+          <td>Lama</td>
+          <td>Sertifikat</td>
+          <td>Dibiayai Oleh</td>
+        </tr>
+        {{#each nonformaleducationsPromise}}
+        <tr>
+          <td>
+            {{this.course}}
+          </td>
+          <td>
+            {{this.year}}
+          </td>
+          <td>
+            {{this.duration}}
+          </td>
+          <td>
+            Ada
+          </td>
+          <td>
+            {{this.sponsored_by}}
+          </td>
+        </tr>
+        {{/each}}
+      </table>
+    </div>
+    <div id="keahlian">
+      <table class="head-cell">
+        <tr>
+          <td><b>Penguasaan Komputer & Keahlian Khusus </b><small>(Computer Literate and Special Skills)</small></td>
+        </tr>
+      </table>
+      <table>
+        <tr class="head-cell-tr">
+          <td>Jenis Program Aplikasi dan Keahlian Khusus</td>
+          <td>Tingkat Penguasaan </td>
+        </tr>
+        {{#each computerliteratesPromise}}
+        <tr>
+          <td>
+            {{this.skill}}
+          </td>
+          <td>
+            {{this.level}}
+          </td>
+        </tr>
+        {{/each}}
+      </table>
+    </div>
+    <div id="jobs_history">
+      <table class="head-cell">
+        <tr>
+          <td><b>RIWAYAT PEKERJAAN </b><small>(Mulai dari pekerjaan terakhir)</small></td>
+        </tr>
+      </table>
+      <table>
+        <tr class="head-cell-tr">
+          <td>
+            <span>Bulan/Tahun</span> <br>
+            <small><i>Month/Year</i></small>
+          </td>
+          <td>
+            <span>Nama Perusahaan</span> <br>
+            <small><i>name of Company</i></small>
+          </td>
+          <td>
+            <span>Jabatan</span> <br>
+            <small><i>position</i></small>
+          </td>
+          <td>
+            <span>Atasan Langsung</span> <br>
+            <small><i>Supervisor</i></small>
+          </td>
+          <td>
+            <span>Total Gaji</span> <br>
+            <small><i>Take Home Pay</i></small>
+          </td>
+          <td>
+            <span>Alasan Keluar</span> <br>
+            <small><i>Reason for Leaving</i></small>
+          </td>
+        </tr>
+        {{#each employmenthistoriesPromise}}
+        <tr>
+          <td>
+            <small style="font-size: 60%;">Start: </small>{{this.start}}
+          </td>
+          <td rowspan="2">
+            {{this.name_company}}
+          </td>
+          <td rowspan="2">
+            {{this.position}}
+          </td>
+          <td rowspan="2">
+            {{this.direct_supervisor}}
+          </td>
+          <td rowspan="2">
+            {{this.take_home_pay}}
+          </td>
+          <td rowspan="2">
+            {{this.reason_leaving}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <small style="font-size: 60%;">End: </small>{{this.end}}
+          </td>
+        </tr>
+        {{/each}}
+      </table>
+    </div>
+    <div id="job_desc">
+      <table class="head-cell">
+        <tr>
+          <td><b>Tugas dan Tanggung Jawab Pekerjaan </b><small>(Job Description)</small></td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <td>
+            {{this.jobdescriptionPromise.desciption}}
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div id="other_information">
+      <table class="head-cell">
+        <tr>
+          <td><b>KETERANGAN LAINNYA </b><small>(Other Informations)</small></td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <td>
+            <p style="font-size: 70%;">
+              Apakah anda pernah dirawat di rumah sakit dan atau menderita sakit yang lama ? <i>Have you been
+                hospitalized
+                and / or seriously ill for a long time?</i>
+            </p>
+            {{this.otherinformationPromise.hospitalized}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="font-size: 70%;">
+              (Jika Ya) Sakit apa? <i>(If Yes) What kind of disease ? </i>
+            </p>
+            {{this.otherinformationPromise.disease}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="font-size: 70%;">
+              Kapan terakhir anda mengikuti evaluasi psikologis (psikotest) ?<i> When last time you taken a psycological
+                test ? </i>
+            </p>
+            {{this.otherinformationPromise.psycological_test}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="font-size: 70%;">
+              Berapa lama pengalaman anda didalam area kerja ? <i>How long have your experience in the work area?</i>
+              <br>
+              1. Telecommunication Industry
+            </p>
+            {{this.otherinformationPromise.experience_tellecomunication}} Bulan
+            <p style="font-size: 70%;">2. IT Technology </p>
+            {{this.otherinformationPromise.experience_it}} Bulan
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="font-size: 70%;">
+              Sebutkan alasan anda ingin bergabung dengan PT Imani Prima?<i> Why do you want to join with PT Imani
+                Prima?</i>
+            </p>
+            {{this.otherinformationPromise.reason_join}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="font-size: 70%;">
+              Mengapa kami bisa mempekerjakan anda? <i>Why we can hire you?</i>
+            </p>
+            {{this.otherinformationPromise.reason_hire}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="font-size: 70%;">
+              Informasikan pendapat anda tentang Kerjasama (Team Work)? <i>Inform your opinion about team work?</i>
+            </p>
+            {{this.otherinformationPromise.opinion_teamwork}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="font-size: 70%;">
+              Sebutkan rencana jangka pendek dan rencana jangka panjang anda? <i>Mention your short term plan and your
+                long term plan?</i>
+            </p>
+            {{this.otherinformationPromise.plan}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="font-size: 70%;">
+              Bagaimana tanggapan anda mengenai target yang akan diberikan oleh perusahaan kepada anda? <i>How do your
+                respond to the target will company will give you?</i>
+            </p>
+            {{this.otherinformationPromise.respond_target}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="font-size: 70%;">
+              Bagaimana tanggapan anda mengenai tekanan dalam pekerjaan? <i>How do your respond to pressure at work?</i>
+            </p>
+            {{this.otherinformationPromise.respond_preasure}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="font-size: 70%;">
+              Mengapa anda ingin keluar dari perusahaan terakhir? <i>Why do you want to leave the last company?</i>
+            </p>
+            {{this.otherinformationPromise.reason_leave_last_company}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="font-size: 70%;">
+              Berapa gaji yang anda inginkan ? <i>How much salary do you expect ?</i>
+            </p>
+            Rp.{{this.otherinformationPromise.salary_expect}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="font-size: 70%;">
+              Kapan anda dapat mulai bekerja ? <i>When will you be able to start to work ?</i>
+            </p>
+            {{this.otherinformationPromise.able_to_start}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="font-size: 70%;">
+              Sebutkan orang terdekat yang bisa dihubungi dalam keadaan darurat? <i>Person to contact in case of
+                emergency?</i>
+            </p>
+            {{this.otherinformationPromise.contact_emergency}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="font-size: 70%;">
+              Sebutkan nama kenalan anda di PT. Imani Prima dan hubungan anda dengannya sebagai?<i> Name your friends /
+                relatives in PT. Imani Prima and the relationship as ?</i>
+            </p>
+            {{this.otherinformationPromise.relatives_in_ip}}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p style="font-size: 70%;">
+              Menurut anda apa kelebihan dan kekurangan pada diri anda ? Sebutkan masing-masing 3 item.
+              <i>What do you think is your strengths and weaknesses ? Please state 3 items.</i>
+            </p>
+            <p style="font-size: 70%;">
+              Kelebihan :
+            </p>
+            {{this.otherinformationPromise.strength}}
+            <p style="font-size: 70%;">
+              Kekurangan :
+            </p>
+            {{this.otherinformationPromise.weakness}}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </main>
+</body>
+
+</html>
+<a href="http://localhost:3000/api/1.0/download_pdf/1"></a>
