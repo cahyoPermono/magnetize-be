@@ -5,7 +5,6 @@ const path = require('path');
 const pdf = require('pdf-creator-node');
 const nodemailer = require('nodemailer');
 const ApplicantService = require("../applicant/ApplicantService");
-const JobService = require("../skill/JobService");
 const SubSkillService = require('../skill/SubSkillService');
 
 const options = {
@@ -13,7 +12,6 @@ const options = {
     orientation: 'potrait',
     border: '10mm'
 };
-
 router.get("/api/1.0/download_pdf/:id", async (req, res) => {
     const filename = 'applicantDocs_' + req.params.id + '.pdf';
     fs.readFile('./docs/' + filename, 'base64', ((err, dataPDF) => {
@@ -24,9 +22,14 @@ router.get("/api/1.0/download_pdf/:id", async (req, res) => {
         }
     }));
 });
-router.get("/api/1.0/get_applicantskill/:id", async (req, res) => {
+
+router.get("/api/1.0/topdf_skill/:id", async (req, res) => {
     const dataApplicant = await ApplicantService.byId(req.params.id);
 
+    const dataApplicantPromise = {
+        name: dataApplicant.name,
+        phone: dataApplicant.phone,
+    };
     const applicantskills = []
     dataApplicant.applicantskills.forEach(element => {
         applicantskills.push({ subskill_id: element.subskillId, nilai: element.nilai, keterangan: element.keterangan })
@@ -36,12 +39,78 @@ router.get("/api/1.0/get_applicantskill/:id", async (req, res) => {
     subskill.forEach(element => {
         applicantskills.forEach(e => {
             if (element.id === e.subskill_id) {
-                a.push({subskill:element.subskill, nilai:e.nilai, keterangan:e.keterangan} )
+                a.push({ skill: element.skill.skill, subskill: element.subskill, nilai: e.nilai, keterangan: e.keterangan })
             }
         });
     });
-    console.log(a)
-    res.send( a )
+    const skills = [];
+    for (let item of a) {
+        const { skill } = item
+        if (!skills.includes(skill)) {
+            skills.push(skill)
+        }
+    }
+    let c = []
+    skills.forEach(el => {
+        const y = { skill: el, subskill: [] }
+        a.forEach(e => {
+            if (e.skill === y.skill) {
+                const x = { subskill: e.subskill, nilai: e.nilai, keterangan: e.keterangan };
+                y.subskill.push(x)
+            }
+        })
+        c.push(y)
+    })
+
+    const html = fs.readFileSync(path.join(__dirname, '../toPDF/template/temp_tech.html'), 'utf-8');
+    const filename_TechnicalSkill = 'TechApplicantDocs_' + req.params.id + '.pdf';
+
+
+    const document = {
+        html: html,
+        data: {
+            dataApplicant: dataApplicantPromise,
+            skillAplicant: c
+        },
+        path: './docs/' + filename_TechnicalSkill
+    }
+    await pdf.create(document, options)
+        .then(res => {
+            console.log(res);
+        }).catch(error => {
+            console.log(error);
+        });
+
+    const transporter = nodemailer.createTransport({
+        service: "hotmail",
+        auth: {
+            user: "testing229988@outlook.com",
+            pass: "23121ggg"
+        }
+    });
+
+    const filename_DataApplicant = 'applicantDocs_' + req.params.id + '.pdf';
+    const test = {
+        from: "testing229988@outlook.com",
+        to: "zidnazen@gmail.com",
+        subject: "testing",
+        text: "Ada pendaftar baru yang mendaftarkan diri, silahkan lihat lamaran pekerjaan dan technical skill berikut:",
+        attachments: [
+            { filename: filename_TechnicalSkill, path: './docs/' + filename_TechnicalSkill },
+            { filename: filename_DataApplicant, path: './docs/' + filename_DataApplicant }
+        ]
+
+    }
+    transporter.sendMail(test, (err) => {
+        if (err) {
+            console.log(err)
+        } else {
+            console.log("email send")
+            // Send base64 pdf to client
+            res.send({message:"Email Send!"})
+        };
+    });
+
 })
 
 router.get("/api/1.0/topdf/:id", async (req, res) => {
@@ -49,7 +118,6 @@ router.get("/api/1.0/topdf/:id", async (req, res) => {
     const dataApplicant = await ApplicantService.byId(req.params.id);
 
     const filename = 'applicantDocs_' + dataApplicant.id + '.pdf';
-
     const dataApplicantPromise = {
         name: dataApplicant.name,
         gender: dataApplicant.gender,
@@ -65,7 +133,7 @@ router.get("/api/1.0/topdf/:id", async (req, res) => {
         office_parent_phone: dataApplicant.office_parent_phone,
         email: dataApplicant.email,
         id_sim_no: dataApplicant.id_sim_no,
-        valid_to: dataApplicant.valid_to.toISOString().substring(0, 10).split("-").reverse().join("-"),
+        valid_to: dataApplicant.valid_to,
         npwp_no: dataApplicant.npwp_no,
         account_no: dataApplicant.account_no,
         religion: dataApplicant.religion,
@@ -175,10 +243,6 @@ router.get("/api/1.0/topdf/:id", async (req, res) => {
         attachmentapplicantsPromise.push(args)
     });
 
-    //dataApplicantPromise, familiesPromise, formaleducationPromise, nonformaleducationsPromise, 
-    //computerliteratesPromise, employmenthistoriesPromise, jobdescriptionPromise, otherinformationPromise,
-    //attachmentapplicantsPromise
-
     const document = {
         html: html,
         data: {
@@ -198,46 +262,16 @@ router.get("/api/1.0/topdf/:id", async (req, res) => {
     await pdf.create(document, options)
         .then(res => {
             console.log(res);
-        }).catch(error => {
-            console.log(error);
-        });
-
-    const filepath = 'http://localhost:3000/docs/' + filename;
-
-    const transporter = nodemailer.createTransport({
-        service: "hotmail",
-        auth: {
-            user: "testing229988@outlook.com",
-            pass: "23121ggg"
-        }
-    });
-
-    const test = {
-        from: "testing229988@outlook.com",
-        to: "zidnazen@gmail.com",
-        subject: "testing",
-        text: "Ada pendaftar baru yang mendaftarkan diri, silahkan lihat lamaran pekerjaan berikut ini:",
-        attachments: [
-            { filename: filename, path: './docs/' + filename }
-        ]
-
-    }
-    transporter.sendMail(test, (err) => {
-        if (err) {
-            console.log(err)
-        } else {
-            console.log("email send")
-            // Send base64 pdf to client
             fs.readFile('./docs/' + filename, 'base64', ((err, dataPDF) => {
                 if (err) throw err;
                 res.send({
-                    filepath: filepath,
                     message: "pdf generated",
                     pdf: dataPDF,
                 });
             }))
-        };
-    });
+        }).catch(error => {
+            console.log(error);
+        });
 });
 
 module.exports = router;
