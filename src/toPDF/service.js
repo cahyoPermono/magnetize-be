@@ -180,12 +180,7 @@ router.get("/api/1.0/topdf/:id", async (req, res) => {
     office_parent_phone: dataApplicant.office_parent_phone,
     email: dataApplicant.email,
     id_sim_no: dataApplicant.id_sim_no,
-    valid_to: dataApplicant.valid_to
-      .toISOString()
-      .substring(0, 10)
-      .split("-")
-      .reverse()
-      .join("-"),
+    valid_to: dataApplicant.valid_to,
     npwp_no: dataApplicant.npwp_no,
     account_no: dataApplicant.account_no,
     religion: dataApplicant.religion,
