@@ -18,6 +18,8 @@
       float: right;
       height: fit-content;
       width: fit-content;
+      padding: 5px;
+      border: 1px black solid;
     }
 
     .foto-profil img {
@@ -68,7 +70,7 @@
         <p>Applicant Form</p>
       </div>
       <div class="foto-profil">
-        <img src="https://porteous.com.au/wp-content/uploads/2016/09/dummy-profile-pic-male-300x300.jpg" alt="img">
+        <img src="{{this.dataApplicantPromise.photo}}" alt="img">
       </div>
     </div>
 
