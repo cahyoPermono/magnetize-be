@@ -29,7 +29,7 @@ FormalEducation.init(
   },
   {
     sequelize,
-    modelName: 'formaleducation',
+    modelName: 'formalEducations',
   }
 );
 FormalEducation.belongsTo(Applicant);

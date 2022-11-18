@@ -29,7 +29,7 @@ NonFormalEducation.init(
   },
   {
     sequelize,
-    modelName: 'nonformaleducation',
+    modelName: 'nonformalEducations',
   }
 );
 NonFormalEducation.belongsTo(Applicant);
