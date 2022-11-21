@@ -31,7 +31,7 @@ Departements.init(
   },
   {
     sequelize,
-    modelName: "Departements",
+    modelName: "departements",
   }
 );
 

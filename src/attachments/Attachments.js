@@ -23,7 +23,7 @@ Attachments.init(
   },
   {
     sequelize,
-    modelName: "Attachments",
+    modelName: "attachments",
   }
 );
 Attachments.belongsTo(Departements);
