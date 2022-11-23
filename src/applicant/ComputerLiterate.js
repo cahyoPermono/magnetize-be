@@ -20,7 +20,7 @@ ComputerLiterate.init(
   },
   {
     sequelize,
-    modelName: 'computerliterate',
+    modelName: 'computerLiterate',
   }
 );
 ComputerLiterate.belongsTo(Applicant);
