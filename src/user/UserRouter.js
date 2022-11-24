@@ -64,7 +64,7 @@ router.post("/api/1.0/login", async (req, res) => {
         },
         "SECRETKEY",
         {
-          expiresIn: "7d",
+          expiresIn: "2d",
         }
       );
       return res.status(200).send({
