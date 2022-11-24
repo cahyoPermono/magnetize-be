@@ -1,6 +1,7 @@
 const express = require("express");
 const DepartementsService = require("./DepartementsService");
 const router = express.Router();
+const userMiddleware = require('../middleware/middleware');
 const { check, validationResult } = require("express-validator");
 
 router.post(
@@ -44,7 +45,7 @@ router.post(
   }
 );
 
-router.get("/api/1.0/departements", async (req, res) => {
+router.get("/api/1.0/departements", userMiddleware.isLoggedIn, async (req, res) => {
   const departements = await DepartementsService.allDepartmentGet(req.body);
   return res.send({ departements });
 });
