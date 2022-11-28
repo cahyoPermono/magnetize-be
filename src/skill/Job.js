@@ -45,6 +45,9 @@ Job.init(
     desc:{
       type: Sequelize.STRING,
     },
+    payment_frequency:{
+      type: Sequelize.STRING,
+    },
     creator_id: {
       type: Sequelize.INTEGER,
       references: {
