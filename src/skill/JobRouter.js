@@ -11,6 +11,17 @@ router.get(
   '/api/1.0/jobs',
   async (req, res) => {
     const job = await JobService.find();
-      res.send({ message: 'Success Get Job', data: job });
+    res.send({ message: 'Success Get Job', data: job });
   });
+router.get(
+  '/api/1.0/jobs/:id',
+  async (req, res) => {
+    const job = await JobService.findOne(req.params.id);
+    if (job) {
+      res.send({ message: 'Success Get Job', data: job });
+    } else {
+      res.send({ message: "no data !" })
+    }
+  });
+  
 module.exports = router;

@@ -5,9 +5,9 @@ const save = async (body) => {
   const job = { ...body };
   await Job.create(job);
 };
-
-const find = async () => {
-  const job = await Job.findAll({
+const findOne = async (id) => {
+  const job = await Job.findOne({
+    where: { id: id },
     include: [
       Skill
     ],
@@ -18,4 +18,12 @@ const find = async () => {
   return false;
 };
 
-module.exports = { save, find };
+const find = async () => {
+  const job = await Job.findAll();
+  if (job) {
+    return job;
+  }
+  return false;
+};
+
+module.exports = { save, find, findOne };
