@@ -17,7 +17,7 @@ Notes.init(
   },
   {
     sequelize,
-    modelName: "Notes",
+    modelName: "notes",
   }
 );
 
