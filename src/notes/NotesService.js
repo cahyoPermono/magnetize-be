@@ -23,5 +23,3 @@ exports.noteDelete = async (id) => {
     del.destroy();
   }
 };
-
-

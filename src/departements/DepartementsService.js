@@ -20,7 +20,7 @@ exports.departmentGet = async (id) => {
 };
 
 exports.departmentGetsss = async (id) => {
-  const dataDept =  await Departements.findOne({
+  const dataDept = await Departements.findOne({
     where: { id: id },
     include: [Notes, Attachments],
   });
@@ -28,7 +28,9 @@ exports.departmentGetsss = async (id) => {
 };
 
 exports.departementDelete = async (id) => {
-  const dataAttach = await Attachments.destroy({ where: { DepartementId: id } });
+  const dataAttach = await Attachments.destroy({
+    where: { DepartementId: id },
+  });
   const dataNotes = await Notes.destroy({ where: { DepartementId: id } });
   const del = await Departements.findOne({ where: { id: id } });
   if (del) {

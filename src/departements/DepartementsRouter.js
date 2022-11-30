@@ -31,6 +31,7 @@ router.post(
     .bail()
     .isLength({ min: 4, max: 32 })
     .withMessage("alamat_size"),
+  userMiddleware.isLoggedIn,
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -45,9 +46,9 @@ router.post(
   }
 );
 
-router.get("/api/1.0/departements", userMiddleware.isLoggedIn, async (req, res) => {
-  const departements = await DepartementsService.allDepartmentGet(req.body);
-  return res.send({ departements });
+router.get("/api/1.0/departements", userMiddleware.isLoggedIn,  async (req, res) => {
+    const departements = await DepartementsService.allDepartmentGet(req.body);
+    return res.send({ departements });
 });
 
 router.get("/api/1.0/departements/:id", async (req, res) => {

@@ -126,7 +126,7 @@ router.get("/api/1.0/topdf_skill/:id", async (req, res) => {
     dataApplicantPromise.name + " - " + dataApplicantPromise.position;
   const test = {
     from: "testing229988@outlook.com",
-    to: "khusnul@imaniprima.co.id",
+    to: "dwisuciamelia3029@gmail.com",
     subject: subject,
     html: text,
     attachments: [
