@@ -23,6 +23,12 @@ Guest.init(
     email: {
       type: Sequelize.STRING,
     },
+    posisi: {
+      type: Sequelize.STRING,
+    },
+    cv: {
+      type: Sequelize.STRING,
+    },
   },
   {
     sequelize,

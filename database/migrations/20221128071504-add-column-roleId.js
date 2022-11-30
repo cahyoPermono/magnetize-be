@@ -3,16 +3,16 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.addColumn("jobs", "DepartementId", {
+    await queryInterface.addColumn("users", "roleId", {
       type: Sequelize.INTEGER,
       references: {
-        model: "departements",
+        model: "roles",
         key: "id",
       },
     });
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeColumn("jobs", "DepartementId");
+    await queryInterface.removeColumn("users", "roleId");
   },
 };
