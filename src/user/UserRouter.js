@@ -4,15 +4,16 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
+const User = require("./User");
 
 router.post(
   "/api/1.0/users",
-  check("username")
-    .notEmpty()
-    .withMessage("username_null")
-    .bail()
-    .isLength({ min: 4, max: 32 })
-    .withMessage("username_size"),
+  // check("username")
+  //   .notEmpty()
+  //   .withMessage("username_null")
+  //   .bail()
+  //   .isLength({ min: 4, max: 32 })
+  //   .withMessage("username_size"),
   check("email")
     .notEmpty()
     .withMessage("email_null")
@@ -26,15 +27,15 @@ router.post(
         throw new Error("email_inuse");
       }
     }),
-  check("password")
-    .notEmpty()
-    .withMessage("password_null")
-    .bail()
-    .isLength({ min: 6 })
-    .withMessage("password_size")
-    .bail()
-    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/)
-    .withMessage("password_pattern"),
+  // check("password")
+  //   .notEmpty()
+  //   .withMessage("password_null")
+  //   .bail()
+  //   .isLength({ min: 6 })
+  //   .withMessage("password_size")
+  //   .bail()
+  //   .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).*$/)
+  //   .withMessage("password_pattern"),
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -79,5 +80,42 @@ router.post("/api/1.0/login", async (req, res) => {
     res.status(401).json({ error: "User does not exist" });
   }
 });
+
+router.get('/api/1.0/users', async (req, res) => {
+  const user = await UserService.find();
+  res.send({ message: 'Success Get Data User', data: user });
+});
+
+router.get("/api/1.0/users/:id", async (req, res) => {
+  const user = await UserService.findbyId(req.params.id);
+  return res.send({ message: 'Success Get Data User', data: user });
+});
+
+// router.put('/api/1.0/update/:id', async (req, res) => {
+//   await UserService.update(req.params.id);
+//   return res.send({message: 'success'});
+// });
+
+router.put("/api/1.0/update/:id", async (req, res) => {
+  const id = req.params.id;
+
+  User.update(req.body, {
+    where: { id: id },
+  })
+    .then(num => {
+      if (num == 1) {
+        res.send({
+          message: "success"
+        });
+      } else {
+        res.send({
+          message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found or req.body is empty!`
+        });
+      }
+    })
+    .catch(err => {
+      console.log(err);
+    });
+})
 
 module.exports = router;

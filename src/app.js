@@ -24,6 +24,9 @@ const SubSkillRouter = require('./skill/SubSkillRouter');
 const ApplicantSkillRouter = require('./skill/ApplicantSkillRouter');
 const OtherApplicantSkillRouter = require('./skill/OtherApplicantSkillRouter');
 const toPDFService = require('./toPDF/service');
+const RoleRouter = require('./role/RoleRouter');
+const PermissionRouter = require('./permission/PermisionRouter');
+const RolePermissionRouter = require('./rolepermission/RolePermissionRouter');
 
 i18next
   .use(Backend)
@@ -90,5 +93,8 @@ app.use(SkillRouter);
 app.use(SubSkillRouter);
 app.use(ApplicantSkillRouter);
 app.use(OtherApplicantSkillRouter);
+app.use(RoleRouter);
+app.use(PermissionRouter);
+app.use(RolePermissionRouter);
 
 module.exports = app;
