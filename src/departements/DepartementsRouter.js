@@ -1,7 +1,9 @@
 const express = require("express");
 const DepartementsService = require("./DepartementsService");
 const router = express.Router();
-const userMiddleware = require('../middleware/middleware');
+const userMiddleware = require("../middleware/middleware");
+const Helper = require("../utils/helper");
+const helper = new Helper();
 const { check, validationResult } = require("express-validator");
 
 router.post(
@@ -46,10 +48,26 @@ router.post(
   }
 );
 
-router.get("/api/1.0/departements", userMiddleware.isLoggedIn,  async (req, res) => {
-    const departements = await DepartementsService.allDepartmentGet(req.body);
-    return res.send({ departements });
-});
+router.get(
+  "/api/1.0/all_departements/:id",
+  userMiddleware.isLoggedIn,
+  async (req, res) => {
+    // const departements = await DepartementsService.allDepartmentGet(req.body);
+    // return res.send({ departements });
+    // console.log(req)
+
+    await helper
+      .checkPermission(req.params.id, "menu_departement")
+      .then(async (el) => {
+
+        const departements = await DepartementsService.allDepartmentGet();
+        return res.send({ departements, el });
+      })
+      .catch((error) => {
+        return res.send(error);
+      });
+  }
+);
 
 router.get("/api/1.0/departements/:id", async (req, res) => {
   const departement = await DepartementsService.departmentGet(req.params.id);
