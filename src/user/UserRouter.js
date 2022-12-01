@@ -5,6 +5,9 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
 const User = require("./User");
+const Helper = require("../utils/helper");
+const helper = new Helper();
+const userMiddleware = require("../middleware/middleware");
 
 router.post(
   "/api/1.0/users",
@@ -62,6 +65,7 @@ router.post("/api/1.0/login", async (req, res) => {
         {
           email: user.email,
           password: user.password,
+          roleId: user.roleId,
         },
         "SECRETKEY",
         {
@@ -81,9 +85,16 @@ router.post("/api/1.0/login", async (req, res) => {
   }
 });
 
-router.get('/api/1.0/users', async (req, res) => {
-  const user = await UserService.find();
-  res.send({ message: 'Success Get Data User', data: user });
+router.get('/api/1.0/all_users/:id', userMiddleware.isLoggedIn, async (req, res) => {
+    await helper
+      .checkPermission(req.params.id, "menu_users")
+      .then(async (el) => {
+        const user = await UserService.find();
+        res.send({ message: 'Success Get Data User', data: user, el });
+      })
+      .catch((error) => {
+        return res.send(error);
+      });
 });
 
 router.get("/api/1.0/users/:id", async (req, res) => {
@@ -91,16 +102,11 @@ router.get("/api/1.0/users/:id", async (req, res) => {
   return res.send({ message: 'Success Get Data User', data: user });
 });
 
-// router.put('/api/1.0/update/:id', async (req, res) => {
-//   await UserService.update(req.params.id);
-//   return res.send({message: 'success'});
-// });
 
 router.put("/api/1.0/update/:id", async (req, res) => {
   const id = req.params.id;
-
   User.update(req.body, {
-    where: { id: id },
+    where: { roleId: id },
   })
     .then(num => {
       if (num == 1) {
@@ -116,6 +122,6 @@ router.put("/api/1.0/update/:id", async (req, res) => {
     .catch(err => {
       console.log(err);
     });
-})
+});
 
 module.exports = router;
