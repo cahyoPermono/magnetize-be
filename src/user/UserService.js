@@ -1,9 +1,6 @@
 const User = require("./User");
 const Role = require('../role/Role');
 const bcrypt = require("bcrypt");
-// const jwt = require("jsonwebtoken")
-// const Helper = require('../utils/helper');
-// const helper = new Helper();
 
 const save = async (body) => {
   const hash = await bcrypt.hash('magnetize', 10);
@@ -32,12 +29,6 @@ const findbyId = async (id) => {
   });
 };
 
-const update = async (id) => {
-  await User.update({ lastActive: '' }, {
-    where: { id: id }
-  });
-};
-
 const login = async (email) => {
   const user = await User.findOne({
     where: {
@@ -51,4 +42,4 @@ const login = async (email) => {
   }
 };
 
-module.exports = { save, findByEmail, login, find, findbyId, update };
+module.exports = { save, findByEmail, login, find, findbyId };

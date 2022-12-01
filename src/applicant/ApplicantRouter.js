@@ -102,6 +102,15 @@ router.post(
 );
 
 router.get('/api/1.0/applicants', async (req, res) => {
+  // await helper
+  //     .checkPermission(req.params.id, "menu_applicant")
+  //     .then(async (el) => {
+  //       const applicant = await ApplicantService.findOrder();
+  //       res.send({ message: 'Success Get Data Applicant', data: applicant, el });
+  //     })
+  //     .catch((error) => {
+  //       return res.send(error);
+  //     });
   const applicant = await ApplicantService.findOrder();
   res.send({ message: 'Success Get Data Applicant', data: applicant });
 });

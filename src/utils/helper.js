@@ -1,5 +1,5 @@
-const RolePermission = require('../src/rolepermission/RolePermission');
-const Permission = require('../src/permission/Permission');
+const RolePermission = require('../rolepermission/RolePermission');
+const Permission = require('../permission/Permission');
 
 class Helper {
   constructor() {}
@@ -27,7 +27,7 @@ class Helper {
               }
             })
             .catch((error) => {
-              reject(error);
+              reject({ message: error });
             });
         })
         .catch(() => {
