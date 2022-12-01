@@ -74,6 +74,12 @@ Applicant.init(
     year_marriage: {
       type: Sequelize.STRING,
     },
+    status: {
+      type: Sequelize.STRING,
+    },
+    isCandidate: {
+      type: Sequelize.BOOLEAN,
+    },
   },
   {
     sequelize,

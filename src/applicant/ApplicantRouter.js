@@ -1,5 +1,6 @@
 const express = require('express');
 const ApplicantService = require('./ApplicantService');
+const Applicant = require('./Applicant');
 const FamilyService = require('./FamilyService');
 const FormalEducationService = require('./FormalEducationService');
 const NonFormalEducationService = require('./NonFormalEducationService');
@@ -113,6 +114,22 @@ router.get('/api/1.0/allapplicants', async (req, res) => {
 router.get('/api/1.0/applicants/:id', async (req, res) => {
   const applicant = await ApplicantService.byId(req.params.id);
   res.send({ message: 'Success Get Data Applicant by Id', data: applicant });
+});
+
+router.put("/api/1.0/tocandidate/:id", async (req, res) => {
+  const id = req.params.id;
+  const applicant = await Applicant.findOne({ where: { id: id, } });
+
+  if (!applicant) {
+    res.send({ message: "no applicant found !" })
+  } else {
+    Applicant.update(req.body, { where: { id: id }, })
+      .then(() => {
+        res.send({ message: `${applicant.name} telah menjadi kandidat` });
+      }).catch(err => {
+        res.send({ message: err });
+      });
+  }
 });
 
 module.exports = router;

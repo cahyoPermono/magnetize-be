@@ -1,6 +1,8 @@
 const express = require('express');
 const JobService = require('./JobService');
+const Applicant = require('../applicant/Applicant');
 const router = express.Router();
+
 router.post(
   '/api/1.0/jobs',
   async (req, res) => {
@@ -23,5 +25,5 @@ router.get(
       res.send({ message: "no data !" })
     }
   });
-  
+
 module.exports = router;
