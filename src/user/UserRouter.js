@@ -106,7 +106,7 @@ router.get("/api/1.0/users/:id", async (req, res) => {
 router.put("/api/1.0/update/:id", async (req, res) => {
   const id = req.params.id;
   User.update(req.body, {
-    where: { roleId: id },
+    where: { id: id },
   })
     .then(num => {
       if (num == 1) {
