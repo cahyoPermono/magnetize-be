@@ -48,6 +48,9 @@ Job.init(
     desc:{
       type: Sequelize.STRING,
     },
+    package_detail:{
+      type: Sequelize.STRING,
+    },
     creator_id: {
       type: Sequelize.INTEGER,
       references: {
@@ -58,7 +61,7 @@ Job.init(
   },
   {
     sequelize,
-    modelName: 'job',
+    modelName: 'jobs',
   }
 );
 
