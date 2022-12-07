@@ -52,12 +52,8 @@ router.get(
   "/api/1.0/all_departements/:id",
   userMiddleware.isLoggedIn,
   async (req, res) => {
-    // const departements = await DepartementsService.allDepartmentGet(req.body);
-    // return res.send({ departements });
-    // console.log(req)
-
     await helper
-      .checkPermission(req.params.id, "menu_departement")
+      .checkPermission(req.params.id, "menu_departements")
       .then(async (el) => {
 
         const departements = await DepartementsService.allDepartmentGet();

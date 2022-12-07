@@ -1,3 +1,4 @@
+const Permission = require("../permission/Permission");
 const RolePermission = require("./RolePermission");
 
 const save = async (body) => {
@@ -5,4 +6,20 @@ const save = async (body) => {
   await RolePermission.create(rolepermission);
 };
 
-module.exports = { save };
+const byroleId = async (roleId) => {
+  const permissions = await RolePermission.findAll({
+    where: { roleId: roleId },
+    include: [Permission],
+  });
+  return permissions;
+};
+
+const bypermission = async (permissionId) => {
+  const permissions = await RolePermission.findAll({
+    where: { permissionId: permissionId },
+    include: [Permission],
+  });
+  return permissions;
+};
+
+module.exports = { save, byroleId, bypermission };
