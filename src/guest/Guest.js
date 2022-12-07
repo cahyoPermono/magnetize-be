@@ -27,7 +27,7 @@ Guest.init(
       type: Sequelize.STRING,
     },
     cv: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT('long'),
     },
   },
   {

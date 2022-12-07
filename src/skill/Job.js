@@ -42,7 +42,16 @@ Job.init(
     max_salary:{
       type: Sequelize.STRING,
     },
+    status:{
+      type: Sequelize.STRING,
+    },
     desc:{
+      type: Sequelize.STRING,
+    },
+    package_detail:{
+      type: Sequelize.STRING,
+    },
+    payment_frequency:{
       type: Sequelize.STRING,
     },
     creator_id: {
@@ -55,7 +64,7 @@ Job.init(
   },
   {
     sequelize,
-    modelName: 'job',
+    modelName: 'jobs',
   }
 );
 

@@ -16,12 +16,7 @@ const save = async (body) => {
 };
 
 const find = async () => {
-  const applicant = await Applicant.findAll({
-    include: [
-      Family, FormalEducation, NonFormalEducation, ComputerLiterate,
-      EmploymentHistory, JobDescription, OtherInformation, AttachmentApplicant, ApplicantSkill, OtherApplicantSkill
-    ],
-  });
+  const applicant = await Applicant.findAll({});
   if (applicant) {
     return applicant;
   }
