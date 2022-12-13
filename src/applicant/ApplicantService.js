@@ -9,6 +9,7 @@ const OtherInformation = require('../applicant/OtherInformation');
 const AttachmentApplicant = require('../applicant/AttachmentApplicant');
 const ApplicantSkill = require('../skill/ApplicantSkill');
 const OtherApplicantSkill = require('../skill/OtherApplicantSkill');
+const Job = require('../skill/Job');
 
 const save = async (body) => {
   const applicant = { ...body };
@@ -16,7 +17,9 @@ const save = async (body) => {
 };
 
 const find = async () => {
-  const applicant = await Applicant.findAll({});
+  const applicant = await Applicant.findAll({
+    include: [Job]
+  });
   if (applicant) {
     return applicant;
   }

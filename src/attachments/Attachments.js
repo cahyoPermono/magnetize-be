@@ -4,7 +4,7 @@ const Departements = require("../departements/Departements");
 
 const Model = Sequelize.Model;
 
-class Attachments extends Model {}
+class Attachments extends Model { }
 
 Attachments.init(
   {
@@ -26,12 +26,11 @@ Attachments.init(
     modelName: "attachments",
   }
 );
-Attachments.belongsTo(Departements);
+Attachments.belongsTo(Departements, {
+  foreignKey: 'DepartementId',
+});
 Departements.hasMany(Attachments, {
-  foreignKey: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
+  foreignKey: 'DepartementId',
 });
 
 module.exports = Attachments;
