@@ -1,3 +1,4 @@
+const Role = require("../role/Role");
 const Permission = require("./Permission");
 
 const save = async (body) => {
@@ -6,7 +7,9 @@ const save = async (body) => {
 };
 
 const find = async () => {
-  const permission = await Permission.findAll({});
+  const permission = await Permission.findAll({
+    include: [Role],
+  });
   if (permission) {
     return permission;
   }

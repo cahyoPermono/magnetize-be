@@ -8,7 +8,7 @@ const save = async (body) => {
 
 const find = async () => {
   const role = await Role.findAll({
-    include: [Permission]
+    include: [Permission],
   });
   if (role) {
     return role;
@@ -16,4 +16,15 @@ const find = async () => {
   return false;
 };
 
-module.exports = { save, find };
+const findById = async (id) => {
+  const role = await Role.findOne({
+    where: { id: id },
+    include: Permission,
+  });
+  if (role) {
+    return role;
+  }
+  return false;
+};
+
+module.exports = { save, find, findById };
