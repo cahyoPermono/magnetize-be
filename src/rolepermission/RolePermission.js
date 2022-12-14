@@ -15,7 +15,7 @@ RolePermission.init(
     permissionId: {
       type: Sequelize.INTEGER,
     },
-   },
+  },
   {
     sequelize,
     modelName: 'rolepermission',
@@ -28,6 +28,5 @@ Role.hasMany(RolePermission);
 RolePermission.belongsTo(Role);
 Permission.hasMany(RolePermission);
 RolePermission.belongsTo(Permission);
-
 
 module.exports = RolePermission;

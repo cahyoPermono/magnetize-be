@@ -102,6 +102,11 @@ router.get("/api/1.0/users/:id", async (req, res) => {
   return res.send({ message: 'Success Get Data User', data: user });
 });
 
+router.get("/api/1.0/users", async (req, res) => {
+  const user = await UserService.find();
+  return res.send({ message: 'Success Get Data User', data: user });
+});
+
 
 router.put("/api/1.0/update/:id", async (req, res) => {
   const id = req.params.id;
