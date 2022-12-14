@@ -12,6 +12,7 @@ const AttachmentApplicantService = require('./AttachmentApplicantService');
 const { check, validationResult } = require('express-validator');
 const router = express.Router();
 
+//add new applicant
 router.post(
   '/api/1.0/applicants',
   // check('applicant.name').notEmpty().withMessage('Name cannot be null'),
@@ -101,6 +102,7 @@ router.post(
   }
 );
 
+//get one last applicant
 router.get('/api/1.0/applicants', async (req, res) => {
   // await helper
   //     .checkPermission(req.params.id, "menu_applicant")
@@ -115,16 +117,19 @@ router.get('/api/1.0/applicants', async (req, res) => {
   res.send({ message: 'Success Get Data Applicant', data: applicant });
 });
 
-router.get('/api/1.0/allapplicants', async (req, res) => {
-  const applicant = await ApplicantService.find();
+//get all applicants (with jobId filter)
+router.get('/api/1.0/allapplicants/:jobId', async (req, res) => {
+  const applicant = await ApplicantService.find(req.params.jobId);
   res.send({ message: 'Success Get Data Applicant', data: applicant });
 });
 
+//get applicant by ID within all data
 router.get('/api/1.0/applicants/:id', async (req, res) => {
   const applicant = await ApplicantService.byId(req.params.id);
   res.send({ message: 'Success Get Data Applicant by Id', data: applicant });
 });
 
+//update applicant status
 router.put("/api/1.0/tocandidate/:id", async (req, res) => {
   const id = req.params.id;
   const applicant = await Applicant.findOne({ where: { id: id, } });

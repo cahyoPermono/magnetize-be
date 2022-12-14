@@ -16,8 +16,9 @@ const save = async (body) => {
   await Applicant.create(applicant);
 };
 
-const find = async () => {
+const find = async (JobId) => {
   const applicant = await Applicant.findAll({
+    where: { JobId: JobId },
     include: [Job]
   });
   if (applicant) {
