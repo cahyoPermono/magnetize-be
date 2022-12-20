@@ -30,21 +30,12 @@ router.post(
   }
 );
 
-// router.get(
-//   '/api/1.0/answers/:email',
-//   async (email) => {
-//       const answerByEmail = await AnswerService.mailExists(email);
-//       res.send({ message: 'Success Get Question', data: answerByEmail });
-//   }
-  
-// );
-
 router.get(
   '/api/1.0/answers/:email',
   async (req, res) => {
-    const email = req.params.email
-    const answer = await AnswerService.findByEmail(email);
-      res.send({ message: 'Success Get Answer', data: answer });
+  const email = req.params.email;
+  const answer = await AnswerService.findByEmail(email);
+  res.send({ message: 'Success Get Answer', data: answer });
   }
   
 );
