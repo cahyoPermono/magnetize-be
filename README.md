@@ -1,16 +1,26 @@
-Magnetize Back End
+# Magnetize Back End
 
-Setup
+## Setup
 
 Make sure to install the dependencies
-    npm install
+
+```bash
+npm install
+```
 
 create a database named magnetize
 
-run a migration :
-    npx sequelize db:migrate
 
-Development
+Run a migration
+
+```bash
+npx sequelize db:migrate
+```
+
+## Development
 
 Start the development server on http://localhost:3000
-    npm run dev
+
+```bash
+npm run dev
+```
