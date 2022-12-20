@@ -34,6 +34,6 @@ const deleterolePermission = async (id) => {
   const rolepermission = await RolePermission.destroy({
     where: { roleId: id },
   });
-}
+};
 
 module.exports = { save, byroleId, bypermission, all, deleterolePermission };

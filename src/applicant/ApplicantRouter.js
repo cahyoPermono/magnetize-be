@@ -102,15 +102,6 @@ router.post(
 );
 
 router.get('/api/1.0/applicants', async (req, res) => {
-  // await helper
-  //     .checkPermission(req.params.id, "menu_applicant")
-  //     .then(async (el) => {
-  //       const applicant = await ApplicantService.findOrder();
-  //       res.send({ message: 'Success Get Data Applicant', data: applicant, el });
-  //     })
-  //     .catch((error) => {
-  //       return res.send(error);
-  //     });
   const applicant = await ApplicantService.findOrder();
   res.send({ message: 'Success Get Data Applicant', data: applicant });
 });
@@ -127,15 +118,16 @@ router.get('/api/1.0/applicants/:id', async (req, res) => {
 
 router.put("/api/1.0/tocandidate/:id", async (req, res) => {
   const id = req.params.id;
-  const applicant = await Applicant.findOne({ where: { id: id, } });
+  const applicant = await Applicant.findOne({ where: { id: id } });
 
   if (!applicant) {
     res.send({ message: "no applicant found !" })
   } else {
-    Applicant.update(req.body, { where: { id: id }, })
+    Applicant.update(req.body, { where: { id: id } })
       .then(() => {
         res.send({ message: `${applicant.name} telah menjadi kandidat` });
-      }).catch(err => {
+      })
+      .catch(err => {
         res.send({ message: err });
       });
   }

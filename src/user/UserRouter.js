@@ -102,25 +102,19 @@ router.get("/api/1.0/users/:id", async (req, res) => {
   return res.send({ message: 'Success Get Data User', data: user });
 });
 
-router.get("/api/1.0/users", async (req, res) => {
-  const user = await UserService.find();
-  return res.send({ message: 'Success Get Data User', data: user });
-});
-
-
 router.put("/api/1.0/update/:id", async (req, res) => {
   const id = req.params.id;
   User.update(req.body, {
     where: { id: id },
   })
-    .then(num => {
-      if (num == 1) {
+    .then(user => {
+      if (user) {
         res.send({
-          message: "success"
+          message: "success update"
         });
       } else {
         res.send({
-          message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found or req.body is empty!`
+          message: `Cannot update`,
         });
       }
     })

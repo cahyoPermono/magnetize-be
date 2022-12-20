@@ -36,7 +36,7 @@ router.delete("/api/1.0/rolepermissions/:id", async (req, res) => {
   } else {
     await RolePermissionService.deleterolePermission(req.params.id);
     return res.send({
-      message: req.t(`departement with id ${req.params.id} deleted`),
+      message: req.t(`data with id ${req.params.id} deleted`),
     });
   }
 });
