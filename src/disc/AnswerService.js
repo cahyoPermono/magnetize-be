@@ -5,23 +5,13 @@ const save = async (body) => {
   await Answer.create(answer);
 };
 
-const mailExists = async (email) => {
-  const answer = await Answer.findOne({ where: { email } });
-
+const findByEmail = async (email) => {
+  const answer = await Answer.findAll({ where: { email } });
   if (answer) {
     return answer;
   }
 
-  return false;
+  return 'tidak ada data';
 };
 
-const findByEmail = async (email) => {
-  const answer = await Answer.findAll({ where: { email } });
-  if (answer) {
-    return answer
-  }
-
-  return 'tidak ada data';
-}
-
-module.exports = { save, findByEmail, mailExists};
+module.exports = { save, findByEmail };
