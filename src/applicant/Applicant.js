@@ -1,10 +1,11 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/database');
+const Jobs = require('../skill/Job');
 
 // initiate model for extend
 const Model = Sequelize.Model;
 
-class Applicant extends Model {}
+class Applicant extends Model { }
 
 Applicant.init(
   {
@@ -62,8 +63,12 @@ Applicant.init(
     religion: {
       type: Sequelize.STRING,
     },
-    position: {
-      type: Sequelize.STRING,
+    JobId: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'jobs',
+        key: 'id',
+      },
     },
     photo: {
       type: Sequelize.STRING,
@@ -86,5 +91,9 @@ Applicant.init(
     modelName: 'applicant',
   }
 );
+Applicant.belongsTo(Jobs);
+Jobs.hasMany(Applicant, {
+  foreignKey: 'JobId',
+});
 
 module.exports = Applicant;

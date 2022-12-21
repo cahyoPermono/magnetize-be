@@ -1,6 +1,5 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/database');
-const Departements = require("../departements/Departements");
 const Users = require("../user/User");
 
 // initiate model for extend

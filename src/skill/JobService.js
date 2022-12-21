@@ -1,3 +1,4 @@
+const User = require('../user/User');
 const Job = require('./Job');
 const Skill = require('./Skill');
 
@@ -9,7 +10,7 @@ const findOne = async (id) => {
   const job = await Job.findOne({
     where: { id: id },
     include: [
-      Skill
+      Skill, User
     ],
   });
   if (job) {

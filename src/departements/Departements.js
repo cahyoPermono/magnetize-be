@@ -26,7 +26,7 @@ Departements.init(
       type: Sequelize.STRING,
     },
     avatar: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT('long'),
     },
   },
   {

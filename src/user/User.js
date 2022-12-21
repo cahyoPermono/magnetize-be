@@ -36,7 +36,7 @@ User.init(
       type: Sequelize.STRING,
     },
     image: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT('long'),
     },
     lastActive: {
       type: Sequelize.DATE,

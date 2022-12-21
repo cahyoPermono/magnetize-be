@@ -4,7 +4,7 @@ const Departements = require("../departements/Departements");
 
 const Model = Sequelize.Model;
 
-class Notes extends Model {}
+class Notes extends Model { }
 
 Notes.init(
   {
@@ -21,12 +21,11 @@ Notes.init(
   }
 );
 
-Notes.belongsTo(Departements);
+Notes.belongsTo(Departements, {
+  foreignKey: 'DepartementId',
+});
 Departements.hasMany(Notes, {
-  foreignKey: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
+  foreignKey: 'DepartementId',
 });
 
 module.exports = Notes;
