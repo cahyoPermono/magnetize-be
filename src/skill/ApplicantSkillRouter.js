@@ -12,4 +12,9 @@ router.get('/api/1.0/applicantskills', async (req, res) => {
   res.send({ message: 'Success Get skill', data: applicantskill });
 });
 
+router.get('/api/1.0/applicantskills/:id', async (req, res) => {
+  const applicantskill = await ApplicantSkillService.findByIdApplicant(req.params.id);
+  res.send({ message: 'Success Get skill', data: applicantskill });
+});
+
 module.exports = router;
