@@ -38,119 +38,6 @@ router.get("/api/1.0/download_pdf/:id", async (req, res) => {
   });
 });
 
-router.get("/api/1.0/topdf_skill/:id", async (req, res) => {
-  const dataApplicant = await ApplicantService.byId(req.params.id);
-
-  const dataApplicantPromise = {
-    name: dataApplicant.name,
-    phone: dataApplicant.mobile,
-    position: dataApplicant.position,
-  };
-  const applicantskills = [];
-  dataApplicant.applicantskills.forEach((element) => {
-    applicantskills.push({
-      subskill_id: element.subskillId,
-      nilai: element.nilai,
-      keterangan: element.keterangan,
-    });
-  });
-  let a = [];
-  const subskill = await SubSkillService.find();
-  subskill.forEach((element) => {
-    applicantskills.forEach((e) => {
-      if (element.id === e.subskill_id) {
-        a.push({
-          skill: element.skill.skill,
-          subskill: element.subskill,
-          nilai: e.nilai,
-          keterangan: e.keterangan,
-        });
-      }
-    });
-  });
-  const skills = [];
-  for (let item of a) {
-    const { skill } = item;
-    if (!skills.includes(skill)) {
-      skills.push(skill);
-    }
-  }
-  let c = [];
-  skills.forEach((el) => {
-    const y = { skill: el, subskill: [] };
-    a.forEach((e) => {
-      if (e.skill === y.skill) {
-        const x = {
-          subskill: e.subskill,
-          nilai: e.nilai,
-          keterangan: e.keterangan,
-        };
-        y.subskill.push(x);
-      }
-    });
-    c.push(y);
-  });
-  const html = fs.readFileSync(
-    path.join(__dirname, "../toPDF/template/temp_tech.html"),
-    "utf-8"
-  );
-  const filename_TechnicalSkill = "TechApplicantDocs_" + req.params.id + ".pdf";
-
-  const document = {
-    html: html,
-    data: {
-      dataApplicant: dataApplicantPromise,
-      skillAplicant: c,
-    },
-    path: "./docs/" + filename_TechnicalSkill,
-  };
-  await pdf
-    .create(document, options)
-    .then((res) => {
-      console.log(res);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
-  const transporter = nodemailer.createTransport({
-    service: "hotmail",
-    auth: {
-      user: "testing229988@outlook.com",
-      pass: "23121ggg",
-    },
-  });
-  const text = `<p><b>Dear HR Imani Prima,</b> <br><br>Diinformasikan bahwa ada pelamar baru yang telah mengisi formulir, yaitu: <br> Nama: ${dataApplicantPromise.name} <br>Posisi: ${dataApplicantPromise.position} <br><br>formulir yang telah diisi pelamar terlamir. Terima Kasih</p>`;
-  const filename_DataApplicant = "applicantDocs_" + req.params.id + ".pdf";
-  const subject =
-    dataApplicantPromise.name + " - " + dataApplicantPromise.position;
-  const test = {
-    from: "testing229988@outlook.com",
-    to: "dwisuciamelia3029@gmail.com",
-    subject: subject,
-    html: text,
-    attachments: [
-      {
-        filename: filename_TechnicalSkill,
-        path: "./docs/" + filename_TechnicalSkill,
-      },
-      {
-        filename: filename_DataApplicant,
-        path: "./docs/" + filename_DataApplicant,
-      },
-    ],
-  };
-  transporter.sendMail(test, (err) => {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log("email send");
-      // Send base64 pdf to client
-      res.send({ message: "Email Send!" });
-    }
-  });
-});
-
 router.get("/api/1.0/topdf/:id", async (req, res) => {
   const html = fs.readFileSync(
     path.join(__dirname, "../toPDF/template/temp.html"),
@@ -184,7 +71,7 @@ router.get("/api/1.0/topdf/:id", async (req, res) => {
     npwp_no: dataApplicant.npwp_no,
     account_no: dataApplicant.account_no,
     religion: dataApplicant.religion,
-    position: dataApplicant.position,
+    position: dataApplicant.job.name,
     photo: dataApplicant.photo,
     marital_status: dataApplicant.marital_status,
     year_marriage: dataApplicant.year_marriage,
@@ -333,6 +220,124 @@ router.get("/api/1.0/topdf/:id", async (req, res) => {
     .catch((error) => {
       console.log(error);
     });
+});
+
+router.get("/api/1.0/topdf_skill/:id", async (req, res) => {
+  try {
+    const dataApplicant = await ApplicantService.findOrder();
+    const dataApplicantPromise = {
+      name: dataApplicant[0].name,
+      phone: dataApplicant[0].mobile,
+      position: dataApplicant[0].job.name,
+    };
+
+    const applicantskills = [];
+    dataApplicant[0].applicantskills.forEach((element) => {
+      applicantskills.push({
+        subskill_id: element.subskillId,
+        nilai: element.nilai,
+        keterangan: element.keterangan,
+      });
+    });
+    let a = [];
+    const subskill = await SubSkillService.find();
+    subskill.forEach((element) => {
+      applicantskills.forEach((e) => {
+        if (element.id === e.subskill_id) {
+          a.push({
+            skill: element.skill.skill,
+            subskill: element.subskill,
+            nilai: e.nilai,
+            keterangan: e.keterangan,
+          });
+        }
+      });
+    });
+    const skills = [];
+    for (let item of a) {
+      const { skill } = item;
+      if (!skills.includes(skill)) {
+        skills.push(skill);
+      }
+    }
+    let c = [];
+    skills.forEach((el) => {
+      const y = { skill: el, subskill: [] };
+      a.forEach((e) => {
+        if (e.skill === y.skill) {
+          const x = {
+            subskill: e.subskill,
+            nilai: e.nilai,
+            keterangan: e.keterangan,
+          };
+          y.subskill.push(x);
+        }
+      });
+      c.push(y);
+    });
+
+    const html = fs.readFileSync(
+      path.join(__dirname, "../toPDF/template/temp_tech.html"),
+      "utf-8"
+    );
+    const filename_TechnicalSkill = "TechApplicantDocs_" + req.params.id + ".pdf";
+
+    const document = {
+      html: html,
+      data: {
+        dataApplicant: dataApplicantPromise,
+        skillAplicant: c,
+      },
+      path: "./docs/" + filename_TechnicalSkill,
+    };
+    await pdf
+      .create(document, options)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    const transporter = nodemailer.createTransport({
+      service: "hotmail",
+      auth: {
+        user: "testing229988@outlook.com",
+        pass: "23121ggg",
+      },
+    });
+    const text = `<p><b>Dear HR Imani Prima,</b> <br><br>Diinformasikan bahwa ada pelamar baru yang telah mengisi formulir, yaitu: <br> Nama: ${dataApplicantPromise.name} <br>Posisi: ${dataApplicantPromise.position} <br><br>formulir yang telah diisi pelamar terlamir. Terima Kasih</p>`;
+    const filename_DataApplicant = "applicantDocs_" + req.params.id + ".pdf";
+    const subject =
+      dataApplicantPromise.name + " - " + dataApplicantPromise.position;
+    const test = {
+      from: "testing229988@outlook.com",
+      to: "zidnazen@gmail.com",
+      subject: subject,
+      html: text,
+      attachments: [
+        {
+          filename: filename_TechnicalSkill,
+          path: "./docs/" + filename_TechnicalSkill,
+        },
+        {
+          filename: filename_DataApplicant,
+          path: "./docs/" + filename_DataApplicant,
+        },
+      ],
+    };
+    transporter.sendMail(test, (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("email send");
+        // Send base64 pdf to client
+        res.send({ message: "Email Send!" });
+      }
+    });
+  } catch (error) {
+    res.send({ message: error })
+  }
 });
 
 module.exports = router;

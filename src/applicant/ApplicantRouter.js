@@ -110,7 +110,7 @@ router.get('/api/1.0/applicants', async (req, res) => {
 
 //get all applicants (with jobId filter)
 router.get('/api/1.0/allapplicants/:jobId', async (req, res) => {
-  const applicant = await ApplicantService.find(req.params.jobId);
+  const applicant = await ApplicantService.findByJob(req.params.jobId);
   res.send({ message: 'Success Get Data Applicant', data: applicant });
 });
 

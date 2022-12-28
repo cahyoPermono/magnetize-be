@@ -91,7 +91,9 @@ Applicant.init(
     modelName: 'applicant',
   }
 );
-Applicant.belongsTo(Jobs);
+Applicant.belongsTo(Jobs, {
+  foreignKey: 'JobId',
+});
 Jobs.hasMany(Applicant, {
   foreignKey: 'JobId',
 });
