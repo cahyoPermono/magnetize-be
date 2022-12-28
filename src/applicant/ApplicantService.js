@@ -16,6 +16,14 @@ const save = async (body) => {
   await Applicant.create(applicant);
 };
 
+const allApplicant = async() => {
+  const applicant = await Applicant.findAll();
+  if(applicant){
+    return applicant;
+  }
+  return false;
+};
+
 const find = async () => {
   const applicant = await Applicant.findAll({
     include: [Job]
@@ -66,4 +74,4 @@ const byId = async (id) => {
   return false;
 };
 
-module.exports = { save, find, byId, findOrder, findByJob };
+module.exports = { save, find, byId, findOrder, findByJob, allApplicant };

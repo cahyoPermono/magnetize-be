@@ -69,7 +69,7 @@ router.post(
     }
 
     await ApplicantService.save(req.body.applicant);
-    const applicant = await ApplicantService.find();
+    const applicant = await ApplicantService.allApplicant();
     const applicantId = applicant[applicant.length - 1];
 
     for (let index = 0; index < req.body.family.length; index++) {
@@ -105,6 +105,12 @@ router.post(
 //get one last applicant
 router.get('/api/1.0/applicants', async (req, res) => {
   const applicant = await ApplicantService.findOrder();
+  res.send({ message: 'Success Get Data Applicant', data: applicant });
+});
+
+//get all applicant
+router.get('/api/1.0/all_applicant', async (req, res) => {
+  const applicant = await ApplicantService.allApplicant();
   res.send({ message: 'Success Get Data Applicant', data: applicant });
 });
 
