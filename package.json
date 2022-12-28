@@ -4,7 +4,7 @@
   "description": "backend for magnetize using express and tdd methodology",
   "main": "app.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon index",
+    "dev": "cross-env NODE_ENV=development nodemon --max-old-space-size=5120 index",
     "test": "cross-env NODE_ENV=test jest --watch"
   },
   "author": "Cahyo Adi Permono",

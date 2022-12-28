@@ -24,10 +24,20 @@ const allApplicant = async() => {
   return false;
 };
 
-const find = async (JobId) => {
+const find = async () => {
+  const applicant = await Applicant.findAll({
+    include: [Job]
+  });
+  if (applicant) {
+    return applicant;
+  }
+  return false;
+};
+
+const findByJob = async (JobId) => {
   const applicant = await Applicant.findAll({
     where: { JobId: JobId },
-    include: [Job],
+    include: [Job]
   });
   if (applicant) {
     return applicant;
@@ -39,6 +49,7 @@ const findOrder = async () => {
   const applicant = await Applicant.findAll({
     limit: 1,
     order: [['id', 'desc']],
+    include: [ApplicantSkill, Job],
   });
   if (applicant) {
     return applicant;
@@ -54,8 +65,7 @@ const byId = async (id) => {
     },
     include: [
       Family, FormalEducation, NonFormalEducation, ComputerLiterate,
-      EmploymentHistory, JobDescription, OtherInformation, AttachmentApplicant, 
-      ApplicantSkill, OtherApplicantSkill, Job
+      EmploymentHistory, JobDescription, OtherInformation, AttachmentApplicant, ApplicantSkill, OtherApplicantSkill, Job
     ],
   });
   if (applicant) {
@@ -64,4 +74,4 @@ const byId = async (id) => {
   return false;
 };
 
-module.exports = { save, find, byId, findOrder, allApplicant };
+module.exports = { save, find, byId, findOrder, findByJob, allApplicant };
