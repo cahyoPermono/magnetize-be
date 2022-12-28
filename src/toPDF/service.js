@@ -302,8 +302,8 @@ router.get("/api/1.0/topdf_skill/:id", async (req, res) => {
     const transporter = nodemailer.createTransport({
       service: "hotmail",
       auth: {
-        user: "testing229988@outlook.com",
-        pass: "23121ggg",
+        user: "auto_notifier_ip@outlook.com",
+        pass: "magnetize2022",
       },
     });
     const text = `<p><b>Dear HR Imani Prima,</b> <br><br>Diinformasikan bahwa ada pelamar baru yang telah mengisi formulir, yaitu: <br> Nama: ${dataApplicantPromise.name} <br>Posisi: ${dataApplicantPromise.position} <br><br>formulir yang telah diisi pelamar terlamir. Terima Kasih</p>`;
@@ -311,7 +311,7 @@ router.get("/api/1.0/topdf_skill/:id", async (req, res) => {
     const subject =
       dataApplicantPromise.name + " - " + dataApplicantPromise.position;
     const test = {
-      from: "testing229988@outlook.com",
+      from: "auto_notifier_ip@outlook.com",
       to: "zidnazen@gmail.com",
       subject: subject,
       html: text,
