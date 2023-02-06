@@ -1,6 +1,6 @@
-const Sequelize = require('sequelize');
-const sequelize = require('../config/database');
-const Applicant = require('./Applicant');
+const Sequelize = require("sequelize");
+const sequelize = require("../config/database");
+const Applicant = require("./Applicant");
 
 const Model = Sequelize.Model;
 
@@ -14,6 +14,9 @@ FormalEducation.init(
     name_location: {
       type: Sequelize.STRING,
     },
+    location: {
+      type: Sequelize.STRING,
+    },
     major: {
       type: Sequelize.STRING,
     },
@@ -23,13 +26,16 @@ FormalEducation.init(
     graduate: {
       type: Sequelize.STRING,
     },
+    ip_rata: {
+      type: Sequelize.STRING,
+    },
     applicantId: {
       type: Sequelize.INTEGER,
     },
   },
   {
     sequelize,
-    modelName: 'formaleducation',
+    modelName: "formaleducation",
   }
 );
 FormalEducation.belongsTo(Applicant);
