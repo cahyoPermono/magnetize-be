@@ -8,6 +8,7 @@ router.post(
   check('applicantId').notEmpty().withMessage('ID cannot be null'),
   check('level').notEmpty().withMessage('Level Education cannot be null'),
   check('name_location').notEmpty().withMessage('Name & Location cannot be null'),
+  check('location').notEmpty().withMessage('Name & Location cannot be null'),
   check('major').notEmpty().withMessage('Major cannot be null'),
   check('entry').notEmpty().withMessage('Entry cannot be null'),
   check('graduate').notEmpty().withMessage('Graduate cannot be null'),

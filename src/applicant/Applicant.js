@@ -24,11 +24,35 @@ Applicant.init(
     blood_type: {
       type: Sequelize.ENUM('A', 'B', 'AB', 'O'),
     },
+    province: {
+      type: Sequelize.STRING,
+    },
+    city: {
+      type: Sequelize.STRING,
+    },
+    district: {
+      type: Sequelize.STRING,
+    },
+    subdistrict: {
+      type: Sequelize.STRING,
+    },
     address: {
       type: Sequelize.STRING,
     },
     postal_code_address: {
       type: Sequelize.INTEGER,
+    },
+    province_dom: {
+      type: Sequelize.STRING,
+    },
+    city_dom: {
+      type: Sequelize.STRING,
+    },
+    district_dom: {
+      type: Sequelize.STRING,
+    },
+    subdistrict_dom: {
+      type: Sequelize.STRING,
     },
     domicile: {
       type: Sequelize.STRING,

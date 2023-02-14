@@ -14,6 +14,12 @@ FormalEducation.init(
     name_location: {
       type: Sequelize.STRING,
     },
+    location: {
+      type: Sequelize.STRING,
+    },
+    gpa: {
+      type: Sequelize.STRING,
+    },
     major: {
       type: Sequelize.STRING,
     },
