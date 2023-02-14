@@ -1,6 +1,6 @@
-const Sequelize = require('sequelize');
-const sequelize = require('../config/database');
-const Applicant = require('./Applicant');
+const Sequelize = require("sequelize");
+const sequelize = require("../config/database");
+const Applicant = require("./Applicant");
 
 const Model = Sequelize.Model;
 
@@ -12,6 +12,9 @@ OtherInformation.init(
       type: Sequelize.STRING,
     },
     disease: {
+      type: Sequelize.STRING,
+    },
+    year: {
       type: Sequelize.STRING,
     },
     psycological_test: {
@@ -68,7 +71,7 @@ OtherInformation.init(
   },
   {
     sequelize,
-    modelName: 'otherinformation',
+    modelName: "otherinformation",
   }
 );
 OtherInformation.belongsTo(Applicant);
