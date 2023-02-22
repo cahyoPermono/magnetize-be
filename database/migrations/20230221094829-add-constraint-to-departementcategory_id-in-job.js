@@ -3,17 +3,17 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    await queryInterface.addColumn("departements", "DepartementCategoryId", {
+    await queryInterface.addColumn("jobs", "JobCategoryId", {
       type: Sequelize.INTEGER,
       references: {
-        model: 'departementCategories',
+        model: 'jobCategories',
         key: 'id',
       },
-      after:'deskripsi'
+      after:'package_detail'
     });
   },
 
   async down (queryInterface) {
-    await queryInterface.removeColumn("departements", "DepartementCategoryId");
+    await queryInterface.removeColumn("jobs", "JobCategoryId");
   }
 };

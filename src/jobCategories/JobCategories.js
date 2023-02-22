@@ -4,9 +4,9 @@ const sequelize = require('../config/database');
 // initiate model for extend
 const Model = Sequelize.Model;
 
-class DepartementCategories extends Model {}
+class JobCategories extends Model {}
 
-DepartementCategories.init(
+JobCategories.init(
   {
     category: {
       type: Sequelize.STRING,
@@ -14,8 +14,8 @@ DepartementCategories.init(
   },
   {
     sequelize,
-    modelName: 'departementCategories',
+    modelName: 'jobCategories',
   }
 );
 
-module.exports = DepartementCategories;
+module.exports = JobCategories;

@@ -1,6 +1,5 @@
 const Sequelize = require("sequelize");
 const sequelize = require("../config/database");
-const DepartementCategories = require("../departementCategories/DepartementCategories");
 
 const Model = Sequelize.Model;
 
@@ -38,12 +37,5 @@ Departements.init(
     modelName: "departements",
   }
 );
-
-DepartementCategories.hasMany(Departements, {
-  foreignKey: 'DepartementCategoryId',
-});
-Departements.belongsTo(DepartementCategories, {
-  foreignKey: 'DepartementCategoryId',
-});
 
 module.exports = Departements;
