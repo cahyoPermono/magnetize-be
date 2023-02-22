@@ -25,9 +25,6 @@ Departements.init(
     deskripsi: {
       type: Sequelize.STRING,
     },
-    DepartementCategoryId: {
-      type: Sequelize.INTEGER,
-    },
     avatar: {
       type: Sequelize.TEXT('long'),
     },
