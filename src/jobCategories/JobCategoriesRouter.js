@@ -1,14 +1,14 @@
 const express = require("express");
-const DepartementCategoriesService = require("./DepartementCategoriesService");
+const JobCategoriesService = require("./JobCategoriesService");
 const router = express.Router();
 const userMiddleware = require("../middleware/middleware");
 const Helper = require("../utils/helper");
 const helper = new Helper();
 const { check, validationResult } = require("express-validator");
 
-// POST /api/1.0/departementcategories
+// POST /api/1.0/jobcategories
 router.post(
-  "/api/1.0/departementcategories",
+  "/api/1.0/jobcategories",
   check("category")
     .notEmpty()
     .withMessage("category_null"),
@@ -22,21 +22,21 @@ router.post(
         .forEach((error) => (validationErrors[error.param] = req.t(error.msg)));
       return res.status(400).send({ validationErrors: validationErrors });
     }
-    await DepartementCategoriesService.departementCategoriesPost(req.body);
-    return res.send({ message: req.t("newDeparement_create_success") });
+    await JobCategoriesService.JobCategoriesPost(req.body);
+    return res.send({ message: req.t("new job categories success created") });
   }
 );
 
-// GET /api/1.0/all_departementcategories/:id => get all
+// GET /api/1.0/all_jobcategories/:id => get all
 router.get(
-  "/api/1.0/all_departementcategories/:id",
+  "/api/1.0/all_jobcategories/:id",
   userMiddleware.isLoggedIn,
   async (req, res) => {
     await helper
       .checkPermission(req.params.id, "menu_departements")
-      .then(async (el) => {
-        const departements = await DepartementCategoriesService.allDepartementCategoriesGet();
-        return res.send({ departements, el });
+      .then(async (role) => {
+        const categories = await JobCategoriesService.allJobCategoriesGet();
+        return res.send({ categories, role });
       })
       .catch((error) => {
         return res.send(error);
@@ -44,20 +44,20 @@ router.get(
   }
 );
 
-// GET /api/1.0/departementcategories/:id => get one
-router.get("/api/1.0/departementcategories/:id", async (req, res) => {
-  const departement = await DepartementCategoriesService.departementCategoriesGet(req.params.id);
-  if (!departement) {
+// GET /api/1.0/jobcategories/:id => get one
+router.get("/api/1.0/jobcategories/:id", async (req, res) => {
+  const category = await JobCategoriesService.JobCategoriesGet(req.params.id);
+  if (!category) {
     return res.send({
       message: req.t(`no data with id ${req.params.id} exist!`),
     });
   }
-  return res.send({ departement });
+  return res.send({ category });
 });
 
-//DEL /api/1.0/departementcategories/:id
-router.delete("/api/1.0/departementcategories/:id", async (req, res) => {
-  const checkDdepartement = await DepartementCategoriesService.departementCategoriesGet(
+//DEL /api/1.0/jobcategories/:id
+router.delete("/api/1.0/jobcategories/:id", async (req, res) => {
+  const checkDdepartement = await JobCategoriesService.JobCategoriesGet(
     req.params.id
   );
   if (!checkDdepartement) {
@@ -65,9 +65,9 @@ router.delete("/api/1.0/departementcategories/:id", async (req, res) => {
       message: req.t(`no data with id ${req.params.id} exist!`),
     });
   } else {
-    await DepartementCategoriesService.departementCategoriesDelete(req.params.id);
+    await JobCategoriesService.JobCategoriesDelete(req.params.id);
     return res.send({
-      message: req.t(`departement with id ${req.params.id} deleted`),
+      message: req.t(`job Category with id ${req.params.id} deleted`),
     });
   }
 });

@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/database');
+const JobCategories = require('../jobCategories/JobCategories');
 const Users = require("../user/User");
 
 // initiate model for extend
@@ -49,6 +50,13 @@ Job.init(
     },
     package_detail:{
       type: Sequelize.STRING,
+    },
+    JobCategoryId: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'jobCategories',
+        key: 'id',
+      },
     },
     payment_frequency:{
       type: Sequelize.STRING,
