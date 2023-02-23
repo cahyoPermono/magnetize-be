@@ -1,3 +1,5 @@
+const Departements = require('../departements/Departements');
+const JobCategories = require('../jobCategories/JobCategories');
 const User = require('../user/User');
 const Job = require('./Job');
 const Skill = require('./Skill');
@@ -10,7 +12,7 @@ const findOne = async (id) => {
   const job = await Job.findOne({
     where: { id: id },
     include: [
-      Skill, User
+      Skill, User, Departements, JobCategories
     ],
   });
   if (job) {
@@ -20,7 +22,11 @@ const findOne = async (id) => {
 };
 
 const find = async () => {
-  const job = await Job.findAll();
+  const job = await Job.findAll({
+    include: [
+      Departements, JobCategories
+    ]
+  });
   if (job) {
     return job;
   }

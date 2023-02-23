@@ -27,21 +27,15 @@ router.post(
   }
 );
 
-// GET /api/1.0/all_jobcategories/:id => get all
-router.get(
-  "/api/1.0/all_jobcategories/:id",
-  userMiddleware.isLoggedIn,
-  async (req, res) => {
-    await helper
-      .checkPermission(req.params.id, "menu_departements")
-      .then(async (role) => {
-        const categories = await JobCategoriesService.allJobCategoriesGet();
-        return res.send({ categories, role });
-      })
-      .catch((error) => {
-        return res.send(error);
-      });
+// GET /api/1.0/all_jobcategories => get all
+router.get("/api/1.0/all_jobcategories", userMiddleware.isLoggedIn, async (req, res) => {
+  try {
+    const categories = await JobCategoriesService.allJobCategoriesGet();
+    return res.status(200).send({ categories });
+  } catch (error) {
+    return res.status(400).send(error);
   }
+}
 );
 
 // GET /api/1.0/jobcategories/:id => get one

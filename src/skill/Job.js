@@ -1,5 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/database');
+const Departements = require('../departements/Departements');
+const JobCategories = require('../jobCategories/JobCategories');
 const Users = require("../user/User");
 
 // initiate model for extend
@@ -79,6 +81,18 @@ Job.belongsTo(Users,{
 });
 Users.hasMany(Job, {
   foreignKey:"creator_id"
+});
+Job.belongsTo(Departements,{
+  foreignKey:"DepartementId",
+});
+Departements.hasMany(Job, {
+  foreignKey:"DepartementId"
+});
+Job.belongsTo(JobCategories,{
+  foreignKey:"JobCategoryId",
+});
+JobCategories.hasMany(Job, {
+  foreignKey:"JobCategoryId"
 });
 
 module.exports = Job;
