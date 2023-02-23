@@ -48,21 +48,17 @@ router.post(
   }
 );
 
-router.get(
-  "/api/1.0/all_departements/:id",
-  userMiddleware.isLoggedIn,
-  async (req, res) => {
-    await helper
-      .checkPermission(req.params.id, "menu_departements")
-      .then(async (el) => {
-
-        const departements = await DepartementsService.allDepartmentGet();
-        return res.send({ departements, el });
-      })
-      .catch((error) => {
-        return res.send(error);
-      });
-  }
+router.get("/api/1.0/all_departements/:id", userMiddleware.isLoggedIn, async (req, res) => {
+  await helper
+    .checkPermission(req.params.id, "menu_departements")
+    .then(async (el) => {
+      const departements = await DepartementsService.allDepartmentGet();
+      return res.send({ departements, el });
+    })
+    .catch((error) => {
+      return res.send(error);
+    });
+}
 );
 
 router.get("/api/1.0/departements/:id", async (req, res) => {
