@@ -18,7 +18,7 @@ NonFormalEducation.init(
       type: Sequelize.STRING,
     },
     certificate: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT('long'),
     },
     sponsored_by: {
       type: Sequelize.STRING,

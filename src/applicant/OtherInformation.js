@@ -65,6 +65,27 @@ OtherInformation.init(
     weakness: {
       type: Sequelize.STRING,
     },
+    part_time_job: {
+      type: Sequelize.STRING,
+    },
+    about_part_time_job: {
+      type: Sequelize.STRING,
+    },
+    overtime: {
+      type: Sequelize.STRING,
+    },
+    work_on_holiday: {
+      type: Sequelize.STRING,
+    },
+    out_town_duty: {
+      type: Sequelize.STRING,
+    },
+    shifting: {
+      type: Sequelize.STRING,
+    },
+    giving_reference: {
+      type: Sequelize.STRING,
+    },
     applicantId: {
       type: Sequelize.INTEGER,
     },
