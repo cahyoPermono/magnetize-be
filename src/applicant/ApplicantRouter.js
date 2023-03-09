@@ -1,3 +1,7 @@
+const pdf = require("pdf-creator-node");
+const fs = require("fs");
+const path = require("path");
+const nodemailer = require("nodemailer");
 const express = require('express');
 const ApplicantService = require('./ApplicantService');
 const Applicant = require('./Applicant');
@@ -54,34 +58,90 @@ router.post(
         .forEach((error) => (validationErrors[error.param] = error.msg));
       return res.status(400).send({ validationErrors });
     }
+    try {
+      await ApplicantService.save(req.body.applicant);
+      const applicant = await ApplicantService.allApplicant();
+      const applicantId = applicant[applicant.length - 1];
 
-    await ApplicantService.save(req.body.applicant);
-    const applicant = await ApplicantService.allApplicant();
-    const applicantId = applicant[applicant.length - 1];
+      await ApplicantAuthsService.ApplicantAuthUpdate(applicantId.id, req.body.applicant.ApplicantAuthId);
 
-    await ApplicantAuthsService.ApplicantAuthUpdate(applicantId.id, req.body.applicant.ApplicantAuthId);
+      for (let index = 0; index < req.body.formaleducation.length; index++) {
+        await FormalEducationService.save2(applicantId.id, req.body.formaleducation[index]);
+      }
 
-    for (let index = 0; index < req.body.formaleducation.length; index++) {
-      await FormalEducationService.save2(applicantId.id, req.body.formaleducation[index]);
+      for (let index = 0; index < req.body.nonformaleducation.length; index++) {
+        await NonFormalEducationService.save2(applicantId.id, req.body.nonformaleducation[index]);
+      }
+
+      for (let index = 0; index < req.body.computerliterate.length; index++) {
+        await ComputerLiterateService.save2(applicantId.id, req.body.computerliterate[index]);
+      }
+
+      for (let index = 0; index < req.body.employmenthistory.length; index++) {
+        await EmploymentHistoryService.save2(applicantId.id, req.body.employmenthistory[index]);
+      }
+
+      await JobDescriptionService.save2(applicantId.id, req.body.jobdescription);
+
+      await OtherInformationService.save2(applicantId.id, req.body.otherinformation);
+
+      const options = {
+        format: "A4",
+        orientation: "potrait",
+        border: "10mm",
+      };
+      const html = fs.readFileSync(
+        path.join(__dirname, "./pdfTemp/temp.html"),
+        "utf-8"
+      );
+      const filename = "applicantDocs_first_" + req.body.applicant.name + "_" + applicantId.id + ".pdf";
+      const document = {
+        html: html,
+        data: {
+          dataApplicantPromise: req.body.applicant,
+          formaleducationPromise: req.body.formaleducation,
+          nonformaleducationsPromise: req.body.nonformaleducation,
+          computerliteratesPromise: req.body.computerliterate,
+          employmenthistoriesPromise: req.body.employmenthistory,
+          jobdescriptionPromise: req.body.jobdescription,
+          otherinformationPromise: req.body.otherinformation,
+        },
+        path: "./docs/" + filename,
+      };
+      const createPdf = await pdf.create(document, options);
+      const transporter = nodemailer.createTransport({
+        service: "hotmail",
+        auth: {
+          user: "auto_notifier_ip@outlook.com",
+          pass: "magnetize2022",
+        },
+      });
+      const text = `<p><b>Dear HR Imani Prima,</b> <br><br>Diinformasikan bahwa ada pelamar baru yang telah mengisi formulir, yaitu: <br> Nama: ${req.body.applicant.name} <br>Posisi: ${req.body.applicant.jobPosition} <br><br>formulir yang telah diisi pelamar terlamir. Terima Kasih</p>`;
+      const subject = "Lamaran Pekerjaan " + req.body.applicant.name + " - " + req.body.applicant.jobPosition;
+      const test = {
+        from: "auto_notifier_ip@outlook.com",
+        to: "sidna.zen@imaniprima.com",
+        subject: subject,
+        html: text,
+        attachments: [
+          {
+            filename: filename,
+            path: "./docs/" + filename,
+          },
+        ],
+      };
+      transporter.sendMail(test, (err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log("email send");
+          res.send({ message: "Success Save Data, pdf generated, mail send" });
+        }
+      });
+    } catch (error) {
+      console.log(error);
+      return res.send({ error })
     }
-
-    for (let index = 0; index < req.body.nonformaleducation.length; index++) {
-      await NonFormalEducationService.save2(applicantId.id, req.body.nonformaleducation[index]);
-    }
-
-    for (let index = 0; index < req.body.computerliterate.length; index++) {
-      await ComputerLiterateService.save2(applicantId.id, req.body.computerliterate[index]);
-    }
-
-    for (let index = 0; index < req.body.employmenthistory.length; index++) {
-      await EmploymentHistoryService.save2(applicantId.id, req.body.employmenthistory[index]);
-    }
-
-    await JobDescriptionService.save2(applicantId.id, req.body.jobdescription);
-
-    await OtherInformationService.save2(applicantId.id, req.body.otherinformation);
-
-    return res.send({ message: 'Success Save Data' });
   }
 );
 
