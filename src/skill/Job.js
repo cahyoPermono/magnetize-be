@@ -13,7 +13,6 @@ Job.init(
   {
     name: {
       type: Sequelize.STRING,
-      unique: true,
     },
     DepartementId: {
       type: Sequelize.INTEGER,

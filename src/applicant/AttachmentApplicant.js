@@ -12,7 +12,7 @@ AttachmentApplicant.init(
       type: Sequelize.STRING,
     },
     file: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT('long'),
     },
     applicantId: {
       type: Sequelize.INTEGER,

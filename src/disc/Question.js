@@ -10,7 +10,6 @@ Question.init(
   {
     question: {
       type: Sequelize.STRING,
-      unique: true,
     },
   },
   {
