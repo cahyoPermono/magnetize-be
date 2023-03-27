@@ -29,6 +29,7 @@ const toPDFService = require('./toPDF/service');
 const RoleRouter = require('./role/RoleRouter');
 const PermissionRouter = require('./permission/PermisionRouter');
 const RolePermissionRouter = require('./rolepermission/RolePermissionRouter');
+const ProcessEvaluationRouter = require('./processEvaluation/ProcessEvaluationRouter');
 
 i18next
   .use(Backend)
@@ -100,5 +101,6 @@ app.use(OtherApplicantSkillRouter);
 app.use(RoleRouter);
 app.use(PermissionRouter);
 app.use(RolePermissionRouter);
+app.use(ProcessEvaluationRouter);
 
 module.exports = app;

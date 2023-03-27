@@ -99,8 +99,8 @@ router.post("/api/1.0/applicant_auth/login", async (req, res) => {
     }
 });
 
-router.get('/api/1.0/applicant_auth', userMiddleware.isLoggedIn, async (req, res) => {
-    const user = await UserService.find();
-    res.send({ message: 'Success Get Data User', data: user, el });
+router.get('/api/1.0/applicant_auth/:id', userMiddleware.isLoggedIn, async (req, res) => {
+    const user = await ApplicantAuthsService.ApplicantAuthGet(req.params.id);
+    res.send({ message: 'Success Get Data User', data: user });
 });
 module.exports = router;

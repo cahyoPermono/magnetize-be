@@ -16,9 +16,9 @@ const save = async (body) => {
   await Applicant.create(applicant);
 };
 
-const allApplicant = async() => {
+const allApplicant = async () => {
   const applicant = await Applicant.findAll();
-  if(applicant){
+  if (applicant) {
     return applicant;
   }
   return false;
@@ -74,4 +74,13 @@ const byId = async (id) => {
   return false;
 };
 
-module.exports = { save, find, byId, findOrder, findByJob, allApplicant };
+const update = async (body, id) => {
+  const applicant = { ...body };
+  await Applicant.update(applicant, { where: { id: id } });
+};
+
+const update2 = async (body, id) => {
+  await Applicant.update(body, { where: id });
+};
+
+module.exports = { save, find, byId, findOrder, findByJob, allApplicant, update, update2 };
