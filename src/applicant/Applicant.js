@@ -80,12 +80,6 @@ Applicant.init(
     email: {
       type: Sequelize.STRING,
     },
-    id_sim_no: {
-      type: Sequelize.STRING,
-    },
-    valid_to: {
-      type: Sequelize.STRING,
-    },
     npwp_no: {
       type: Sequelize.STRING,
     },
@@ -116,6 +110,9 @@ Applicant.init(
     },
     isCandidate: {
       type: Sequelize.BOOLEAN,
+    },
+    ktp_no: {
+      type: Sequelize.STRING,
     },
   },
   {

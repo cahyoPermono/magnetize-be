@@ -25,6 +25,7 @@ module.exports = {
       queryInterface.addColumn("otherinformations", "giving_reference", {
         type: Sequelize.STRING,
       }),
+
     ]);
   },
 
@@ -37,6 +38,7 @@ module.exports = {
       queryInterface.removeColumn("otherinformations", "out_town_duty"),
       queryInterface.removeColumn("otherinformations", "shifting"),
       queryInterface.removeColumn("otherinformations", "giving_reference"),
+      queryInterface.removeColumn("applicants", "ktp_no"),
     ]);
   }
 };

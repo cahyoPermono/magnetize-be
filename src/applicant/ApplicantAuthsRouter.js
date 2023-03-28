@@ -8,6 +8,7 @@ const Helper = require("../utils/helper");
 const helper = new Helper();
 const userMiddleware = require("../middleware/middleware");
 const nodemailer = require("nodemailer");
+const email = require('../config/emailReceiver');
 
 //Register Applicant Auth
 router.post(
@@ -35,19 +36,12 @@ router.post(
                     .forEach((error) => (validationErrors[error.param] = req.t(error.msg)));
                 return res.status(400).send({ validationErrors: validationErrors });
             }
-            const transporter = nodemailer.createTransport({
-                service: "hotmail",
-                auth: {
-                    user: "auto_notifier_ip@outlook.com",
-                    pass: "magnetize2022",
-                },
-            });
+            const transporter = nodemailer.createTransport(email.sender);
             const text = `<p><b>Dear HR Imani Prima,</b> <br><br>Diinformasikan bahwa ada pelamar baru yang melakukan registrasi dan belum mengisi formulir, yaitu: <br> Nama: ${req.body.name} <br>Email: ${req.body.email} <br><br>Terima Kasih</p>`;
             const subject = `Registrasi Pelamar Baru (${req.body.name} - ${req.body.email})`
-            const targetRecivier = `sidna.zen@imaniprima.com`
             const mail = {
-                from: "auto_notifier_ip@outlook.com",
-                to: targetRecivier,
+                from: email.sender.auth.user,
+                to: email.receiver,
                 subject: subject,
                 html: text,
             }
@@ -99,8 +93,8 @@ router.post("/api/1.0/applicant_auth/login", async (req, res) => {
     }
 });
 
-router.get('/api/1.0/applicant_auth', userMiddleware.isLoggedIn, async (req, res) => {
-    const user = await UserService.find();
-    res.send({ message: 'Success Get Data User', data: user, el });
+router.get('/api/1.0/applicant_auth/:id', userMiddleware.isLoggedIn, async (req, res) => {
+    const user = await ApplicantAuthsService.ApplicantAuthGet(req.params.id);
+    res.send({ message: 'Success Get Data User', data: user });
 });
 module.exports = router;

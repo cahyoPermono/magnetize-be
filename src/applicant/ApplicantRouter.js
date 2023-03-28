@@ -4,7 +4,7 @@ const path = require("path");
 const nodemailer = require("nodemailer");
 const express = require('express');
 const ApplicantService = require('./ApplicantService');
-const Applicant = require('./Applicant');
+const AttachmentApplicantService = require('./AttachmentApplicantService')
 const FormalEducationService = require('./FormalEducationService');
 const NonFormalEducationService = require('./NonFormalEducationService');
 const ComputerLiterateService = require('./ComputerLiterateService');
@@ -12,8 +12,11 @@ const EmploymentHistoryService = require('./EmploymentHistoryService');
 const JobDescriptionService = require('./JobDescriptionService');
 const OtherInformationService = require('./OtherInformationService');
 const ApplicantAuthsService = require('./ApplicantAuthsService');
+const FamilyService = require('./FamilyService');
 const { check, validationResult } = require('express-validator');
+const Applicant = require("./Applicant");
 const router = express.Router();
+const email = require('../config/emailReceiver');
 
 //add new applicant
 router.post(
@@ -33,7 +36,7 @@ router.post(
   check('applicant.religion').notEmpty().withMessage('Religion cannot be null'),
   check('applicant.photo').notEmpty().withMessage('Photo cannot be null'),
   check('applicant.JobId').notEmpty().withMessage('Job Id cannot be null'),
-  check('applicant.martial_status').notEmpty().withMessage('martial status cannot be null'),
+  check('applicant.marital_status').notEmpty().withMessage('martial status cannot be null'),
 
   check('otherinformation.hospitalized').notEmpty().withMessage('Have you been hospitalized cannot be null'),
   check('otherinformation.reason_hire').notEmpty().withMessage('Why we can hire you cannot be null'),
@@ -50,15 +53,15 @@ router.post(
   check('otherinformation.part_time_job').notEmpty().withMessage('part time job cannot be null'),
 
   async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      const validationErrors = {};
-      errors
-        .array()
-        .forEach((error) => (validationErrors[error.param] = error.msg));
-      return res.status(400).send({ validationErrors });
-    }
     try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        const validationErrors = {};
+        errors
+          .array()
+          .forEach((error) => (validationErrors[error.param] = error.msg));
+        return res.status(400).send({ validationErrors });
+      }
       await ApplicantService.save(req.body.applicant);
       const applicant = await ApplicantService.allApplicant();
       const applicantId = applicant[applicant.length - 1];
@@ -71,7 +74,7 @@ router.post(
 
       for (let index = 0; index < req.body.nonformaleducation.length; index++) {
         await NonFormalEducationService.save2(applicantId.id, req.body.nonformaleducation[index]);
-      }
+      } 
 
       for (let index = 0; index < req.body.computerliterate.length; index++) {
         await ComputerLiterateService.save2(applicantId.id, req.body.computerliterate[index]);
@@ -109,18 +112,12 @@ router.post(
         path: "./docs/" + filename,
       };
       const createPdf = await pdf.create(document, options);
-      const transporter = nodemailer.createTransport({
-        service: "hotmail",
-        auth: {
-          user: "auto_notifier_ip@outlook.com",
-          pass: "magnetize2022",
-        },
-      });
-      const text = `<p><b>Dear HR Imani Prima,</b> <br><br>Diinformasikan bahwa ada pelamar baru yang telah mengisi formulir, yaitu: <br> Nama: ${req.body.applicant.name} <br>Posisi: ${req.body.applicant.jobPosition} <br><br>formulir yang telah diisi pelamar terlamir. Terima Kasih</p>`;
+      const transporter = nodemailer.createTransport(email.sender);
+      const text = `<p><b>Dear HR Imani Prima,</b> <br><br>Diinformasikan bahwa ada pelamar baru yang telah mengisi formulir, yaitu: <br>Nama: ${req.body.applicant.name} <br>Email: ${req.body.applicant.email} <br>Posisi: ${req.body.applicant.jobPosition} <br><br>formulir yang telah diisi pelamar terlamir. Terima Kasih</p>`;
       const subject = "Lamaran Pekerjaan " + req.body.applicant.name + " - " + req.body.applicant.jobPosition;
       const test = {
-        from: "auto_notifier_ip@outlook.com",
-        to: "sidna.zen@imaniprima.com",
+        from: email.sender.auth.user,
+        to: email.receiver,
         subject: subject,
         html: text,
         attachments: [
@@ -135,12 +132,11 @@ router.post(
           console.log(err);
         } else {
           console.log("email send");
-          res.send({ message: "Success Save Data, pdf generated, mail send" });
+          res.status(200).send({ message: "Success Save Data, pdf generated, mail send" });
         }
       });
     } catch (error) {
-      console.log(error);
-      return res.send({ error })
+      res.status(400).send({ message: error })
     }
   }
 );
@@ -175,16 +171,39 @@ router.put("/api/1.0/tocandidate/:id", async (req, res) => {
   const applicant = await Applicant.findOne({ where: { id: id } });
 
   if (!applicant) {
-    res.send({ message: "no applicant found !" })
+    res.status(400).send({ message: "no applicant found !" });
   } else {
     Applicant.update(req.body, { where: { id: id } })
       .then(() => {
-        res.send({ message: `${applicant.name} telah menjadi kandidat` });
+        res.status(200).send({ message: `${applicant.name} telah menjadi kandidat` });
       })
       .catch(err => {
-        res.send({ message: err });
+        res.status(400).send({ message: err });
       });
   }
 });
 
+//update applicant
+router.put("/api/1.0/applicants/:id", async (req, res) => {
+  const id = req.params.id;
+  const applicant = await Applicant.findOne({ where: { id: id } });
+
+  if (!applicant) {
+    res.status(400).send({ message: "no applicant found !" });
+  } else {
+    try {
+      await ApplicantService.createPDF(req.body);
+      await ApplicantService.update(req.body.applicant, id);
+      for (let index = 0; index < req.body.families.length; index++) {
+        await FamilyService.save2(id, req.body.families[index]);
+      };
+      for (let index = 0; index < req.body.attachments.length; index++) {
+        await AttachmentApplicantService.save2(id, req.body.attachments[index]);
+      };
+      res.status(200).send({ message: `${applicant.name} telah di update` });
+    } catch (error) {
+      res.status(400).send({ message: error });
+    }
+  }
+});
 module.exports = router;

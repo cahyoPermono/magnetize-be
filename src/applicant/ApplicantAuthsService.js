@@ -1,6 +1,7 @@
 const ApplicantAuths = require("./ApplicantAuths");
 const bcrypt = require("bcrypt");
 const Applicant = require("./Applicant");
+const Job = require("../skill/Job");
 
 exports.save = async (body) => {
     const hash = await bcrypt.hash(body.password, 10);
@@ -33,7 +34,7 @@ exports.allApplicantAuth = async () => {
 
 exports.ApplicantAuthGet = async (id) => {
     return await ApplicantAuths.findOne({
-        where: { id: id }, include: [Applicant]
+        where: { id: id }, include: [{ model: Applicant, include: [Job] }]
     });
 };
 

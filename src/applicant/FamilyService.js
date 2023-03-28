@@ -45,4 +45,9 @@ const byIdApplicant = async (id) => {
   return false;
 };
 
-module.exports = { save, save2, find, byIdApplicant };
+const update = async (body, id) => {
+  const family = { ...body };
+  await Family.update(family, { where: { id: id } });
+};
+
+module.exports = { save, save2, find, byIdApplicant, update };

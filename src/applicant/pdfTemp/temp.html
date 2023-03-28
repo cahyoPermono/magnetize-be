@@ -75,15 +75,6 @@
         </div>
 
     </div>
-    <!-- <main>
-        {{this.dataApplicantPromise}}
-        {{this.formaleducationPromise}}
-        {{this.nonformaleducationPromise}}
-        {{this.computerliteratesPromise}}
-        {{this.employmenthistoriesPromise}}
-        {{this.jobdescriptionPromise}}
-        {{this.otherinformationPromise}}
-    </main> -->
     <main>
         <div id="table-personal-data">
             <table>
@@ -193,8 +184,8 @@
                         <small><i>Martial Status</i></small>
                     </td>
                     <td>
-                        {{this.dataApplicantPromise.martial_status}}
-                        {{#ifCond this.dataApplicantPromise.martial_status '===' 'Menikah'}}
+                        {{this.dataApplicantPromise.marital_status}}
+                        {{#ifCond this.dataApplicantPromise.marital_status '===' 'Menikah'}}
                         (Tahun {{this.dataApplicantPromise.year_marriage}})
                         {{/ifCond}}
                     </td>

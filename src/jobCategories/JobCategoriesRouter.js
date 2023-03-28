@@ -1,10 +1,10 @@
 const express = require("express");
-const JobCategoriesService = require("./JobCategoriesService");
 const router = express.Router();
 const userMiddleware = require("../middleware/middleware");
 const Helper = require("../utils/helper");
 const helper = new Helper();
 const { check, validationResult } = require("express-validator");
+const JobCategoriesService = require("./JobCategoriesService");
 
 // POST /api/1.0/jobcategories
 router.post(
