@@ -6,34 +6,24 @@ const pdf = require("pdf-creator-node");
 const nodemailer = require("nodemailer");
 const ApplicantService = require("../applicant/ApplicantService");
 const SubSkillService = require("../skill/SubSkillService");
+const email = require('../config/emailReceiver');
 
 const options = {
   format: "A4",
   orientation: "potrait",
   border: "10mm",
 };
-router.get("/api/1.0/download_pdf/:id", async (req, res) => {
-  const filename = "applicantDocs_" + req.params.id + ".pdf";
-  const filename_TechnicalSkill = "TechApplicantDocs_" + req.params.id + ".pdf";
+router.get("/api/1.0/download_pdf", async (req, res) => {
+  const filename = "applicantDocs_first_" + req.query.name + "_" + req.query.id + ".pdf";
+  // const filename_TechnicalSkill = "TechApplicantDocs_" + req.params.id + ".pdf";
 
   fs.readFile("./docs/" + filename, "base64", (err, dataPDF) => {
     if (err) {
       res.send({ message: "error !" });
     } else {
-      fs.readFile(
-        "./docs/" + filename_TechnicalSkill,
-        "base64",
-        (err, dataPDF_TechnicalSkill) => {
-          if (err) {
-            res.send({ message: "error !" });
-          } else {
-            res.send({
-              dataPDF: dataPDF,
-              dataPDF_TechnicalSkill: dataPDF_TechnicalSkill,
-            });
-          }
-        }
-      );
+      res.send({
+        dataPDF: dataPDF
+      });
     }
   });
 });
@@ -299,20 +289,14 @@ router.get("/api/1.0/topdf_skill/:id", async (req, res) => {
         console.log(error);
       });
 
-    const transporter = nodemailer.createTransport({
-      service: "hotmail",
-      auth: {
-        user: "auto_notifier_ip@outlook.com",
-        pass: "magnetize2022",
-      },
-    });
+    const transporter = nodemailer.createTransport(email.sender);
     const text = `<p><b>Dear HR Imani Prima,</b> <br><br>Diinformasikan bahwa ada pelamar baru yang telah mengisi formulir, yaitu: <br> Nama: ${dataApplicantPromise.name} <br>Posisi: ${dataApplicantPromise.position} <br><br>formulir yang telah diisi pelamar terlamir. Terima Kasih</p>`;
     const filename_DataApplicant = "applicantDocs_" + req.params.id + ".pdf";
     const subject =
       dataApplicantPromise.name + " - " + dataApplicantPromise.position;
     const test = {
-      from: "auto_notifier_ip@outlook.com",
-      to: "dwisuciamelia3029@gmail.com",
+      from: email.sender.auth.user,
+      to: email.receiver,
       subject: subject,
       html: text,
       attachments: [

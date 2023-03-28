@@ -2,7 +2,7 @@
   "development": {
     "username": "root",
     "password": "11223344",
-    "database": "magnetize",
+    "database": "db_test_1",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },

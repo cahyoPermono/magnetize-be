@@ -16,6 +16,7 @@ const FamilyService = require('./FamilyService');
 const { check, validationResult } = require('express-validator');
 const Applicant = require("./Applicant");
 const router = express.Router();
+const email = require('../config/emailReceiver');
 
 //add new applicant
 router.post(
@@ -111,18 +112,12 @@ router.post(
         path: "./docs/" + filename,
       };
       const createPdf = await pdf.create(document, options);
-      const transporter = nodemailer.createTransport({
-        service: "hotmail",
-        auth: {
-          user: "auto_notifier_ip@outlook.com",
-          pass: "magnetize2022",
-        },
-      });
-      const text = `<p><b>Dear HR Imani Prima,</b> <br><br>Diinformasikan bahwa ada pelamar baru yang telah mengisi formulir, yaitu: <br> Nama: ${req.body.applicant.name} <br>Posisi: ${req.body.applicant.jobPosition} <br><br>formulir yang telah diisi pelamar terlamir. Terima Kasih</p>`;
+      const transporter = nodemailer.createTransport(email.sender);
+      const text = `<p><b>Dear HR Imani Prima,</b> <br><br>Diinformasikan bahwa ada pelamar baru yang telah mengisi formulir, yaitu: <br>Nama: ${req.body.applicant.name} <br>Email: ${req.body.applicant.email} <br>Posisi: ${req.body.applicant.jobPosition} <br><br>formulir yang telah diisi pelamar terlamir. Terima Kasih</p>`;
       const subject = "Lamaran Pekerjaan " + req.body.applicant.name + " - " + req.body.applicant.jobPosition;
       const test = {
-        from: "auto_notifier_ip@outlook.com",
-        to: "sidna.zen@imaniprima.com",
+        from: email.sender.auth.user,
+        to: email.receiver,
         subject: subject,
         html: text,
         attachments: [
@@ -197,16 +192,14 @@ router.put("/api/1.0/applicants/:id", async (req, res) => {
     res.status(400).send({ message: "no applicant found !" });
   } else {
     try {
+      await ApplicantService.createPDF(req.body);
       await ApplicantService.update(req.body.applicant, id);
-
       for (let index = 0; index < req.body.families.length; index++) {
         await FamilyService.save2(id, req.body.families[index]);
       };
-
       for (let index = 0; index < req.body.attachments.length; index++) {
         await AttachmentApplicantService.save2(id, req.body.attachments[index]);
       };
-
       res.status(200).send({ message: `${applicant.name} telah di update` });
     } catch (error) {
       res.status(400).send({ message: error });
