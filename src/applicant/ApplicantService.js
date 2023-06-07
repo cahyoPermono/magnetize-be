@@ -15,14 +15,15 @@ const fs = require("fs");
 const path = require("path");
 const nodemailer = require("nodemailer");
 const email = require('../config/emailReceiver');
+const ApplicantStatus = require('../applicantStatus/ApplicantStatus');
 
 const save = async (body) => {
-  const applicant = { ...body };
+  const applicant = { ...body, ApplicantStatusId: 3 };
   await Applicant.create(applicant);
 };
 
 const allApplicant = async () => {
-  const applicant = await Applicant.findAll();
+  const applicant = await Applicant.findAll({ include: [ApplicantStatus] });
   if (applicant) {
     return applicant;
   }
@@ -69,7 +70,7 @@ const byId = async (id) => {
       id: id,
     },
     include: [
-      Family, FormalEducation, NonFormalEducation, ComputerLiterate,
+      Family, FormalEducation, NonFormalEducation, ComputerLiterate, ApplicantStatus,
       EmploymentHistory, JobDescription, OtherInformation, AttachmentApplicant, ApplicantSkill, OtherApplicantSkill, Job
     ],
   });
@@ -80,12 +81,13 @@ const byId = async (id) => {
 };
 
 const update = async (body, id) => {
-  const applicant = { ...body };
+  const applicant = { ...body, ApplicantStatusId: 5 };
   await Applicant.update(applicant, { where: { id: id } });
 };
 
 const update2 = async (body, id) => {
-  await Applicant.update(body, { where: id });
+  const applicant = { ...body }
+  await Applicant.update(applicant, { where: { id: id } });
 };
 
 const createPDF = async (body) => {
@@ -116,7 +118,7 @@ const createPDF = async (body) => {
     const create = await pdf.create(document, options);
     const transporter = nodemailer.createTransport(email.sender);
     const text = `<p><b>Dear HR Imani Prima,</b> <br><br>Diinformasikan bahwa pelamar ${body.name} baru yang telah mengisi formulir ke-dua<br><br>formulir yang telah diisi pelamar terlamir. Terima Kasih</p>`;
-    const subject = "Hasil pengisian Tahap 2 - " + body.name ;
+    const subject = "Hasil pengisian Tahap 2 - " + body.name;
     const test = {
       from: email.sender.auth.user,
       to: email.receiver,

@@ -1,8 +1,8 @@
 const app = require('./src/app');
 const sequelize = require('./src/config/database');
 
+const sync = (async () => {
+    await sequelize.sync({ force: true });
+});
 
-
-sequelize.sync();
-
-app.listen(3000, () => console.log('app is running in port 3000'));
+app.listen(3005, () => console.log('app is running in port 3005'));
