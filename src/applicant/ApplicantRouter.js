@@ -74,7 +74,7 @@ router.post(
 
       for (let index = 0; index < req.body.nonformaleducation.length; index++) {
         await NonFormalEducationService.save2(applicantId.id, req.body.nonformaleducation[index]);
-      } 
+      }
 
       for (let index = 0; index < req.body.computerliterate.length; index++) {
         await ComputerLiterateService.save2(applicantId.id, req.body.computerliterate[index]);
@@ -206,4 +206,22 @@ router.put("/api/1.0/applicants/:id", async (req, res) => {
     }
   }
 });
+
+router.put("/api/1.0/applicants/update_status/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const applicant = await Applicant.findOne({ where: { id: id } });
+
+    if (!applicant) {
+      res.status(400).send({ message: "no applicant found !" });
+    } else {
+     await ApplicantService.update2(req.body.applicant, id);
+     res.status(200).send({message: `${applicant.name} telah di update`})
+    }
+  } catch (error) {
+    res.status(400).send({ message: error });
+
+  }
+});
+
 module.exports = router;

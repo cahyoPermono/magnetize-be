@@ -2,6 +2,7 @@ const Sequelize = require('sequelize');
 const sequelize = require('../config/database');
 const Jobs = require('../skill/Job');
 const ApplicantAuths = require('./ApplicantAuths');
+const ApplicantStatus = require('../applicantStatus/ApplicantStatus');
 
 // initiate model for extend
 const Model = Sequelize.Model;
@@ -14,6 +15,13 @@ Applicant.init(
       type: Sequelize.INTEGER,
       references: {
         model: 'applicantauths',
+        key: 'id',
+      },
+    },
+    ApplicantStatusId: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'applicantstatus',
         key: 'id',
       },
     },
@@ -132,6 +140,14 @@ Applicant.belongsTo(ApplicantAuths, {
 });
 ApplicantAuths.hasOne(Applicant, {
   foreignKey: 'ApplicantAuthId',
+});
+
+
+Applicant.belongsTo(ApplicantStatus, {
+  foreignKey: 'ApplicantStatusId',
+});
+ApplicantStatus.hasMany(Applicant, {
+  foreignKey: 'ApplicantStatusId',
 });
 
 module.exports = Applicant;

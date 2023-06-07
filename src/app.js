@@ -30,6 +30,7 @@ const RoleRouter = require('./role/RoleRouter');
 const PermissionRouter = require('./permission/PermisionRouter');
 const RolePermissionRouter = require('./rolepermission/RolePermissionRouter');
 const ProcessEvaluationRouter = require('./processEvaluation/ProcessEvaluationRouter');
+const ApplicantStatusRouter = require('./applicantStatus/ApplicantStatusRouter');
 
 i18next
   .use(Backend)
@@ -85,6 +86,7 @@ app.use(AttachmentsRouter);
 app.use(GuestRouter);
 app.use(ApplicantRouter);
 app.use(ApplicantAuthsRouter);
+app.use(ApplicantStatusRouter);
 // app.use(FamilyRouter);
 // app.use(FormalEducationRouter);
 // app.use(NonFormalEducationRouter);

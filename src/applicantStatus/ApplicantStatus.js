@@ -1,0 +1,26 @@
+const Sequelize = require("sequelize");
+const sequelize = require("../config/database");
+
+const Model = Sequelize.Model;
+
+class ApplicantStatus extends Model { }
+
+ApplicantStatus.init(
+    {
+        id: {
+            allowNull: false,
+            autoIncrement: true,
+            primaryKey: true,
+            type: Sequelize.INTEGER,
+        },
+        status: {
+            type: Sequelize.STRING,
+        }
+    },
+    {
+        sequelize,
+        modelName: "applicantstatus",
+    }
+);
+
+module.exports = ApplicantStatus;
