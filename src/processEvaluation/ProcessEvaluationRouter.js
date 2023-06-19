@@ -25,6 +25,7 @@ router.post(
             await ApplicantService.update2({ status: req.body.status, ApplicantStatusId: 7 },  req.body.applicantId );
             return res.status(200).send({ message: req.t("process evaluation saved !") });
         } catch (error) {
+            console.log(error)
             return res.status(400).send({ message: error });
         }
     }

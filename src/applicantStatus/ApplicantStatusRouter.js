@@ -11,16 +11,22 @@ router.post(
     check("status").notEmpty().withMessage("status cannot null"),
     userMiddleware.isLoggedIn,
     async (req, res) => {
-        const errors = validationResult(req);
-        if (!errors.isEmpty()) {
-            const validationErrors = {};
-            errors
-                .array()
-                .forEach((error) => (validationErrors[error.param] = req.t(error.msg)));
-            return res.status(400).send({ validationErrors: validationErrors });
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                const validationErrors = {};
+                errors
+                    .array()
+                    .forEach((error) => (validationErrors[error.param] = req.t(error.msg)));
+                return res.status(400).send({ validationErrors: validationErrors });
+            }
+            await ApplicantStatusService.applicantStatusPost(req.body);
+            return res.status(200).send({ message: req.t("applicantStatus_create_success") });
+        } catch (error) {
+            console.log(error)
+            return res.status(200).send({ error: error });
         }
-        await ApplicantStatusService.applicantStatusPost(req.body);
-        return res.status(200).send({ message: req.t("applicantStatus_create_success") });
+
     }
 );
 

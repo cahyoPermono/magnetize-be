@@ -4,7 +4,8 @@ const Subskill = require('./SubSkill');
 
 const save = async (body) => {
   const skill = { ...body };
-  await Skill.create(skill);
+  const data = await Skill.create(skill);
+  return data;
 };
 
 const find = async () => {

@@ -5,8 +5,8 @@ const router = express.Router();
 router.post(
   '/api/1.0/skills',
   async (req, res) => {
-    await SkillService.save(req.body);
-    return res.send({ message: 'Success Save Skill' });
+    const data = await SkillService.save(req.body);
+    return res.send({ message: 'Success Save Skill', data: data });
   }
 );
 

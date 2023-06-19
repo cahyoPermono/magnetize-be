@@ -19,8 +19,10 @@ ApplicantStatus.init(
     },
     {
         sequelize,
+        freezeTableName:true,
+        timestamps:false,
         modelName: "applicantstatus",
-    }
+    }   
 );
 
 module.exports = ApplicantStatus;

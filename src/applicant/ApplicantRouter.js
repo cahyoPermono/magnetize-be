@@ -149,8 +149,16 @@ router.get('/api/1.0/applicants', async (req, res) => {
 
 //get all applicant
 router.get('/api/1.0/all_applicant', async (req, res) => {
-  const applicant = await ApplicantService.allApplicant();
-  res.send({ message: 'Success Get Data Applicant', data: applicant });
+  try {
+    const applicant = await ApplicantService.allApplicant();
+    if (applicant.length < 1) {
+      return res.status(200).send({ message: 'no data for now', data: applicant });
+    }
+    return res.status(200).send({ message: 'Success Get Data Applicant', data: applicant });
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({ message: 'internal error', error: error });
+  }
 });
 
 //get all applicants (with jobId filter)
@@ -215,8 +223,8 @@ router.put("/api/1.0/applicants/update_status/:id", async (req, res) => {
     if (!applicant) {
       res.status(400).send({ message: "no applicant found !" });
     } else {
-     await ApplicantService.update2(req.body.applicant, id);
-     res.status(200).send({message: `${applicant.name} telah di update`})
+      await ApplicantService.update2(req.body.applicant, id);
+      res.status(200).send({ message: `${applicant.name} telah di update` })
     }
   } catch (error) {
     res.status(400).send({ message: error });
