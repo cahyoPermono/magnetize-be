@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applicant PDF</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            margin: 12px 30px;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .foto-profil {
+            margin: 20px;
+            float: right;
+            height: fit-content;
+            width: fit-content;
+            padding: 5px;
+            border: 1px black solid;
+        }
+
+        .foto-profil img {
+            width: 100px;
+        }
+
+        .f {
+            display: flex;
+        }
+
+        .head-cell-tr {
+            background-color: rgba(108, 117, 125, 0.3);
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .col-1 {
+            width: 20%;
+        }
+
+        td {
+            padding: 5px;
+        }
+
+        tr,
+        td {
+            border: 1px black solid;
+        }
+
+        .head-cell {
+            color: white;
+            background-color: #195563;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="f">
+            <div>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSbIO6Djw3OrosvFawG2ZXIeDsAWemx9Sc-b1GpOT5iwQ&s"
+                    alt="logo imani prima">
+                <h3>FORMULIR Technical Form</h3>
+            </div>
+            <div class="foto-profil">
+                <img src="{{this.dataApplicantPromise.photo}}" alt="img">
+            </div>
+        </div>
+    </div>
+    <main>
+        <table>
+            <tr class="head-cell-tr">
+                <td>Skill</td>
+                <td>Nilai</td>
+                <td>Keterangan</td>
+            </tr>
+            {{#each applicantSkillsPromise}}
+            <tr>
+                <td>{{ this.subskill }}</td>
+                <td>{{ this.nilai }}</td>
+                <td>{{ this.keterangan }}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </main>
+</body>
+
+</html>
+<a href="http://localhost:3000/api/1.0/download_pdf/1"></a>

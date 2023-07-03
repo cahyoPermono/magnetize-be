@@ -7,6 +7,11 @@ const save = async (body) => {
   await ApplicantSkill.create(applicantskill);
 };
 
+const save2 = async (applicantId, body) => {
+  const applicantskill = { applicantId: applicantId, ...body };
+  await ApplicantSkill.create(applicantskill);
+};
+
 const find = async () => {
   const applicantskill = await ApplicantSkill.findAll({
     include: [SubSkill, Applicant],
@@ -23,7 +28,7 @@ const findByIdApplicant = async (applicantId) => {
     where: {
       applicantId: applicantId,
     },
-    include: [SubSkill, Applicant],
+    include: [SubSkill],
   });
   if (applicantskill) {
     return applicantskill;
@@ -32,4 +37,4 @@ const findByIdApplicant = async (applicantId) => {
   return false;
 };
 
-module.exports = { save, find, findByIdApplicant };
+module.exports = { save, save2, find, findByIdApplicant };

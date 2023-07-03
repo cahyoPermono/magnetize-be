@@ -89,6 +89,9 @@ OtherInformation.init(
     applicantId: {
       type: Sequelize.INTEGER,
     },
+    information_source: {
+      type: Sequelize.INTEGER,
+    },
   },
   {
     sequelize,

@@ -330,33 +330,28 @@
                 {{#each employmenthistoriesPromise}}
                 <tr>
                     <td>
-                        <small style="font-size: 60%;">Start: </small>{{this.start}}
+                        <small style="font-size: 60%;">{{this.start}} - {{this.end}}</small>
                     </td>
-                    <td rowspan="2">
+                    <td>
                         {{this.name_company}}
                     </td>
-                    <td rowspan="2">
+                    <td>
                         {{this.position}}
                     </td>
-                    <td rowspan="2">
+                    <td>
                         {{this.direct_supervisor}}
                     </td>
-                    <td rowspan="2">
+                    <td>
                         {{this.take_home_pay}}
                     </td>
-                    <td rowspan="2">
-                        {{this.reason_leaving}}
-                    </td>
-                </tr>
-                <tr>
                     <td>
-                        <small style="font-size: 60%;">End: </small>{{this.end}}
+                        {{this.reason_leaving}}
                     </td>
                 </tr>
                 {{/each}}
             </table>
         </div>
-        <div id="job_desc">
+        <div id="job_desc" style="page-break-after: always;">
             <table class="head-cell">
                 <tr>
                     <td><b>Tugas dan Tanggung Jawab Pekerjaan </b><small>(Job Description)</small></td>
@@ -376,7 +371,7 @@
                     <td><b>KETERANGAN LAINNYA </b><small>(Other Informations)</small></td>
                 </tr>
             </table>
-            <table>
+            <table style="page-break-after: always;">
                 <tr>
                     <td>
                         <p style="font-size: 70%;">
@@ -488,6 +483,8 @@
                         {{this.otherinformationPromise.relatives_in_ip}}
                     </td>
                 </tr>
+            </table>
+            <table>
                 <tr>
                     <td>
                         <p style="font-size: 70%;">
@@ -518,6 +515,14 @@
                             jika punya, dimana dan sebagai apa ?
                         </p>
                         {{this.otherinformationPromise.about_part_time_job}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p style="font-size: 70%;">
+                            dimana anda mendapatkan informasi lowongan kerja ini ?
+                        </p>
+                        {{this.otherinformationPromise.information_source}}
                     </td>
                 </tr>
             </table>

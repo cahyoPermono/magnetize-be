@@ -17,6 +17,7 @@ const { check, validationResult } = require('express-validator');
 const Applicant = require("./Applicant");
 const router = express.Router();
 const email = require('../config/emailReceiver');
+const ApplicantSkillService = require("../skill/ApplicantSkillService");
 
 //add new applicant
 router.post(
@@ -37,6 +38,8 @@ router.post(
   check('applicant.photo').notEmpty().withMessage('Photo cannot be null'),
   check('applicant.JobId').notEmpty().withMessage('Job Id cannot be null'),
   check('applicant.marital_status').notEmpty().withMessage('martial status cannot be null'),
+
+  check('applicantskills').notEmpty().withMessage('applicant skills cannot be null'),
 
   check('otherinformation.hospitalized').notEmpty().withMessage('Have you been hospitalized cannot be null'),
   check('otherinformation.reason_hire').notEmpty().withMessage('Why we can hire you cannot be null'),
@@ -84,15 +87,21 @@ router.post(
         await EmploymentHistoryService.save2(applicantId.id, req.body.employmenthistory[index]);
       }
 
+      for (let index = 0; index < req.body.applicantskills.length; index++) {
+        await ApplicantSkillService.save2(applicantId.id, req.body.applicantskills[index]);
+      }
+
       await JobDescriptionService.save2(applicantId.id, req.body.jobdescription);
 
       await OtherInformationService.save2(applicantId.id, req.body.otherinformation);
 
+      //create pdf file
       const options = {
         format: "A4",
         orientation: "potrait",
         border: "10mm",
       };
+
       const html = fs.readFileSync(
         path.join(__dirname, "./pdfTemp/temp.html"),
         "utf-8"
@@ -112,6 +121,34 @@ router.post(
         path: "./docs/" + filename,
       };
       const createPdf = await pdf.create(document, options);
+
+      const filename2 = "applicantDocs_technical_form_" + req.body.applicant.name + "_" + applicantId.id + ".pdf"
+      if (req.body.applicantskills.length > 0) {
+        const applicantskills = await ApplicantSkillService.findByIdApplicant(applicantId.id);
+        let dataPDF = [];
+        applicantskills.forEach(skills => {
+          dataPDF.push({
+            subskill: skills.subskill.subskill,
+            nilai: skills.nilai,
+            keterangan: skills.keterangan,
+          })
+        });
+
+        const html2 = fs.readFileSync(
+          path.join(__dirname, "./pdfTemp/technical_form.html"),
+          "utf-8"
+        );
+        const document2 = {
+          html: html2,
+          data: {
+            applicantSkillsPromise: dataPDF,
+          },
+          path: "./docs/" + filename2,
+        };
+        const createPdf2 = await pdf.create(document2, options);
+      }
+
+      //send mail
       const transporter = nodemailer.createTransport(email.sender);
       const text = `<p><b>Dear HR Imani Prima,</b> <br><br>Diinformasikan bahwa ada pelamar baru yang telah mengisi formulir, yaitu: <br>Nama: ${req.body.applicant.name} <br>Email: ${req.body.applicant.email} <br>Posisi: ${req.body.applicant.jobPosition} <br><br>formulir yang telah diisi pelamar terlamir. Terima Kasih</p>`;
       const subject = "Lamaran Pekerjaan " + req.body.applicant.name + " - " + req.body.applicant.jobPosition;
@@ -125,6 +162,10 @@ router.post(
             filename: filename,
             path: "./docs/" + filename,
           },
+          {
+            filename: filename2,
+            path: "./docs/" + filename2,
+          },
         ],
       };
       transporter.sendMail(test, (err) => {
@@ -135,7 +176,9 @@ router.post(
           res.status(200).send({ message: "Success Save Data, pdf generated, mail send" });
         }
       });
+
     } catch (error) {
+      console.log(error);
       res.status(400).send({ message: error })
     }
   }

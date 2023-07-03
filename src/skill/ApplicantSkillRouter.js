@@ -3,8 +3,12 @@ const ApplicantSkillService = require('./ApplicantSkillService');
 const router = express.Router();
 
 router.post('/api/1.0/applicantskills', async (req, res) => {
-  await ApplicantSkillService.save(req.body);
-  return res.send({ message: 'Success Save Skill' });
+  try {
+    await ApplicantSkillService.save(req.body);
+    return res.send({ message: 'Success Save Skill' });
+  } catch (error) {
+    return res.status(500).send({ message: error });
+  }
 });
 
 router.get('/api/1.0/applicantskills', async (req, res) => {
