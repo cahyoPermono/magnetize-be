@@ -91,7 +91,7 @@
                     <td><b>Data Pribadi </b><small>(personal data)</small></td>
                 </tr>
             </table>
-            <table>
+            <table style="page-break-after: always;">
                 <tr>
                     <td class="col-1">
                         <span>Nama Lengkap</span><br>
@@ -185,7 +185,7 @@
                     </td>
                     <td>
                         {{this.dataApplicantPromise.marital_status}}
-                        {{#ifCond this.dataApplicantPromise.marital_status '===' 'Menikah'}}
+                        {{#ifCond this.dataApplicantPromise.marital_status '===' 'menikah'}}
                         (Tahun {{this.dataApplicantPromise.year_marriage}})
                         {{/ifCond}}
                     </td>
@@ -200,13 +200,10 @@
             </table>
             <table>
                 <tr class="head-cell-tr">
-                    <td rowspan="2">Jenjang</td>
-                    <td rowspan="2">Nama&Kota/tempat</td>
-                    <td rowspan="2">Jurusan</td>
-                    <td rowspan="2">IPK / Nilai</td>
-                    <td colspan="2">Tahun Pendidikan</td>
-                </tr>
-                <tr class="head-cell-tr">
+                    <td>Jenjang</td>
+                    <td>Nama&Kota/tempat</td>
+                    <td>Jurusan</td>
+                    <td>IPK / Nilai</td>
                     <td>Masuk</td>
                     <td>Lulus</td>
                 </tr>
@@ -330,7 +327,7 @@
                 {{#each employmenthistoriesPromise}}
                 <tr>
                     <td>
-                        <small style="font-size: 60%;">{{this.start}} - {{this.end}}</small>
+                        <small style="font-size: 60%;">{{this.start}} sd. {{this.end}}</small>
                     </td>
                     <td>
                         {{this.name_company}}

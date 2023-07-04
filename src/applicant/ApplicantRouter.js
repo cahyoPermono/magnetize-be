@@ -39,8 +39,6 @@ router.post(
   check('applicant.JobId').notEmpty().withMessage('Job Id cannot be null'),
   check('applicant.marital_status').notEmpty().withMessage('martial status cannot be null'),
 
-  check('applicantskills').notEmpty().withMessage('applicant skills cannot be null'),
-
   check('otherinformation.hospitalized').notEmpty().withMessage('Have you been hospitalized cannot be null'),
   check('otherinformation.reason_hire').notEmpty().withMessage('Why we can hire you cannot be null'),
   check('otherinformation.plan').notEmpty().withMessage('Short term plan and your long term plan cannot be null'),
@@ -122,7 +120,14 @@ router.post(
       };
       const createPdf = await pdf.create(document, options);
 
-      const filename2 = "applicantDocs_technical_form_" + req.body.applicant.name + "_" + applicantId.id + ".pdf"
+      //add attachment
+      const attachment = [];
+      attachment.push({
+        filename: filename,
+        path: "./docs/" + filename,
+      })
+
+      const filename2 = "applicantDocs_technical_form_" + req.body.applicant.name + "_" + applicantId.id + ".pdf";
       if (req.body.applicantskills.length > 0) {
         const applicantskills = await ApplicantSkillService.findByIdApplicant(applicantId.id);
         let dataPDF = [];
@@ -145,7 +150,13 @@ router.post(
           },
           path: "./docs/" + filename2,
         };
+
         const createPdf2 = await pdf.create(document2, options);
+
+        attachment.push({
+          filename: filename2,
+          path: "./docs/" + filename2,
+        })
       }
 
       //send mail
@@ -157,16 +168,7 @@ router.post(
         to: email.receiver,
         subject: subject,
         html: text,
-        attachments: [
-          {
-            filename: filename,
-            path: "./docs/" + filename,
-          },
-          {
-            filename: filename2,
-            path: "./docs/" + filename2,
-          },
-        ],
+        attachments: attachment,
       };
       transporter.sendMail(test, (err) => {
         if (err) {
@@ -181,6 +183,7 @@ router.post(
       console.log(error);
       res.status(400).send({ message: error })
     }
+
   }
 );
 

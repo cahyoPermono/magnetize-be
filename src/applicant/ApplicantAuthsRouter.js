@@ -62,34 +62,39 @@ router.post(
 
 //Login Applicant Auth
 router.post("/api/1.0/applicant_auth/login", async (req, res) => {
-    const user = await ApplicantAuthsService.login(req.body.email);
-    if (user) {
-        const validPassword = await bcrypt.compare(
-            req.body.password,
-            user.password
-        );
-        if (validPassword) {
-            const token = jwt.sign(
-                {
-                    name: user.name,
-                    email: user.email,
-                    password: user.password,
-                },
-                "SECRETKEY",
-                {
-                    expiresIn: "2d",
-                }
+    try {
+        const user = await ApplicantAuthsService.login(req.body.email);
+        if (user) {
+            const validPassword = await bcrypt.compare(
+                req.body.password,
+                user.password
             );
-            return res.status(200).send({
-                message: "Logged in!",
-                token,
-                user: user,
-            });
+            if (validPassword) {
+                const token = jwt.sign(
+                    {
+                        name: user.name,
+                        email: user.email,
+                        password: user.password,
+                    },
+                    "SECRETKEY",
+                    {
+                        expiresIn: "2d",
+                    }
+                );
+                return res.status(200).send({
+                    message: "Logged in!",
+                    token,
+                    user: user,
+                });
+            } else {
+                res.status(400).json({ error: "Invalid Password" });
+            }
         } else {
-            res.status(400).json({ error: "Invalid Password" });
+            res.status(401).json({ error: "User does not exist" });
         }
-    } else {
-        res.status(401).json({ error: "User does not exist" });
+    } catch (error) {
+        res.status(500).send(error);
+        console.log(error);
     }
 });
 

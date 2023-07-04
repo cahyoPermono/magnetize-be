@@ -22,6 +22,13 @@ module.exports = {
       comment: {
         type: Sequelize.TEXT('medium'),
       },
+      applicantId: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'applicants',
+          key: 'id',
+        },
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -22,7 +22,7 @@ router.post(
                 return res.status(400).send({ message: validationErrors });
             }
             await ProcessEvaluationService.ProcessEvaluationPost(req.body);
-            await ApplicantService.update2({ status: req.body.status, ApplicantStatusId: 7 },  req.body.applicantId );
+            await ApplicantService.update2({ status: req.body.status, ApplicantStatusId: 8 },  req.body.applicantId );
             return res.status(200).send({ message: req.t("process evaluation saved !") });
         } catch (error) {
             console.log(error)

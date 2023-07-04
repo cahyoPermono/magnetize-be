@@ -9,12 +9,6 @@ class processEvaluations extends Model { }
 
 processEvaluations.init(
     {
-        id: {
-            allowNull: false,
-            autoIncrement: true,
-            primaryKey: true,
-            type: Sequelize.INTEGER,
-        },
         interview_1: {
             type: Sequelize.STRING,
         },
@@ -26,7 +20,14 @@ processEvaluations.init(
         },
         comment: {
             type: Sequelize.TEXT('medium'),
-        }
+        },
+        applicantId: {
+            type: Sequelize.INTEGER,
+            references: {
+                model: 'applicant',
+                key: 'id',
+            },
+        },
     },
     {
         sequelize,
@@ -34,11 +35,17 @@ processEvaluations.init(
     }
 );
 
-processEvaluations.belongsTo(Applicant);
+processEvaluations.belongsTo(Applicant, {
+    foreignKey: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
+});
+
 Applicant.hasOne(processEvaluations, {
-  foreignKey: {
-    type: Sequelize.INTEGER,
-    allowNull: false,
-  },
+    foreignKey: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+    },
 });
 module.exports = processEvaluations;
